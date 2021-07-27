@@ -1,19 +1,15 @@
 public class _746_MinCostClimbingStairs {
 
-//  Note:
-//  cost will have a length in the range [2, 1000].
-//  Every cost[i] will be an integer in the range [0, 999].
-
   public static int minCostClimbingStairs(int[] cost) {
-    int twoStepBefore = cost[0];
-    int oneStepBefore = cost[1];
-    int curr = 0;
-    for(int i = 2;i< cost.length;i++){
-      curr = Math.min(twoStepBefore,oneStepBefore) + cost[i];
-      twoStepBefore = oneStepBefore;
-      oneStepBefore = curr;
+    int[] dp = new int[cost.length+1];
+    dp[0] = 0;
+    dp[1] = 0;
+
+    for (int i = 2; i < dp.length; i++) {
+      dp[i] = Math.min(dp[i-1]+cost[i-1],dp[i-2]+cost[i-2]);
     }
-    return Math.min(oneStepBefore,twoStepBefore);
+
+    return dp[cost.length];
   }
 
   public static void main(String[] args) {
