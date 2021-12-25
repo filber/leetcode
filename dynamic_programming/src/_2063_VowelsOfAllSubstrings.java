@@ -1,3 +1,7 @@
+// TIPS:
+// For substring, considering startIndex and endIndex.
+// DP[i] to represent the all substrings starting with i or ending with i
+// DP[i] = DP[i-1] + i !!!!
 public class _2063_VowelsOfAllSubstrings {
     private static final int[] vowels = new int[26];
     static {
