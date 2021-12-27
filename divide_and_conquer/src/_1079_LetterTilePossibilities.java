@@ -1,5 +1,9 @@
 import java.util.*;
 
+// TOPICS:
+// [Backtracking]
+
+// Using CharCnt instead of map to improve efficiency.
 public class _1079_LetterTilePossibilities {
 
     private int cnt = 0;
