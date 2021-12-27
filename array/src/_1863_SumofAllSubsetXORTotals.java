@@ -1,5 +1,8 @@
+// TOPICS:
+// [Bit Manipulation], [Backtracking], [DFS]
+
 // TIPS:
-// Using Divide&Conquer and recursion to solve Combinatorics
+// dfs(int[] nums, int tempResult, int i)
 public class _1863_SumofAllSubsetXORTotals {
 
     int sum = 0;
