@@ -1,6 +1,9 @@
-import java.util.Stack;
 
-// TIPS: reversing the right part of the linked list
+// TOPICS:
+// [Linked List]
+
+// TIPS: reversing the right part of the linked list,
+// then merge the left and right together.
 public class _143_ReorderList {
     public static class ListNode {
          int val;
