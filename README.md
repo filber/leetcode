@@ -1,1 +1,27 @@
+### Leetcode Tags
 
+- [Array](https://leetcode.com/tag/array/) *1009*
+- [String](https://leetcode.com/tag/string/) *494*
+- [Hash Table](https://leetcode.com/tag/hash-table/) *349*
+- [Dynamic Programming](https://leetcode.com/tag/dynamic-programming/) *348*
+- [Math](https://leetcode.com/tag/math/) *334*
+- [Depth-First Search](https://leetcode.com/tag/depth-first-search/) *236*
+- [Sorting](https://leetcode.com/tag/sorting/) *220*
+- [Greedy](https://leetcode.com/tag/greedy/) *215*
+- [Breadth-First Search](https://leetcode.com/tag/breadth-first-search/) *191*
+- [Database](https://leetcode.com/tag/database/) *189*
+- [Tree](https://leetcode.com/tag/tree/) *184*
+- [Binary Search](https://leetcode.com/tag/binary-search/) *167*
+- [Binary Tree](https://leetcode.com/tag/binary-tree/) *155*
+- [Matrix](https://leetcode.com/tag/matrix/) *152*
+- [Two Pointers](https://leetcode.com/tag/two-pointers/) *140*
+- [Bit Manipulation](https://leetcode.com/tag/bit-manipulation/) *121*
+- [Stack](https://leetcode.com/tag/stack/) *117*
+- [Design](https://leetcode.com/tag/design/) *104*
+- [Heap (Priority Queue)](https://leetcode.com/tag/heap-priority-queue/) *100*
+- [Graph](https://leetcode.com/tag/graph/) *86*
+- [Backtracking](https://leetcode.com/tag/backtracking/) *86*
+- [Simulation](https://leetcode.com/tag/simulation/) *79*
+- [Prefix Sum](https://leetcode.com/tag/prefix-sum/) *72*
+- [Sliding Window](https://leetcode.com/tag/prefix-sum/) *66*
+- [Counting](https://leetcode.com/tag/prefix-sum/) *63*
