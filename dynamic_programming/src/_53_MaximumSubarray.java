@@ -1,3 +1,9 @@
+// TOPICS:
+// [Divide and Conquer], [Dynamic Programming]
+
+// TIPS:
+// dp[i] = max(dp[i-1]+n[i],n[i]) , dp[i] represent maxSum of sub-arrays ending with i
+// maxSum = max(dp[i],maxSum)
 public class _53_MaximumSubarray {
 
     public static int maxSubArray(int[] nums) {
