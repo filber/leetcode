@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 //TOPICS:
-//[Tree],[Breadth-First Search]
+//[Tree],[Depth-First Search],[Breadth-First Search]
 
 //TIPS:
 //Construct all links of children before recurse down them.
@@ -13,14 +13,10 @@ public class _116_PopulatingNextRightPointersInEachNode {
         public Node left;
         public Node right;
         public Node next;
-
-        public Node() {
-        }
-
+        public Node() {}
         public Node(int _val) {
             val = _val;
         }
-
         public Node(int _val, Node _left, Node _right, Node _next) {
             val = _val;
             left = _left;
