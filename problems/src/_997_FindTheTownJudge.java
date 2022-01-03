@@ -1,4 +1,5 @@
 // https://leetcode.com/problems/find-the-town-judge/
+//[Graph]
 public class _997_FindTheTownJudge {
 
     public static int findJudge(int n, int[][] trust) {
