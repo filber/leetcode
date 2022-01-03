@@ -1,9 +1,11 @@
+package hash_table;
+// https://leetcode.com/problems/two-sum/
+
 import java.util.HashMap;
 import java.util.Map;
 
 // TOPICS:
 // [Array],[Hash Map]
-
 // TIPS:
 // Dynamically checking and pushing hashmap when iterating the array.
 public class _1_TwoSum {

@@ -1,3 +1,5 @@
+package hash_table;
+
 // https://leetcode.com/problems/find-the-town-judge/
 //[Graph]
 public class _997_FindTheTownJudge {

@@ -1,7 +1,7 @@
-// TOPICS:
-// [Divide and Conquer], [Dynamic Programming]
+package dp;// TOPICS:
+// [Dynamic Programming]
 
-// TIPS:
+// https://leetcode.com/problems/maximum-subarray/
 // dp[i] = max(dp[i-1]+n[i],n[i]) , dp[i] represent maxSum of sub-arrays ending with i
 // maxSum = max(dp[i],maxSum)
 public class _53_MaximumSubarray {
@@ -45,10 +45,9 @@ public class _53_MaximumSubarray {
 
 
     public static void main(String[] args) {
-        int[] nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
-        // 4,-1,2,1
-        int max = maxSubArray2(nums);
-        System.out.print(max);
+        int m1 = maxSubArray(new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4}); // 6
+        int m2 = maxSubArray(new int[]{1}); // 1
+        int m3 = maxSubArray(new int[]{5,4,-1,7,8}); // 23
     }
 
 }
