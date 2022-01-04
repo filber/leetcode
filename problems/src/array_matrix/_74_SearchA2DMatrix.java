@@ -1,3 +1,5 @@
+package array_matrix;
+
 public class _74_SearchA2DMatrix {
 
 //    Constraints:

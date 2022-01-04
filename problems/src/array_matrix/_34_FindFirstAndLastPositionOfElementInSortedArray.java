@@ -1,4 +1,4 @@
-package array;
+package array_matrix;
 
 //https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
 

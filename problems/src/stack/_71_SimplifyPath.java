@@ -1,4 +1,8 @@
+package stack;
+
 import java.util.Stack;
+
+// https://leetcode.com/problems/simplify-path/
 
 //TOPICS:
 //[String],[Stack]
