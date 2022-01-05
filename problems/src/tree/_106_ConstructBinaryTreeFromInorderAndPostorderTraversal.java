@@ -1,3 +1,5 @@
+package tree;
+
 public class _106_ConstructBinaryTreeFromInorderAndPostorderTraversal {
     /**
      * Definition for a binary tree node.
