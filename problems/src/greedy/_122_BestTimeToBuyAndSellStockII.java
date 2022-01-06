@@ -4,18 +4,20 @@ package greedy;
 //[Greedy]
 public class _122_BestTimeToBuyAndSellStockII {
     public static int maxProfit(int[] prices) {
-        int profit = 0;
-        int cost = -prices[0];
+        if (prices.length==1) {
+            return 0;
+        }
+        int hold = - prices[0];
+        int notHold = 0;
         for (int i = 1; i < prices.length; i++) {
-            if (prices[i]+cost>0) {
-                // sell stock
-                profit += prices[i]+cost;
-            }
-            // buy stock
-            cost = - prices[i];
+//            hold[i] = Math.max(hold[i-1],notHold[i-1]-prices[i]);
+//            notHold[i] = Math.max(notHold[i - 1], hold[i - 1] + prices[i]);
+            int preHold = hold;
+            hold = Math.max(hold, notHold - prices[i]);
+            notHold = Math.max(notHold, preHold + prices[i]);
         }
 
-        return profit;
+        return notHold;
     }
 
     public static void main(String[] args) {
