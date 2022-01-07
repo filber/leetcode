@@ -1,3 +1,6 @@
+package array_matrix;
+
+//https://leetcode.com/problems/find-peak-element/
 public class _169_MajorityElement {
 
     public static int majorityElement(int[] nums) {
