@@ -1,6 +1,9 @@
+package array_matrix;
+
 import java.util.LinkedList;
 import java.util.List;
 
+// https://leetcode.com/problems/majority-element-ii/
 public class _229_MajorityElementII {
 
     public static List<Integer> majorityElement(int[] nums) {
