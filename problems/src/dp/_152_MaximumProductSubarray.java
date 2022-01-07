@@ -1,3 +1,6 @@
+package dp;
+
+// https://leetcode.com/problems/maximum-product-subarray/
 public class _152_MaximumProductSubarray {
 
     public static int maxProduct(int[] nums) {
@@ -20,15 +23,14 @@ public class _152_MaximumProductSubarray {
 
     public static void main(String[] args) {
         // 2,3,-2,4    -   6
-        System.out.println(maxProduct(new int[]{2, 3, -2, 4}));
-
+        int m1 = maxProduct(new int[]{2, 3, -2, 4});
         // -2,0,-1     -   0
-        System.out.println(maxProduct(new int[]{-2,0,-1}));
+        int m2 = maxProduct(new int[]{-2,0,-1});
 
-        // 0
-        System.out.println(maxProduct(new int[]{0,2}));
+        // 2
+        int m3 = maxProduct(new int[]{0,2});
 
         // 24
-        System.out.println(maxProduct(new int[]{-2, 3, -4}));
+        int m4 = maxProduct(new int[]{-2, 3, -4});
     }
 }
