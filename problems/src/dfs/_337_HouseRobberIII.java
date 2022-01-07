@@ -1,4 +1,4 @@
-package dp;
+package dfs;
 
 //https://leetcode.com/problems/house-robber-iii/
 import java.util.HashMap;

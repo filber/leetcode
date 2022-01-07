@@ -1,7 +1,9 @@
+package dfs;
+
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Queue;
 
+// https://leetcode.com/problems/course-schedule/
 public class _207_CourseSchedule {
     public enum Status {
         NotLearned,
