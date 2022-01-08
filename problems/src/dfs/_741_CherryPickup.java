@@ -1,6 +1,6 @@
-package dp;
+package dfs;
 
-import java.util.Arrays;
+// https://leetcode.com/problems/cherry-pickup/
 
 public class _741_CherryPickup {
     private static int[][] direction = new int[][]{{0, 1}, {1, 0}};
