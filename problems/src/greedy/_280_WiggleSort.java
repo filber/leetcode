@@ -1,3 +1,6 @@
+package greedy;
+
+// https://leetcode.com/problems/wiggle-sort/
 // TIPS: traverse the whole array, swapping if necessary.
 public class _280_WiggleSort {
 
