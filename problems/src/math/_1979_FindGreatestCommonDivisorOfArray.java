@@ -14,6 +14,11 @@ public class _1979_FindGreatestCommonDivisorOfArray {
         return gcd;
     }
 
+    private static int lcm(int a,int b) {
+        int gcd = gcdLoop(a,b);
+        return a*b/gcd;
+    }
+
     private static int gcdRecursion(int a, int b) {
         if (a < b) {
             return gcdRecursion(b, a);
@@ -40,6 +45,10 @@ public class _1979_FindGreatestCommonDivisorOfArray {
         int g1 = findGCD(new int[]{2, 5, 6, 9, 10});
         int g2 = findGCD(new int[]{7, 5, 6, 8, 3});
         int g3 = findGCD(new int[]{3, 3});
+
+        int lcm1 = lcm(2,5); // 10
+        int lcm2 = lcm(3,12); // 12
+        int lcm3 = lcm(7,8); // 56
     }
 
 }
