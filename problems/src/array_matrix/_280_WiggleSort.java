@@ -1,4 +1,4 @@
-package greedy;
+package array_matrix;
 
 // https://leetcode.com/problems/wiggle-sort/
 // TIPS: traverse the whole array, swapping if necessary.

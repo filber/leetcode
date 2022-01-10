@@ -1,7 +1,10 @@
+package array_matrix;
+
 import java.util.Arrays;
 
-// TIPS: sorting, then inserting by reverse order
+// https://leetcode.com/problems/wiggle-sort-ii/
 public class _324_WiggleSortII {
+
 
 //    Constraints:
 //        1 <= nums.length <= 5 * 104
