@@ -1,7 +1,10 @@
+package array_matrix;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
+//https://leetcode.com/problems/top-k-frequent-elements/
 public class _347_TopKFrequentElements {
     public static class Tuple {
         int val;
