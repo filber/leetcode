@@ -28,8 +28,9 @@ public class _518_CoinChangeII {
         for (int i = 0; i <= n; i++) {
             dp[i][0] = 1;
         }
+        for (int i = 1; i <= coins.length ; i++) {
         for (int amt = 1; amt <= amount; amt++) {
-            for (int i = 1; i <= coins.length ; i++) {
+
                 int c = coins[i - 1];
                 if (amt>= c) {
                     // not use i + use i
