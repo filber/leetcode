@@ -1,7 +1,9 @@
-import java.util.HashMap;
+package dfs;
+
+// https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/
 
 // TOPICS:
-// [Divide and Conquer], [String]
+// [String]
 
 // TIPS:
 // Split the string by D&Q
@@ -13,28 +15,30 @@ public class _395_LongestSubstringWithAtLeastKRepeatingCharacters {
     }
 
     public static int longestSubstring(String s, int k, int start, int end) {
-        if (start > end) {
+        if (start>end) {
             return 0;
         }
-        int[] chCnt = new int[26];
-        for (int i = start; i <= end; i++) {
-            char ch = s.charAt(i);
-            chCnt[ch - 'a']++;
+
+        int[] alphaCnt = new int[26];
+        for (int i = start; i <= end ; i++) {
+            alphaCnt[s.charAt(i) - 'a'] ++;
         }
 
-        for (int i = start; i <= end; i++) {
-            if (chCnt[s.charAt(i) - 'a'] < k) {
-                // this string is not valid
-                int leftLongest = longestSubstring(s,k,start,i-1);
-                int j = i + 1;
-                while (j < s.length() && chCnt[s.charAt(j) - 'a'] < k) j++;
-
+        for (int i = start; i <= end ; i++) {
+            char ch = s.charAt(i);
+            if (alphaCnt[ch - 'a'] < k) {
+                // ch doesn't meet the constraint, cannot be in the valid substring
+                int leftLongest = longestSubstring(s, k, start, i - 1);
+                int j= i;
+                // expand the gap
+                while (j < s.length() && alphaCnt[s.charAt(j) - 'a'] < k) {
+                    j++;
+                }
                 int rightLongest = longestSubstring(s, k, j, end);
                 return Math.max(leftLongest, rightLongest);
             }
         }
 
-        // this string is valid
         return end - start + 1;
     }
 
