@@ -1,3 +1,7 @@
+package tree;
+
+// https://leetcode.com/problems/logical-or-of-two-binary-grids-represented-as-quad-trees/
+
 public class _558_LogicalORofTwoBinaryGridsRepresentedAsQuadTrees {
     public static class Node {
         public boolean val;
