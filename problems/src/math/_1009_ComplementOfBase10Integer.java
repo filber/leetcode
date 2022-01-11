@@ -1,6 +1,7 @@
-package bit_manip;//https://leetcode.com/problems/complement-of-base-10-integer/
+package math;
 
-//[Bit Manipulation]
+//https://leetcode.com/problems/complement-of-base-10-integer/
+
 // Pay attention to constraints!
 public class _1009_ComplementOfBase10Integer {
     public static int bitwiseComplement(int n) {

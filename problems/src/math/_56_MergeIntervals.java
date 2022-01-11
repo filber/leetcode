@@ -1,4 +1,4 @@
-package bit_manip;
+package math;
 
 import java.util.BitSet;
 
