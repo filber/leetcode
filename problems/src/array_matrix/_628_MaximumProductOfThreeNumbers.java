@@ -1,36 +1,32 @@
+package array_matrix;
 
-//TOPICS:
-//[Math]
+// https://leetcode.com/problems/maximum-product-of-three-numbers/
+//[Array]
 public class _628_MaximumProductOfThreeNumbers {
     public static int maximumProduct(int[] nums) {
-        int max1 = Integer.MIN_VALUE;
-        int max2 = Integer.MIN_VALUE;
-        int max3 = Integer.MIN_VALUE;
-        int min1 = Integer.MAX_VALUE;
-        int min2 = Integer.MAX_VALUE;
-
-        for (int v : nums) {
-            if (v > max1) {
+        int max1 = Integer.MIN_VALUE, max2 = Integer.MIN_VALUE, max3 = Integer.MIN_VALUE;
+        int min1 = Integer.MAX_VALUE, min2 = Integer.MAX_VALUE;
+        for (int n : nums) {
+            if (n>max1) {
                 max3 = max2;
                 max2 = max1;
-                max1 = v;
-            } else if (v > max2) {
+                max1 = n;
+            } else if (n>max2) {
                 max3 = max2;
-                max2 = v;
-            } else if (v > max3) {
-                max3 = v;
+                max2 = n;
+            } else if (n > max3) {
+                max3 = n;
             }
 
-            if (v < min1) {
+            if (n<min1) {
                 min2 = min1;
-                min1 = v;
-            } else if (v < min2) {
-                min2 = v;
+                min1 = n;
+            } else if (n<min2) {
+                min2 = n;
             }
         }
-        int tmp1 = max1 * max2 * max3;
-        int tmp2 = min1 * min2 * max1;
-        return Math.max(tmp1, tmp2);
+
+        return Math.max(min1 * min2 * max1, max1 * max2 * max3);
     }
 
 //    Constraints:
@@ -41,5 +37,7 @@ public class _628_MaximumProductOfThreeNumbers {
         int p2 = new _628_MaximumProductOfThreeNumbers().maximumProduct(new int[]{1,2,3,4}); // 24
         int p3 = new _628_MaximumProductOfThreeNumbers().maximumProduct(new int[]{-1,-2,-3}); // -6
         int p4 = new _628_MaximumProductOfThreeNumbers().maximumProduct(new int[]{-1000,-1000,-1000});
+
+        int p5 = new _628_MaximumProductOfThreeNumbers().maximumProduct(new int[]{-100,-101,-1,2,3,4});
     }
 }
