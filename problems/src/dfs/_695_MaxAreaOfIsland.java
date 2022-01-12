@@ -1,3 +1,7 @@
+package dfs;
+
+// https://leetcode.com/problems/max-area-of-island/
+
 //TOPICS:
 //[Union Find],[Depth-First Search]
 public class _695_MaxAreaOfIsland {
