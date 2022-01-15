@@ -1,4 +1,4 @@
-package dp;
+package dfs;
 
 // https://leetcode.com/problems/jump-game-iii/
 public class _1306_JumpGameIII {
