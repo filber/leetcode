@@ -1,3 +1,7 @@
+package math;
+
+// https://leetcode.com/problems/beautiful-array/
+
 import java.util.Arrays;
 
 // TIPS: When doing mathematics problems, considering:
@@ -8,6 +12,8 @@ import java.util.Arrays;
 // avoid struggling at obvious laws of number
 public class _932_BeautifulArray {
 
+    // (1) A is BA, then a*A + b is BA
+    // (2) A is BA of only even, b is BA of only odd, then [A,B] is BA
     public static int[] beautifulArray(int n) {
         // 1. Initialize array
         int[] nums = new int[n];
