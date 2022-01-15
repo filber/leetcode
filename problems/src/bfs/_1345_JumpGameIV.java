@@ -1,9 +1,10 @@
-package dp;
+package bfs;
 
 // https://leetcode.com/problems/jump-game-iv/
 
 import java.util.*;
 
+//[Breadth-First Search]
 public class _1345_JumpGameIV {
 
 //    Given an array of integers arr, you are initially positioned at the first index of the array.
