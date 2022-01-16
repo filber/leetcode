@@ -1,18 +1,14 @@
-// TOPICS:
-// [Backtracking], [Matrix]
+package dfs;
 
-// TIPS:
-// Backtracking:
-// (1) Guard conditions
-// (2) Succeed conditions
-// (3) Set states
-// (4) Recursively backtracking
-// (5) Restore states
+// TOPICS:
+// [Backtracking], [Depth-First Search]
+
+// https://leetcode.com/problems/unique-paths-iii/
 public class _980_UniquePathsIII {
+
     private int pathCnt = 0;
     private int[][] grid;
     private int walkableCnt = 0;
-
     public int uniquePathsIII(int[][] grid) {
         this.grid = grid;
         // calculate walkableCnt
