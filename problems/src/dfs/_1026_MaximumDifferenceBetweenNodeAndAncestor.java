@@ -1,4 +1,6 @@
-//TOPICS:
+package dfs;
+
+// https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/
 //[Depth-First Search]
 public class _1026_MaximumDifferenceBetweenNodeAndAncestor {
 
@@ -23,21 +25,23 @@ public class _1026_MaximumDifferenceBetweenNodeAndAncestor {
         return maxDiff;
     }
 
-    private void dfs(TreeNode node, int max, int min) {
-        if (node==null) {
-            int diff = max - min;
-            maxDiff = diff > maxDiff ? diff : maxDiff;
+    public void dfs(TreeNode root,int max, int min) {
+        if (root == null) {
+            maxDiff = Math.max(maxDiff, max - min);
             return;
         }
-        max = node.val > max ? node.val : max;
-        min = node.val < min ? node.val : min;
-        dfs(node.left, max, min);
-        dfs(node.right, max, min);
+        max = Math.max(root.val,max);
+        min = Math.min(root.val,min);
+        dfs(root.left, max, min);
+        dfs(root.right, max, min);
     }
 
+
     public static void main(String[] args) {
+        // 1
         int m1 = new _1026_MaximumDifferenceBetweenNodeAndAncestor().maxAncestorDiff(
                 new TreeNode(0, new TreeNode(1), null));
+        // 3
         int m2 = new _1026_MaximumDifferenceBetweenNodeAndAncestor().maxAncestorDiff(
                 new TreeNode(1,
                         null,
@@ -46,6 +50,7 @@ public class _1026_MaximumDifferenceBetweenNodeAndAncestor {
                                 new TreeNode(0,
                                         new TreeNode(3),
                                         null))));
+        // 7
         int m3 = new _1026_MaximumDifferenceBetweenNodeAndAncestor().maxAncestorDiff(
                 new TreeNode(8,
                         new TreeNode(3,
