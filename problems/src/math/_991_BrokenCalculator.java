@@ -2,7 +2,7 @@ package math;
 
 // https://leetcode.com/problems/broken-calculator/
 
-public class _991BrokenCalculator {
+public class _991_BrokenCalculator {
 
 //  Constraints:
 //      1 <= X <= 10^9
