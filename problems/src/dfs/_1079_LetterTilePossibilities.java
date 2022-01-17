@@ -1,3 +1,6 @@
+package dfs;
+// https://leetcode.com/problems/letter-tile-possibilities/
+
 import java.util.*;
 
 // TOPICS:
@@ -36,6 +39,7 @@ public class _1079_LetterTilePossibilities {
         for (char ch : chars) {
             if (chCnt[ch - 'A'] != 0) {
                 cnt++;
+                System.out.println(ch);
                 remain--;
                 chCnt[ch - 'A'] --;
 
@@ -48,10 +52,13 @@ public class _1079_LetterTilePossibilities {
     }
 
     public static void main(String[] args) {
+        // 8
         int c1 = new _1079_LetterTilePossibilities().numTilePossibilities("AAB");
 
+        // 1
         int c2 = new _1079_LetterTilePossibilities().numTilePossibilities("V");
 
+        // 188
         int c3 = new _1079_LetterTilePossibilities().numTilePossibilities("AAABBC");
     }
 }
