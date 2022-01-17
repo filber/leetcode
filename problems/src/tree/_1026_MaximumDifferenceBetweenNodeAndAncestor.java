@@ -1,4 +1,4 @@
-package dfs;
+package tree;
 
 // https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/
 //[Depth-First Search]
