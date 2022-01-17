@@ -14,6 +14,7 @@ public class _290_WordPattern {
 //        s does not contain any leading or trailing spaces.
 //        All the words in s are separated by a single space.
 
+    //  BIJECTION between a letter in pattern and a non-empty word in s.
     public static boolean wordPattern(String pattern, String s) {
         String[] arr = s.split(" ");
         if (pattern.length() != arr.length) {
