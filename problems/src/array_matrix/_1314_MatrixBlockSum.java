@@ -26,23 +26,29 @@ public class _1314_MatrixBlockSum {
 
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                int topLeft = getSum(sumTable, i - k - 1, j - k - 1);
-                int topRight = getSum(sumTable, i - k - 1, j + k);
-                if (topRight == 0 && i - k - 1 >= 0) {
-                    int y = Math.min(n - 1, j + k);
-                    topRight = sumTable[i - k - 1][y];
+
+                int x1 = i - k - 1;
+                int y1 = j - k - 1;
+                int x2 = i + k;
+                int y2 = j + k;
+
+                int topLeft = 0;
+                if (x1 >= 0 &&  y1>= 0) {
+                    topLeft = getSum(sumTable, x1, y1);
                 }
-                int bottomLeft = getSum(sumTable, i + k, j - k - 1);
-                if (bottomLeft == 0 && j - k - 1 >= 0) {
-                    int x = Math.min(m - 1, i + k);
-                    bottomLeft = sumTable[x][j - k - 1];
+
+                int topRight = 0;
+                if (x1 >= 0) {
+                    topRight = getSum(sumTable, x1, Math.min(n - 1, y2));
                 }
-                int bottomRight = getSum(sumTable, i + k, j + k);
-                if (bottomRight == 0) {
-                    int x = Math.min(m - 1, i + k);
-                    int y = Math.min(n - 1, j + k);
-                    bottomRight = sumTable[x][y];
+
+                int bottomLeft = 0;
+                if (y1 >= 0) {
+                    bottomLeft = getSum(sumTable, Math.min(m - 1, x2), y1);
                 }
+
+                int bottomRight = getSum(sumTable, Math.min(m - 1, x2), Math.min(n - 1, y2));
+
                 ans[i][j] = bottomRight - bottomLeft - topRight + topLeft;
             }
         }
