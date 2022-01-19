@@ -1,4 +1,4 @@
-package simulation;
+package math;
 
 //https://leetcode.com/problems/robot-bounded-in-circle/
 public class _1041_RobotBoundedInCircle {
