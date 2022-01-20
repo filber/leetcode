@@ -12,13 +12,13 @@ public class _1201_UglyNumberIII {
         while (l < r) {
             long mid = (l + r) / 2;
             index = mid / a + mid / b + mid / c - mid / a_b - mid / a_c - mid / b_c + mid / a_b_c;
-            if (index < n) {
-                l = mid + 1;
-            } else {
+            if (index >= n) {
                 r = mid;
+            } else {
+                l = mid + 1;
             }
         }
-        return (int) r;
+        return (int) l;
     }
 
     private static long lcm(long a,long b) {
@@ -51,6 +51,6 @@ public class _1201_UglyNumberIII {
         int n8 = nthUglyNumber(5, 2, 11, 13); // 10
 
 
-        int n9 = nthUglyNumber(1000000000, 2, 217983653, 336916467); // 10
+        int n9 = nthUglyNumber(1000000000, 2, 217983653, 336916467); // 1999999984
     }
 }
