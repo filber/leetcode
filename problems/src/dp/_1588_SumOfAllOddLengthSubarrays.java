@@ -1,5 +1,7 @@
 package dp;
 
+// https://leetcode.com/problems/sum-of-all-odd-length-subarrays/
+
 // [Prefix Sum]
 public class _1588_SumOfAllOddLengthSubarrays {
 
