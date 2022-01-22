@@ -1,13 +1,13 @@
+package string;
+
+// https://leetcode.com/problems/substrings-of-size-three-with-distinct-characters/
+
 import java.util.HashMap;
 
-// TOPICS:
 // [Sliding Window],[String]
-
-// TIPS:
-// Using HashMap to keep track of character count in the window
 public class _1876_SubstringsOfSizeThreeWithDistinctCharacters {
 
-//    Constraints:
+    //    Constraints:
 //        1 <= s.length <= 100
 //        s consists of lowercase English letters.
     public static int countGoodSubstrings(String s) {
@@ -36,7 +36,7 @@ public class _1876_SubstringsOfSizeThreeWithDistinctCharacters {
         return cnt;
     }
 
-    private static void putToMap(HashMap<Character,Integer> hashMap,char ch) {
+    private static void putToMap(HashMap<Character, Integer> hashMap, char ch) {
         Integer cnt = hashMap.get(ch);
         if (cnt == null) {
             hashMap.put(ch, 1);
@@ -53,7 +53,6 @@ public class _1876_SubstringsOfSizeThreeWithDistinctCharacters {
             hashMap.put(ch, cnt - 1);
         }
     }
-
 
     public static void main(String[] args) {
         int c1 = countGoodSubstrings("a"); //0
