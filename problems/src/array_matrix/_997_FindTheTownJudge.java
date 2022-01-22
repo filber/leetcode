@@ -1,4 +1,4 @@
-package hash_table;
+package array_matrix;
 
 // https://leetcode.com/problems/find-the-town-judge/
 //[Graph]
