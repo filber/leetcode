@@ -41,6 +41,31 @@ public class _1140_StoneGameII {
         return ans;
     }
 
+    public int stoneGameIIDP(int[] piles) {
+        int m = piles.length, sum = 0;
+
+        int[][] dp = new int[m][m + 1];
+
+        for (int i = m - 1; i >= 0; i--) {
+            sum += piles[i];
+            for (int j = 1; j <= m; j++) {
+                if (i + j * 2 >= m) {
+                    // collect all
+                    dp[i][j] = sum;
+                } else {
+                    int nextMin = Integer.MAX_VALUE;
+                    for (int x = 1; x <= 2 * j; x++) {
+                        int nextM = Math.max(x, j);
+                        int bob = dp[i + x][nextM];
+                        nextMin = Math.min(nextMin, bob);
+                    }
+                    dp[i][j] = sum - nextMin;
+                }
+            }
+        }
+        return dp[0][1];
+    }
+
     public static void main(String[] args) {
         // 104 [1+3+100]
         int s2 = stoneGameII(new int[]{1, 2, 3, 4, 5, 100});
