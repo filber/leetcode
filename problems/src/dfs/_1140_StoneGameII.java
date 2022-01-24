@@ -21,11 +21,7 @@ public class _1140_StoneGameII {
 
     private static int dfs(int[] suffixSum, int[][] mem, int start, int m) {
         int n = suffixSum.length;
-        if (start >= n) {
-            return 0;
-        }
-        int end = start + 2 * m - 1;
-        if (end >= n - 1) {
+        if (start + 2 * m >= n) {
             // collect all remaining piles
             return suffixSum[start];
         } else if (mem[start][m] > 0) {
@@ -41,7 +37,7 @@ public class _1140_StoneGameII {
         return ans;
     }
 
-    public int stoneGameIIDP(int[] piles) {
+    public static int stoneGameIIDP(int[] piles) {
         int m = piles.length, sum = 0;
 
         int[][] dp = new int[m][m + 1];
@@ -68,7 +64,7 @@ public class _1140_StoneGameII {
 
     public static void main(String[] args) {
         // 104 [1+3+100]
-        int s2 = stoneGameII(new int[]{1, 2, 3, 4, 5, 100});
+        int s2 = stoneGameIIDP(new int[]{1, 2, 3, 4, 5, 100});
 
         // 10 [2+4+4]
         int s1 = stoneGameII(new int[]{2, 7, 9, 4, 4});

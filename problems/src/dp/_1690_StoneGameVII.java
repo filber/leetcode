@@ -38,5 +38,8 @@ public class _1690_StoneGameVII {
         int d1 = stoneGameVII(new int[]{5, 3, 1, 4, 2});
         // 122
         int d2 = stoneGameVII(new int[]{7, 90, 5, 1, 100, 10, 10, 2});
+        // 9
+        int d3 = stoneGameVII(new int[]{5, 3, 4, 5});
+
     }
 }
