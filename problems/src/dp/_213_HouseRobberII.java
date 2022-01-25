@@ -4,27 +4,27 @@ package dp;
 
 public class _213_HouseRobberII {
     public static int rob(int[] nums) {
-        int n =nums.length;
-        if (n==1) {
+        int n = nums.length;
+        if (n == 1) {
             return nums[0];
         }
 
-        int[] dpWithFirst = new int[n + 1];
-        dpWithFirst[0] = 0;
-        dpWithFirst[1] = nums[0];
-        for (int i = 1; i < n-1; i++) {
-            dpWithFirst[i + 1] = Math.max(dpWithFirst[i], dpWithFirst[i - 1] + nums[i]);
-        }
+        int skipLast = rob(nums, 0, n - 2);
+        int skipFirst = rob(nums, 1, n - 1);
 
-        int[] dpWithLast = new int[n + 1];
-        dpWithLast[0] = 0;
-        dpWithLast[1] = nums[1]; // without first
-        for (int i = 2; i < n; i++) {
-            dpWithLast[i] = Math.max(dpWithLast[i - 1], dpWithLast[i - 2] + nums[i]);
-        }
-
-        int max = Math.max(dpWithFirst[n-1],dpWithLast[n-1]);
+        int max = Math.max(skipLast, skipFirst);
         return max;
+    }
+
+    private static int rob(int[] nums, int start, int end) {
+        int n = end - start + 1;
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = nums[start++];
+        for (int i = 2; i < dp.length; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[start++]);
+        }
+        return dp[n];
     }
 
     public static void main(String[] args) {
