@@ -1,25 +1,27 @@
-//https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/
-package dp;
-import java.util.Arrays;
 
+package dp;
+
+//https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/
+
+import java.util.Arrays;
 public class _188_BestTimeToBuyAndSellStockIV {
     public static int maxProfit(int k, int[] prices) {
-        if (k==0 || prices.length==0) {
+        if (k == 0 || prices.length < 2) {
             return 0;
         }
 
-        int[] cost = new int[k + 1];
-        Arrays.fill(cost, Integer.MAX_VALUE);
-        int[] profit = new int[k + 1];
+        int[] buy = new int[k + 1];
+        Arrays.fill(buy, Integer.MIN_VALUE);
+        int[] sell = new int[k + 1];
 
-        for (int i = 0; i < prices.length; i++) {
-            for (int j = 1; j <= k; j++) {
-                cost[j] = Math.min(cost[j], prices[i] - profit[j - 1]);
-                profit[j] = Math.max(profit[j], prices[i] - cost[j]);
+        for (int p : prices) {
+            for (int i = 1; i <= k; i++) {
+                buy[i] = Math.max(buy[i], sell[i - 1] - p);
+                sell[i] = Math.max(sell[i], buy[i] + p);
             }
         }
 
-        return profit[k];
+        return sell[k];
     }
 
     public static void main(String[] args) {
@@ -29,6 +31,5 @@ public class _188_BestTimeToBuyAndSellStockIV {
         int m4 = maxProfit(2, new int[]{1, 2, 4, 2, 5, 7, 2, 4, 9, 0}); //13
         int m5 = maxProfit(2, new int[]{2, 4, 1}); //2
         int m6 = maxProfit(2, new int[]{3,2,6,5,0,3}); //7
-
     }
 }

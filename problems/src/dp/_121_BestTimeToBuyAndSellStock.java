@@ -1,6 +1,6 @@
-package dp;//https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-//[Dynamic Programming]
+package dp;
 
+//https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
 public class _121_BestTimeToBuyAndSellStock {
 
     public static int maxProfitDP(int[] prices) {
@@ -13,34 +13,34 @@ public class _121_BestTimeToBuyAndSellStock {
         dp[0] = prices[0];
 
         for (int i = 1; i < prices.length; i++) {
-          maxProfit = Math.max(maxProfit, prices[i] - dp[i-1]);
-          dp[i] = Math.min(dp[i-1],prices[i]);
+            maxProfit = Math.max(maxProfit, prices[i] - dp[i - 1]);
+            dp[i] = Math.min(dp[i - 1], prices[i]);
         }
 
         return maxProfit;
     }
 
 
-    public int maxProfitDPImproved(int[] prices) {
+    public static int maxProfitDPImproved(int[] prices) {
         if (prices == null || prices.length < 2) {
             return 0;
         }
 
-        int min = Integer.MAX_VALUE;
-        int max = 0;
-        for (int i = 1; i < prices.length; i++) {
-            min = Math.min(min, prices[i - 1]);
-            max = Math.max(max, prices[i] - min);
+        int buy = Integer.MIN_VALUE;
+        int sell = 0;
+        for (int i = 0; i < prices.length; i++) {
+            buy = Math.max(buy, -prices[i]);
+            sell = Math.max(sell, buy + prices[i]);
         }
 
-        return max;
+        return sell;
     }
 
     public static void main(String[] args) {
-        _121_BestTimeToBuyAndSellStock instance = new _121_BestTimeToBuyAndSellStock();
+        // 5
+        int m1 = maxProfitDPImproved(new int[]{7, 1, 5, 3, 6, 4});
+        // 0
+        int m2 = maxProfitDPImproved(new int[]{7, 6, 4, 3, 1});
 
-        int[] prices = new int[]{7, 1, 5, 3, 6, 4};
-        int maxProfit = maxProfitDP(prices);
-        System.out.println(maxProfit);
     }
 }

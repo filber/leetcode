@@ -1,22 +1,22 @@
-package dp;//https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
+package dp;
 
-//[Dynamic Programming]
+//https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
 public class _123_BestTimeToBuyAndSellStockIII {
 
     public static int maxProfit(int[] prices) {
-        int t1Cost = Integer.MAX_VALUE;
-        int t2Cost = Integer.MAX_VALUE;
-        int t1Profit = 0;
-        int t2Profit = 0;
+        int buy1 = Integer.MIN_VALUE;
+        int sell1 = 0;
+        int buy2 = Integer.MIN_VALUE;
+        int sell2 = 0;
 
         for (int price : prices) {
-            t1Cost = Math.min(t1Cost, price);
-            t1Profit = Math.max(t1Profit, price - t1Cost);
-            t2Cost = Math.min(t2Cost, price - t1Profit);
-            t2Profit = Math.max(t2Profit, price - t2Cost);
+            buy1 = Math.max(buy1, - price);
+            sell1 = Math.max(sell1, buy1 + price);
+            buy2 = Math.max(buy2, sell1 - price);
+            sell2 = Math.max(sell2, buy2 + price);
         }
 
-        return t2Profit;
+        return sell2;
     }
 
     public static int maxProfitDP(int[] prices) {

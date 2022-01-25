@@ -1,10 +1,10 @@
-package dp;//https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
+package dp;
 
-//[Dynamic Programming]
+//https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
 public class _309_BestTimeToBuyAndSellStockWithCooldown {
     public static int maxProfit(int[] prices) {
         int n = prices.length;
-        if (n==1) {
+        if (n < 2) {
             return 0;
         }
 

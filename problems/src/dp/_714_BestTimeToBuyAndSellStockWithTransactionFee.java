@@ -7,17 +7,15 @@ public class _714_BestTimeToBuyAndSellStockWithTransactionFee {
             return 0;
         }
 
-        int hold = -prices[0];
-        int notHold = 0;
+        int buy = -prices[0];
+        int sell = 0;
         for (int i = 1; i < prices.length; i++) {
-//            hold[i] = Math.max(hold[i - 1], notHold[i - 1] - prices[i]);
-//            notHold[i] = Math.max(notHold[i - 1], hold[i - 1] + prices[i] - fee);
-            int preHold = hold;
-            hold = Math.max(hold, notHold - prices[i]);
-            notHold = Math.max(notHold, preHold + prices[i] - fee);
+            int preBuy = buy;
+            buy = Math.max(buy, sell - prices[i]);
+            sell = Math.max(sell, preBuy + prices[i] - fee);
         }
 
-        return notHold;
+        return sell;
     }
 
     public static void main(String[] args) {
