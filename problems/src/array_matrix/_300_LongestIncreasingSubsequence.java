@@ -4,13 +4,18 @@ package array_matrix;
 
 public class _300_LongestIncreasingSubsequence {
 
+//    Constraints:
+//            1 <= nums.length <= 2500
+//            -104 <= nums[i] <= 104
+
     // O(N*logN)
     public static int lengthOfLIS(int[] nums) {
         int maxL = 0;
-        int[] dp = new int[nums.length];
+        // temp stores the increasing elements less than Ni
+        int[] temp = new int[nums.length];
         for (int num : nums) {
-            int insertLocation = binarySearch(dp, num, 0, maxL);
-            dp[insertLocation] = num;
+            int insertLocation = binarySearch(temp, num, 0, maxL);
+            temp[insertLocation] = num;
             if (insertLocation == maxL)
                 maxL++;
         }
@@ -22,10 +27,11 @@ public class _300_LongestIncreasingSubsequence {
         while (l < r) {
             int mid = (r + l) / 2;
             int midVal = dp[mid];
-            if (midVal < num)
-                l = mid + 1;
-            else
+            if (midVal >= num) {
                 r = mid;
+            } else {
+                l = mid + 1;
+            }
         }
         return l;
     }
@@ -51,7 +57,6 @@ public class _300_LongestIncreasingSubsequence {
     public static void main(String[] args) {
 
         int l4 = lengthOfLIS(new int[]{10, 9, 2, 5, 3, 1, 101, 18});
-
         // 4 - [2,3,7,101]
         int l1 = lengthOfLIS(new int[]{10, 9, 2, 5, 3, 7, 101, 18});
         // 4 - [0,1,2,3]
