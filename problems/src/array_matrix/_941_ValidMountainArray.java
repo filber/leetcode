@@ -15,16 +15,12 @@ public class _941_ValidMountainArray {
 
         boolean findPeak = false;
         for (int i = 2; i < n; i++) {
-            if (!findPeak) {
-                if (arr[i - 1] > arr[i]) {
-                    findPeak = true;
-                } else if (arr[i - 1] == arr[i]) {
-                    return false;
-                }
-            } else {
-                if (arr[i - 1] <= arr[i]) {
-                    return false;
-                }
+            if (arr[i - 1] == arr[i]) {
+                return false;
+            } else if (!findPeak && arr[i - 1] > arr[i]) {
+                findPeak = true;
+            } else if (findPeak && arr[i - 1] < arr[i]) {
+                return false;
             }
         }
 
