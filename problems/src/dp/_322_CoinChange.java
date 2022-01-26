@@ -12,7 +12,7 @@ public class _322_CoinChange {
     // 1 <= coins[i] <= 2^31 - 1
     // 0 <= amount <= 10^4
 
-    public static int coinChange(int[] coins, int amount) {
+    public static int coinChange2D(int[] coins, int amount) {
         int n = coins.length;
         int[][] dp = new int[amount + 1][n + 1];
         Arrays.fill(dp[0], 0);
@@ -38,12 +38,12 @@ public class _322_CoinChange {
         }
     }
 
-    public static int coinChange1D(int[] coins, int amount) {
+    public static int coinChange(int[] coins, int amount) {
         int[] dp = new int[amount + 1];
         Arrays.fill(dp, amount + 1);
         dp[0] = 0;
-        for (int i = 1; i <= amount; i++) {
-            for (int j = 0; j < coins.length; j++) {
+        for (int j = 0; j < coins.length; j++) {
+            for (int i = 1; i <= amount; i++) {
                 int coin = coins[j];
                 if (i - coin >= 0) {
                     dp[i] = Math.min(dp[i], dp[i - coin] + 1);
