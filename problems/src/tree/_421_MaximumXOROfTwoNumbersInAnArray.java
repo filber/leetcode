@@ -1,4 +1,4 @@
-package array_matrix;
+package tree;
 
 // https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/
 public class _421_MaximumXOROfTwoNumbersInAnArray {
