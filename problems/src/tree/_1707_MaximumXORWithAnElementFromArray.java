@@ -80,7 +80,7 @@ public class _1707_MaximumXORWithAnElementFromArray {
         // 15,-1,5
         int[] a2 = maximizeXor(
                 new int[]{5, 2, 4, 6, 6, 3},
-                new int[][]{{12, 4}, {8, 1}, {6, 3}});
+                new int[][]{{12, 4}, {8, 1}, {6, 2}});
 
         // [1050219420,844498962,540190212,539622516,330170208]
         int[] a3 = maximizeXor(
