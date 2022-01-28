@@ -6,32 +6,22 @@ package dp;
 public class _312_BurstBalloons {
 
     public static int maxCoins(int[] nums) {
-        int n = nums.length;
-        int[] arr = new int[n + 2];
-        arr[0] = 1;
-        arr[n+1] = 1;
-        for (int i = 1; i <= n; i++) {
-            arr[i] = nums[i - 1];
+        int[] balloons = new int[nums.length + 2];
+        balloons[0] = 1;
+        balloons[balloons.length - 1] = 1;
+        for (int i = 0; i < nums.length; i++) {
+            balloons[i + 1] = nums[i];
         }
+
+        int n = nums.length;
         int[][] dp = new int[n + 2][n + 2];
-        dp[0][0] = 1;
-        dp[n + 1][n + 1] = 1;
+
         for (int len = 1; len <= n; len++) {
-            for (int i = 1; i <= n; i++) {
-                int j = len - 1 + i;
-                if (j > n) {
-                    break;
-                }
-                if (len == 1) {
-                    dp[i][j] = arr[i - 1] * arr[i] * arr[i + 1];
-                } else {
-                    int left = arr[i - 1];
-                    int right = arr[j + 1];
-                    int max = Integer.MIN_VALUE;
-                    for (int k = i; k <= j; k++) {
-                        max = Math.max(max, left * arr[k] * right + dp[i][k - 1] + dp[k + 1][j]);
-                    }
-                    dp[i][j] = max;
+            for (int i = 1; i <= n - len + 1; i++) {
+                int j = i + len - 1;
+                for (int k = i; k <= j; k++) {
+                    int kVal = balloons[i-1]*balloons[k]*balloons[j+1];
+                    dp[i][j] = Math.max(dp[i][j], dp[i][k - 1] + dp[k + 1][j] + kVal);
                 }
             }
         }
@@ -40,8 +30,8 @@ public class _312_BurstBalloons {
     }
 
     public static void main(String[] args) {
+        int m3 = maxCoins(new int[]{4}); // 4
         int m1 = maxCoins(new int[]{1, 5}); // 10
         int m2 = maxCoins(new int[]{3, 1, 5, 8}); //167
-        int m3 = maxCoins(new int[]{4}); // 4
     }
 }
