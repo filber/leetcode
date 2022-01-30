@@ -8,6 +8,23 @@ public class _1588_SumOfAllOddLengthSubarrays {
     public static int sumOddLengthSubarrays(int[] arr) {
         int n = arr.length;
         int sum = 0;
+        for (int i = 0; i < n; i++) {
+            int left = i + 1;
+            int right = n-i;
+            int leftOdd = (left + 1) / 2;
+            int leftEven = left / 2;
+            int rightOdd = (right + 1) / 2;
+            int rightEven = right / 2;
+            int occurrence = leftEven * rightEven + leftOdd * rightOdd;
+            sum += occurrence * arr[i];
+        }
+
+        return sum;
+    }
+
+    public static int sumOddLengthSubarraysPS(int[] arr) {
+        int n = arr.length;
+        int sum = 0;
         int[] ps = new int[n + 1];
         for (int i = 1; i <= n; i++) {
             ps[i] = ps[i - 1] + arr[i - 1];
