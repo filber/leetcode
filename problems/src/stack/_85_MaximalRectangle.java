@@ -1,4 +1,4 @@
-package dp;
+package stack;
 
 // https://leetcode.com/problems/maximal-rectangle/
 public class _85_MaximalRectangle {
