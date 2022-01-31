@@ -6,7 +6,6 @@ public class _1015_DivisorGame {
     // Makes a move consisting of:
     //  Choosing any x with 0 < x < n and n % x == 0.
     //  Replacing the number n on the chalkboard with n - x.
-
     public static boolean divisorGame(int n) {
         return n % 2 == 0;
     }
@@ -14,24 +13,20 @@ public class _1015_DivisorGame {
     public static boolean divisorGameDP(int n) {
         if (n == 1) {
             return false;
-        } else if (n == 2) {
-            return true;
         }
 
-        boolean[] dp = new boolean[n];
+        boolean[] dp = new boolean[n + 1];
         dp[0] = false;
-        dp[1] = true;
-
-        for (int i = 2; i < n; i++) {
-            for (int x = 1; x < i; x++) {
-                if ((i + 1) % x == 0 && dp[i - x] == false) {
+        dp[1] = false;
+        for (int i = 2; i <= n; i++) {
+            for (int j = i - 1; j >= 1; j--) {
+                if (dp[i - j] == false && (i % j) == 0) {
                     dp[i] = true;
                     break;
                 }
             }
         }
-
-        return dp[n - 1];
+        return dp[n];
     }
 
     public static void main(String[] args) {
