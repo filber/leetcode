@@ -1,35 +1,24 @@
-package dfs;
+package dp;
 
-import java.util.Arrays;
+// https://leetcode.com/problems/palindrome-partitioning-iv/
 
-// https://leetcode.com/problems/palindrome-partitioning-ii/
+public class _1745_PalindromePartitioningIV {
 
-public class _132_PalindromePartitioningII {
-
-    public static int minCut(String s) {
+    public static boolean checkPartitioning(String s) {
         int n = s.length();
         char[] chars = s.toCharArray();
 
         boolean[][] pDP = initDP(chars);
 
-        int[] dp = new int[n];
-        Arrays.fill(dp, Integer.MAX_VALUE);
-        dp[0] = 0;
-        for (int i = 1; i < n; i++) {
-            if (pDP[0][i]) {
-                dp[i] = 0;
-            } else {
-                for (int j = i; j >= 1; j--) {
-                    if (pDP[j][i]) {
-                        dp[i] = Math.min(dp[i], dp[j - 1] + 1);
-                    }
+        for (int i = 0; i < n-1; i++) {
+            for (int j = i + 1; j < n - 1; j++) {
+                if (pDP[0][i]&&pDP[i+1][j]&&pDP[j+1][n-1]) {
+                    return true;
                 }
             }
         }
-
-        return dp[n-1];
+        return false;
     }
-
 
     private static boolean[][] initDP(char[] chars) {
         int n = chars.length;
@@ -55,16 +44,23 @@ public class _132_PalindromePartitioningII {
     }
 
     public static void main(String[] args) {
-        // 1
-        int m1 = minCut("aab");
-        // 0
-        int m2 = minCut("a");
-        // 1
-        int m3 = minCut("ab");
-        // 1
-        int m4 = minCut("aabb");
-        // 1
-        int m5 = minCut("abbab");
+        // true
+        boolean b1 = checkPartitioning("abcbdd");
+
+        // false
+        boolean b2 = checkPartitioning("bcbddxy");
+
+        // true
+        boolean b3 = checkPartitioning("aabb");
+
+        // false
+        boolean b4 = checkPartitioning("abcb");
+
+        // true
+        boolean b5 = checkPartitioning("bbab");
+
+        // true
+        boolean b6 = checkPartitioning("aaax");
 
     }
 }
