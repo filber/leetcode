@@ -1,7 +1,6 @@
-package dp;
+package dfs;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 //https://leetcode.com/problems/palindrome-partitioning/
