@@ -2,7 +2,7 @@ package dp;
 
 // https://leetcode.com/problems/palindrome-partitioning-iii/
 public class _1278_PalindromePartitioningIII {
-    public int palindromePartition(String s, int K) {
+    public static int palindromePartition(String s, int K) {
         int n = s.length();
         char[] chars = s.toCharArray();
         int[][] steps = new int[n][n];
@@ -36,14 +36,19 @@ public class _1278_PalindromePartitioningIII {
                     // STF
                     // dp[j-1][k-1], substring[0,j-1] into k-1 parts
                     // steps[j][i], the new part of substring[j,i]
-                    dp[i][k] = Math.min(dp[i][k], dp[j-1][k-1] + steps[j][i]);
+                    dp[i][k] = Math.min(dp[i][k], dp[j - 1][k - 1] + steps[j][i]);
                 }
             }
         }
-        return dp[n-1][K-1];
+        return dp[n - 1][K - 1];
     }
 
     public static void main(String[] args) {
-
+        // 1
+        int m1 = palindromePartition("abc", 2);
+        // 0
+        int m2 = palindromePartition("aabbc", 3);
+        // 0
+        int m3 = palindromePartition("leetcode", 8);
     }
 }
