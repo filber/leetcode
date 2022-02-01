@@ -48,6 +48,8 @@ public class _1278_PalindromePartitioningIII {
         int m1 = palindromePartition("abc", 2);
         // 0
         int m2 = palindromePartition("aabbc", 3);
+        // 1
+        int m4 = palindromePartition("aabbcd", 3);
         // 0
         int m3 = palindromePartition("leetcode", 8);
     }
