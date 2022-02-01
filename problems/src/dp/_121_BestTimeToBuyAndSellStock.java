@@ -14,12 +14,23 @@ public class _121_BestTimeToBuyAndSellStock {
         return profit;
     }
 
+    public static int maxProfitState(int[] prices) {
+        int n = prices.length;
+        int buy = Integer.MIN_VALUE;
+        int sell = 0;
+        for (int i = 0; i < n; i++) {
+            buy = Math.max(buy, -prices[i]);
+            sell = Math.max(sell, buy + prices[i]);
+        }
+        return sell;
+    }
+
     public static void main(String[] args) {
         // 5
-        int m1 = maxProfit(new int[]{7, 1, 5, 3, 6, 4});
+        int m1 = maxProfitState(new int[]{7, 1, 5, 3, 6, 4});
         // 0
-        int m2 = maxProfit(new int[]{7, 6, 4, 3, 1});
+        int m2 = maxProfitState(new int[]{7, 6, 4, 3, 1});
         // 0
-        int m3 = maxProfit(new int[]{1});
+        int m3 = maxProfitState(new int[]{1});
     }
 }
