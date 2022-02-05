@@ -9,22 +9,37 @@ public class _941_ValidMountainArray {
 //            0 <= arr[i] <= 104
     public static boolean validMountainArray(int[] arr) {
         int n = arr.length;
-        if (n < 3 || arr[0] >= arr[1]) {
+        if (n < 3) {
             return false;
         }
 
-        boolean findPeak = false;
-        for (int i = 2; i < n; i++) {
-            if (arr[i - 1] == arr[i]) {
-                return false;
-            } else if (!findPeak && arr[i - 1] > arr[i]) {
-                findPeak = true;
-            } else if (findPeak && arr[i - 1] < arr[i]) {
-                return false;
+        // 0 - Start
+        // 1 - UpHill
+        // 2 - DownHill
+        int status = 0;
+        for (int i = 0; i < n; i++) {
+            if (status == 0) {
+                // Start
+                if (arr[0] >= arr[1]) {
+                    return false;
+                } else {
+                    status = 1;
+                }
+            } else if (status == 1) {
+                // UpHill
+                if (arr[i - 1] == arr[i]) {
+                    return false;
+                } else if (arr[i - 1] > arr[i]) {
+                    status = 2;
+                }
+            } else if (status == 2) {
+                // DownHill
+                if (arr[i - 1] <= arr[i]) {
+                    return false;
+                }
             }
         }
-
-        return findPeak;
+        return status == 2;
     }
 
     public static void main(String[] args) {
