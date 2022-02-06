@@ -1,4 +1,4 @@
-package array_matrix;
+package bs;
 
 // https://leetcode.com/problems/koko-eating-bananas/
 public class _875_KokoEatingBananas {

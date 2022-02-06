@@ -1,4 +1,4 @@
-package array_matrix;
+package dp;
 
 // https://leetcode.com/problems/find-good-days-to-rob-the-bank/
 

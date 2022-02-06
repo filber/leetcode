@@ -1,4 +1,4 @@
-package array_matrix;
+package string;
 // TOPICS:
 // [Sliding Window], [String]
 

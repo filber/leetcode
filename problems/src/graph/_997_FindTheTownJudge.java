@@ -1,4 +1,4 @@
-package array_matrix;
+package graph;
 
 // https://leetcode.com/problems/find-the-town-judge/
 //[Graph]

@@ -1,25 +1,8 @@
-package array_matrix;
+package list;
 
 // https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/
 
 public class _2095_DeleteTheMiddleNodeOfALinkedList {
-
-    public static class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-    }
 
     public static ListNode deleteMiddle(ListNode head) {
         if (head.next == null) {

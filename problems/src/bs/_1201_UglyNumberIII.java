@@ -1,4 +1,4 @@
-package dp;
+package bs;
 
 // https://leetcode.com/problems/ugly-number-iii/
 // An ugly number is a positive integer that is divisible by a, b, or c.

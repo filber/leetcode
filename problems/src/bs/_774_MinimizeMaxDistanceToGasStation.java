@@ -1,4 +1,4 @@
-package array_matrix;
+package bs;
 // https://leetcode.com/problems/minimize-max-distance-to-gas-station/
 
 //    On a horizontal number line, we have gas stations at positions

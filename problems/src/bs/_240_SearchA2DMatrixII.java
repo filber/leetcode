@@ -1,4 +1,4 @@
-package array_matrix;
+package bs;
 //https://leetcode.com/problems/search-a-2d-matrix/
 
 // TIPS: Using bottom left corner to shrink the matrix

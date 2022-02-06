@@ -1,4 +1,4 @@
-package array_matrix;
+package bs;
 
 public class _74_SearchA2DMatrix {
 

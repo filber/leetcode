@@ -1,4 +1,4 @@
-package array_matrix;
+package bs;
 
 // https://leetcode.com/problems/peak-index-in-a-mountain-array/
 public class _852_PeakIndexInAMountainArray {

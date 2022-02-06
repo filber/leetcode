@@ -1,4 +1,4 @@
-package array_matrix;
+package bs;
 
 // https://leetcode.com/problems/minimized-maximum-of-products-distributed-to-any-store/
 public class _2064_MinimizedMaximumOfProductsDistributedToAnyStore {

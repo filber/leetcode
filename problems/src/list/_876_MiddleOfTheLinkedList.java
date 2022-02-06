@@ -1,4 +1,4 @@
-package array_matrix;
+package list;
 
 // https://leetcode.com/problems/middle-of-the-linked-list/
 //TOPICS:

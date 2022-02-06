@@ -1,4 +1,4 @@
-package array_matrix;
+package bs;
 
 // https://leetcode.com/problems/find-in-mountain-array/
 public class _1095_FindInMountainArray {
