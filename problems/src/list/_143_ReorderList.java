@@ -1,4 +1,4 @@
-package array_matrix;
+package list;
 //https://leetcode.com/problems/reorder-list/
 
 // TIPS: reversing the right part of the linked list,

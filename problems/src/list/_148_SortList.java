@@ -1,5 +1,5 @@
 // https://leetcode.com/problems/sort-list/
-package array_matrix;
+package list;
 
 /**
  * TIPS: using fast-slow pointers to locate the middle of a linked list

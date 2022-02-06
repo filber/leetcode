@@ -1,4 +1,4 @@
-package array_matrix;
+package list;
 
 // https://leetcode.com/problems/linked-list-cycle-ii/
 public class _142_LinkedListCycleII {

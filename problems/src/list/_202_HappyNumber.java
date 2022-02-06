@@ -1,4 +1,4 @@
-package math;
+package list;
 
 public class _202_HappyNumber {
 
