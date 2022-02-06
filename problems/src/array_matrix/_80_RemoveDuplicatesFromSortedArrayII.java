@@ -5,16 +5,17 @@ package array_matrix;
 public class _80_RemoveDuplicatesFromSortedArrayII {
 
     public static int removeDuplicates(int[] nums) {
-        int n = nums.length;
-        int slow = 0;
-        for (int fast = 0; fast < n; fast++) {
-            int val = nums[fast];
-            if (fast < 2 || nums[slow - 2] != val) {
-                nums[slow] = val;
-                slow++;
+        if (nums.length == 0)
+            return 0;
+
+        int j = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[j] != nums[i] || (j == 0 || nums[j - 1] != nums[i])) {
+                j++;
+                nums[j] = nums[i];
             }
         }
-        return slow;
+        return j + 1;
     }
 
     public static void main(String[] args) {
