@@ -8,62 +8,74 @@ import java.util.Map;
 
 public class _30_SubstringWithConcatenationOfAllWords {
 
-    public static List<Integer> findSubstring(String s, String[] words) {
+    private static void sliding(String s, String[] words, Map<String, Integer> wordCount, List<Integer> ans, int left) {
         int n = s.length();
-        char[] chars = s.toCharArray();
-        int m = words.length;
+        int k = words.length;
         int w = words[0].length();
-        int wordsLen = m * w;
+        int len = w * k;
+        // WinStates - 1
+        // Whether the window contains a word excess its cnt int wordCount
+        boolean excessUsed = false;
+        // WinStates - 2
+        // All the words in window
+        int cnt = 0;
+        // WinStates - 3
+        // Count of each word in window
+        Map<String,Integer> winCounter = new HashMap<>();
 
-        int[] chPattern = new int[26];
-        Map<String, Integer> wordPattern = new HashMap<>();
-        for (int i = 0; i < m; i++) {
-            wordPattern.put(words[i], wordPattern.getOrDefault(words[i], 0) + 1);
-            for (char ch : words[i].toCharArray()) {
-                chPattern[ch - 'a']++;
-            }
-        }
-
-        int[] winState = new int[26];
-        List<Integer> ans = new ArrayList<>();
-        for (int i = 0; i + wordsLen - 1 < n; i++) {
-            // 1. Update winState
-            if (i == 0) {
-                for (int j = 0; j < wordsLen; j++) {
-                    winState[chars[j] - 'a']++;
-                }
-
+        // left: pointing to the beginning of the win
+        // right: pointing to the current word
+        // s[left,right+w) stands for the current substring,
+        // window should always be in the correct state
+        for (int right = left; right + w <= n; right += w) {
+            String curW = s.substring(right, right + w);
+            if (!wordCount.containsKey(curW)) {
+                // word not exists, reset window states
+                winCounter.clear();
+                excessUsed = false;
+                cnt = 0;
+                // for next iteration, start==end
+                left = right + w;
             } else {
-                winState[chars[i - 1] - 'a']--;
-                winState[chars[i + wordsLen - 1] - 'a']++;
-            }
-
-            // 2. Comparison
-            boolean equal = true;
-            // 2.1. Compare char frequency
-            for (int k = 0; k < 26; k++) {
-                if (winState[k] != chPattern[k]) {
-                    equal = false;
-                    break;
-                }
-            }
-            if (equal) {
-                // 2.1. Compare word frequency
-                Map<String, Integer> wordFreq = new HashMap<>();
-                for (int j = i; j < i + wordsLen; j += w) {
-                    String key = new String(chars, j, w);
-                    wordFreq.put(key, wordFreq.getOrDefault(key, 0) + 1);
-                }
-                for (String key : wordPattern.keySet()) {
-                    if (!wordFreq.containsKey(key) || !wordFreq.get(key).equals(wordPattern.get(key))) {
-                        equal = false;
-                        break;
+                // continue to move left until window states being correct
+                while (right - left == len || excessUsed) {
+                    String leftW = s.substring(left,left+w);
+                    winCounter.put(leftW, winCounter.get(leftW) - 1);
+                    left += w;
+                    if (winCounter.get(leftW) == wordCount.get(leftW)) {
+                        // don't need leftW in window anymore
+                        excessUsed = false;
+                    } else {
+                        // still need leftW in window
+                        cnt--;
                     }
                 }
-                if (equal) {
-                    ans.add(i);
+
+                winCounter.put(curW, winCounter.getOrDefault(curW, 0) + 1);
+                if (winCounter.get(curW) > wordCount.get(curW)) {
+                    excessUsed = true;
+                } else {
+                    cnt++;
+                }
+
+                if (cnt == k && !excessUsed) {
+                    ans.add(left);
                 }
             }
+        }
+    }
+
+    public static List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> ans = new ArrayList<>();
+
+        int w = words[0].length();
+        Map<String, Integer> wordCount = new HashMap<>();
+        for (String word : words) {
+            wordCount.put(word, wordCount.getOrDefault(word, 0) + 1);
+        }
+
+        for (int start = 0; start < w; start++) {
+            sliding(s, words, wordCount, ans, start);
         }
 
         return ans;
@@ -71,9 +83,9 @@ public class _30_SubstringWithConcatenationOfAllWords {
 
     public static void main(String[] args) {
         // [0,9]
-        List<Integer> l1 =
-                findSubstring("barfoothefoobarman",
-                        new String[]{"foo", "bar"});
+        List<Integer> l1 = findSubstring("barfoothefoobarman",
+                new String[]{"foo", "bar"});
+
         // []
         List<Integer> l2 =
                 findSubstring("wordgoodgoodgoodbestword",
