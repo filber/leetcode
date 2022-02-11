@@ -21,14 +21,16 @@ public class _301_RemoveInvalidParentheses {
             if (chars[i] == startBracket) stack++;
             if (chars[i] == endBracket) stack--;
 
-            if (stack < 0) {
+            if (stack == -1) {
                 // endBrackets are just ONE more than startBrackets
-                // need to delete ONE endBracket in [n,i]
+                // need to delete just ONE endBracket in [n,i]
                 for (int j = n; j <= i; j++) {
                     // ignore adjacent endBracket
                     if (chars[j] == endBracket && (j == n || chars[j - 1] != endBracket)) {
                         // remove j
                         String s1 = s.substring(0, j) + s.substring(j + 1);
+                        // SE = EB for [0,i], for next recursion, m = i
+                        // EB for [0,j] have been deleted at least once, for next recursion, n = j
                         remove(s1, startBracket, endBracket, i, j, list);
                     }
                 }
@@ -38,11 +40,13 @@ public class _301_RemoveInvalidParentheses {
 
         s = new StringBuilder(s).reverse().toString();
         if (startBracket == '(') {
-            // no need to delete any endBrackets
-            // try to delete startBrackets
+            // SE>= EB for all substrings, no need to delete any endBrackets
+            // reverse and try to delete startBrackets
+            // m,n starts from 0 again
             remove(s, endBracket,startBracket, 0, 0, list);
         } else {
             // both redundant startBrackets and endBrackets have been deleted!
+            // s already reversed back
             list.add(s);
         }
     }
