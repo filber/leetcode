@@ -34,6 +34,7 @@ public class _301_RemoveInvalidParentheses {
                         remove(s1, startBracket, endBracket, i, j, list);
                     }
                 }
+                // no need to continue, subsequent chars have been taken care of
                 return;
             }
         }
@@ -53,40 +54,44 @@ public class _301_RemoveInvalidParentheses {
 
     // Breadth First Search
     public static List<String> removeInvalidParenthesesBFS(String s) {
-        Set<String> minValidParens = new HashSet<>();
-        Queue<String> q = new LinkedList<>();
-        q.add(s);
-        boolean minFound = false;
-        Set<String> v = new HashSet<>();
-        while(!q.isEmpty()){
-            int sz = q.size();
-            for(int i = 0; i < sz; i++) {
-                String curr = q.remove();
-
-                // check if you have any valid ones in the queue.
-                // the first minValid has already been found and added
-                if(isValid(curr)){
-                    minValidParens.add(curr);
-                    minFound = true;
-                } else {
-                    if(!minFound){
-                        for(int k = 0; k < curr.length(); k++){
-                            // Remove one letter each time
-                            if(curr.charAt(k) == '(' || curr.charAt(k) ==')') { // skip over alphabets
-                                String cand = curr.substring(0,k) + curr.substring(k+1);
-                                // if candidate not in set, add it to the queue for next BFS
-                                if(v.add(cand))
-                                    q.add(cand);
+        Queue<String> queue = new ArrayDeque<>();
+        queue.add(s);
+        Set<String> ansSet = new HashSet<>();
+        Set<String> reduceSet = new HashSet<>();
+        boolean found = false;
+        while (!queue.isEmpty()) {
+            int qSize = queue.size();
+            for (int i = 0; i < qSize; i++) {
+                String str = queue.poll();
+                if (isValid(str)) {
+                    // found the first valid substring!
+                    // no need to traverse next level
+                    // still need to consume remaining str in queue
+                    found = true;
+                    ansSet.add(str);
+                } else if (!found) {
+                    // not found, still need to search next level
+                    for (int j = 0; j < str.length(); j++) {
+                        if (str.charAt(j) == '(' || str.charAt(j) == ')') {
+                            // Remove j
+                            String cand = str.substring(0, j) + str.substring(j + 1);
+                            // if candidate not in reduceSet, add it to the queue for next BFS
+                            // Avoiding too many duplicates being added to queue
+                            if (reduceSet.add(cand)) {
+                                queue.add(cand);
                             }
                         }
                     }
                 }
             }
+
         }
 
-        List<String> ret = new ArrayList<>(minValidParens);
-        if(ret.isEmpty()) ret.add("");
-        return ret;
+        List<String> ans = new ArrayList<>(ansSet);
+        if (ans.isEmpty()) {
+            ans.add("");
+        }
+        return ans;
     }
 
     public static List<String> removeInvalidParenthesesDFS(String s) {
