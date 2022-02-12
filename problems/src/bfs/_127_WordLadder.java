@@ -6,42 +6,49 @@ import java.util.*;
 public class _127_WordLadder {
 
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        Set<String> words = new HashSet(wordList);
-        Set<String> begin = new HashSet();
-        Set<String> end = new HashSet();
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (!wordSet.contains(endWord)) {
+            return 0;
+        }
 
-        if (!words.contains(endWord)) return 0;
-
+        Set<String> begin = new HashSet<>();
         begin.add(beginWord);
+        Set<String> end = new HashSet<>();
         end.add(endWord);
 
-        int step = 2;
-
+        int trans = 2;
         while (!begin.isEmpty()) {
-            Set<String> next = new HashSet();
-            for (String curr : begin) {
-                char[] ch = curr.toCharArray();
-                for (int j = 0; j < ch.length; j++) {
-                    char cr = ch[j];
+            Set<String> next = new HashSet<>();
+            for (String s : begin) {
+                char[] chars = s.toCharArray();
+                for (int i = 0; i < chars.length; i++) {
+                    char tmp = chars[i];
                     for (char k = 'a'; k <= 'z'; k++) {
-                        ch[j] = k;
-                        String temp = String.valueOf(ch);
-                        if (end.contains(temp)) return step;
-                        if (words.contains(temp)) {
-                            words.remove(temp);
-                            next.add(temp);
+                        chars[i] = k; // replace
+                        String cand = new String(chars);
+                        if (end.contains(cand)) {
+                            return trans;
+                        } else if (wordSet.contains(cand)) {
+                            next.add(cand);
+                            // remove candidate from wordSet, so won't try it in the future.
+                            wordSet.remove(cand);
                         }
-                        ch[j] = cr;
                     }
+                    // reverse
+                    chars[i] = tmp;
                 }
             }
-            step++;
+            // Didn't find in current level, increase transit
+            trans++;
 
-            if (next.size() > end.size()) {
+            if (next.size() <= end.size()) {
+                // search forward
+                begin = next;
+            } else {
+                // search backward
+                // Reverse the order, from end to next
                 begin = end;
                 end = next;
-            } else {
-                begin = next;
             }
         }
 
@@ -50,14 +57,9 @@ public class _127_WordLadder {
 
     public int ladderLengthBFS(String beginWord, String endWord, List<String> wordList) {
         int w = beginWord.length();
-        // valid char at each position
-        int[][] charSet = new int[w][26];
         Set<String> wordSet = new HashSet<>();
         for (String word : wordList) {
             wordSet.add(word);
-            for (int i = 0; i < w; i++) {
-                charSet[i][word.charAt(i) - 'a']++;
-            }
         }
 
         // 0. Guard condition
@@ -77,21 +79,20 @@ public class _127_WordLadder {
                 } else {
                     char[] sb = next.toCharArray();
                     // modify one position each time
-                    for (int j = 0; j < next.length(); j++) {
-                        for (int k = 0; k < 26; k++) {
+                    for (int j = 0; j < sb.length; j++) {
+                        char cur = sb[j];
+                        for (char k = 'a'; k <= 'z'; k++) {
                             // Just consider valid letter at position j
-                            if (charSet[j][k] > 0) {
-                                sb[j] = (char) ('a' + k);
-                                String candidate = new String(sb);
-                                if (wordSet.contains(candidate)) {
-                                    queue.add(candidate);
-                                    // Remove candidate so next time won't try it
-                                    wordSet.remove(candidate);
-                                }
+                            sb[j] = k;
+                            String candidate = new String(sb);
+                            if (wordSet.contains(candidate)) {
+                                queue.add(candidate);
+                                // Remove candidate so next time won't try it
+                                wordSet.remove(candidate);
                             }
                         }
                         // reverse
-                        sb[j] = next.charAt(j);
+                        sb[j] = cur;
                     }
                 }
             }
