@@ -5,65 +5,92 @@ import java.util.*;
 //https://leetcode.com/problems/different-ways-to-add-parentheses/
 public class _241_DifferentWaysToAddParentheses {
 
-    private static Map<String, List<Integer>> map = new HashMap<>();
+    public List<Integer> diffWaysToCompute(String input) {
+        char[] chars = input.toCharArray();
+        int n = chars.length;
+        List<Integer>[][] mem = new List[n][n];
+        return dfs(chars, mem, 0, n - 1);
+    }
 
-    public static List<Integer> diffWaysToCompute(String input) {
-        if (map.containsKey(input)) {
-            return map.get(input);
+    private List<Integer> dfs(char[] chars, List<Integer>[][] mem, int start, int end) {
+        if (mem[start][end] != null) {
+            return mem[start][end];
         }
 
-        List<Integer> list = new LinkedList<>();
-        for (int i = 0; i < input.length(); i++) {
-            char operator = input.charAt(i);
-            if (operator == '+' || operator == '-' || operator == '*') {
-                List<Integer> leftList = diffWaysToCompute(input.substring(0, i));
-                List<Integer> rightList = diffWaysToCompute(input.substring(i + 1));
-                for (int left : leftList) {
-                    for (int right : rightList) {
-                        int value = calculate(left,right,operator);
-                        list.add(value);
-                    }
+        List<Integer> ans = new ArrayList<>();
+        for (int i = start + 1; i < end; i++) {
+            if (chars[i] < '0') {
+                List<Integer> left = dfs(chars, mem, start, i - 1);
+                List<Integer> right = dfs(chars, mem, i + 1, end);
+                ans.addAll(calculate(left, chars[i], right));
+            }
+        }
+        if (ans.isEmpty()) {
+            ans.add(Integer.valueOf(new String(chars, start, end - start + 1)));
+        }
+        mem[start][end] = ans;
+        return ans;
+    }
+
+    public List<Integer> diffWaysToComputeDP(String input) {
+        List<Integer> expression = new ArrayList<>();
+        char[] chars = input.toCharArray();
+        int m = chars.length;
+        int pre = 0;
+        for (int i = 0; i < m; i++) {
+            if (chars[i] < '0') {
+                String operand = input.substring(pre, i);
+                char operator = input.charAt(i);
+                pre = i + 1;
+                expression.add(Integer.valueOf(operand));
+                expression.add((int) operator);
+            }
+        }
+        expression.add(Integer.valueOf(input.substring(pre)));
+
+        int n = expression.size();
+        List<Integer>[][] dp = new List[n][n];
+        for (int i = 0; i < n; i += 2) {
+            dp[i][i] = new ArrayList<>();
+            dp[i][i].add(expression.get(i));
+        }
+
+        for (int len = 3; len <= n; len += 2) {
+            // sub expression[i,j]
+            for (int i = 0; i + len <= n; i += 2) {
+                int j = i + len - 1;
+                List<Integer> val = new ArrayList<>();
+                for (int k = i + 1; k < j; k += 2) {
+                    char operator = (char) expression.get(k).intValue();
+                    List<Integer> left = dp[i][k - 1];
+                    List<Integer> right = dp[k + 1][j];
+                    val.addAll(calculate(left, operator, right));
                 }
+                dp[i][j] = val;
             }
         }
 
-        if (list.isEmpty()) {
-            list.add(Integer.valueOf(input));
-        }
-
-        map.put(input,list);
-        return list;
+        List<Integer> res = new ArrayList<>(dp[0][n - 1]);
+        return res;
     }
 
-    private static int calculate(
-            int left,
-            int right,
-            char operator) {
-        if ('+' == operator) {
-            return left + right;
-        } else if ('-' == operator) {
-            return left - right;
-        } else {
-            return left * right;
+    private List<Integer> calculate(List<Integer> left, char operator, List<Integer> right) {
+        List<Integer> res = new ArrayList<>();
+        for (int l : left) {
+            for (int r : right) {
+                switch (operator) {
+                    case '+':
+                        res.add(l + r);
+                        break;
+                    case '-':
+                        res.add(l - r);
+                        break;
+                    case '*':
+                        res.add(l * r);
+                        break;
+                }
+            }
         }
-    }
-
-    public static void main(String[] args) {
-//        Input: "2-1-1"
-//        Output: [0, 2]
-//        Explanation:
-//        ((2-1)-1) = 0
-//        (2-(1-1)) = 2
-        diffWaysToCompute("2-1-1");
-
-//        Input: "2*3-4*5"
-//        Output: [-34, -14, -10, -10, 10]
-//        Explanation:
-//        (2*(3-(4*5))) = -34
-//        ((2*3)-(4*5)) = -14
-//        ((2*(3-4))*5) = -10
-//        (2*((3-4)*5)) = -10
-//        (((2*3)-4)*5) = 10
-        diffWaysToCompute("2*3-4*5");
+        return res;
     }
 }
