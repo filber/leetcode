@@ -6,37 +6,41 @@ package dfs;
 //[Union Find],[Depth-First Search]
 public class _695_MaxAreaOfIsland {
 
-    public static int maxAreaOfIsland(int[][] grid) {
+    public int maxAreaOfIsland(int[][] grid) {
+        int maxArea = 0;
         int m = grid.length;
         int n = grid[0].length;
-        int max = 0;
-        int[][] visited = new int[m][n];
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (grid[i][j] == 1 && visited[i][j] == 0) {
-                    int cnt = dfs(grid, visited, i, j, 0); // up
-                    max = Math.max(cnt, max);
-                }
+                // Update maxArea
+                maxArea = Math.max(maxArea, dfs(grid, i, j));
             }
         }
-        return max;
+        return maxArea;
     }
 
-    public static int dfs(int[][] grid, int[][] visited, int i, int j, int cnt) {
+    private int dfs(int[][] grid, int i, int j) {
         int m = grid.length;
         int n = grid[0].length;
-        if (i < 0 || i >= m || j < 0 || j >= n || visited[i][j]==1 || grid[i][j]==0) {
-            return cnt;
-        }
-        visited[i][j] = 1;
-        cnt++;
 
-        cnt = dfs(grid, visited, i - 1, j, cnt); // up
-        cnt = dfs(grid, visited, i + 1, j, cnt); // down
-        cnt = dfs(grid, visited, i, j - 1, cnt); // left
-        cnt = dfs(grid, visited, i, j + 1, cnt); // right
-        return cnt;
+        // 0. Guard condition
+        if (i < 0 || i >= m || j < 0 || j >= n) {
+            return 0;
+        } else if (grid[i][j] == 0) {
+            return 0;
+        }
+
+        grid[i][j] = 0; // mark as searched
+        // 1. DFS for four directions
+        int area = 1 +
+                dfs(grid, i - 1, j) +
+                dfs(grid, i + 1, j) +
+                dfs(grid, i, j - 1) +
+                dfs(grid, i, j + 1);
+
+        return area;
     }
+
 
     private int[] id;
     private int[] sz;
