@@ -3,62 +3,48 @@ package dfs;
 
 import java.util.*;
 
-// TOPICS:
-// [Backtracking]
-
-// Using CharCnt instead of map to improve efficiency.
 public class _1079_LetterTilePossibilities {
 
-    private int cnt = 0;
-    private int[] chCnt = new int[26];
-    private int remain = 0;
-    private Character[] chars = null;
+    private int[] charCnt;
+    int remain;
+    int cnt = 0;
+    private Character[] letters;
 
     public int numTilePossibilities(String tiles) {
-        remain = tiles.length();
+        charCnt = new int[26];
+        char[] chars = tiles.toCharArray();
+        remain = chars.length;
 
-        Set<Character> chSet = new HashSet<>();
-        for (int i = 0; i < tiles.length(); i++) {
-            char ch = tiles.charAt(i);
-            chSet.add(ch);
-            chCnt[ch - 'A'] ++;
+        Set<Character> set = new HashSet<>();
+        for (char ch : chars) {
+            charCnt[ch - 'A']++;
+            set.add(ch);
         }
-        chars = new Character[chSet.size()];
-        chars = chSet.toArray(chars);
+        letters = set.toArray(new Character[0]);
 
-        backTrack();
+        backtracking();
         return cnt;
     }
 
-    private void backTrack() {
-        // 0. Guard conditions
+    private void backtracking() {
         if (remain == 0) {
-            return;
+            return; // no available letter tiles
         }
 
-        for (char ch : chars) {
-            if (chCnt[ch - 'A'] != 0) {
+        for (char ch : letters) {
+            int j = ch - 'A';
+            if (charCnt[j] != 0) {
                 cnt++;
-                System.out.println(ch);
+
+                // set states
                 remain--;
-                chCnt[ch - 'A'] --;
+                charCnt[j]--;
+                backtracking();
 
-                backTrack();
-
+                // reverse states
                 remain++;
-                chCnt[ch - 'A'] ++;
+                charCnt[j]++;
             }
         }
-    }
-
-    public static void main(String[] args) {
-        // 8
-        int c1 = new _1079_LetterTilePossibilities().numTilePossibilities("AAB");
-
-        // 1
-        int c2 = new _1079_LetterTilePossibilities().numTilePossibilities("V");
-
-        // 188
-        int c3 = new _1079_LetterTilePossibilities().numTilePossibilities("AAABBC");
     }
 }
