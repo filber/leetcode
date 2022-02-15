@@ -3,105 +3,86 @@ package dp;
 // https://leetcode.com/problems/stone-game-v/
 public class _1563_StoneGameV {
 
-    public static int stoneGameV(int[] stoneValue) {
-        int n = stoneValue.length;
-        if (n == 1) {
-            return 0;
-        }
+    private int[] stoneValue;
+    private int n;
 
-        int[] prefixSum = new int[n + 1];
-        for (int i = 1; i <= n; i++) {
-            prefixSum[i] = prefixSum[i - 1] + stoneValue[i - 1];
-        }
+    private int[] prefixSum;
+    private int[][] mem;
 
+    public int stoneGameV(int[] s) {
+        stoneValue = s;
+        n = s.length;
+        prefixSum = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefixSum[i + 1] = prefixSum[i] + stoneValue[i];
+        }
         int[][] dp = new int[n][n];
         for (int len = 2; len <= n; len++) {
-            for (int i = 0; i < n; i++) {
+            for (int i = 0; i + len - 1 < n; i++) {
                 int j = i + len - 1;
-                if (j >= n) {
-                    break;
-                }
-                int max = 0;
+                int maxScore = 0;
                 for (int k = i; k < j; k++) {
-                    int sum = 0;
-                    // left [i,k]
-                    int left = prefixSum[k + 1] - prefixSum[i];
-                    // right [k+1,j]
-                    int right = prefixSum[j + 1] - prefixSum[k + 1];
-                    if (left > right) {
-                        sum = right + dp[k + 1][j];
-                    } else if (left < right) {
-                        sum = left + dp[i][k];
+                    int score = 0;
+                    int leftScore = prefixSum[k + 1] - prefixSum[i]; //[i,k]
+                    int rightScore = prefixSum[j + 1] - prefixSum[k + 1]; //[k+1,j]
+                    if (leftScore < rightScore) {
+                        score += leftScore;
+                        score += dp[i][k];
+                    } else if (leftScore > rightScore) {
+                        score += rightScore;
+                        score += dp[k + 1][j];
                     } else {
-                        sum = Math.max(dp[i][k], dp[k + 1][j]) + left;
+                        score += rightScore;
+                        score += Math.max(dp[i][k], dp[k + 1][j]);
                     }
-                    max = Math.max(max, sum);
+                    maxScore = Math.max(maxScore, score);
                 }
-                dp[i][j] = max;
+                dp[i][j] = maxScore;
             }
         }
 
         return dp[0][n - 1];
     }
 
-    public static int stoneGameVDFS(int[] stoneValue) {
-        int n = stoneValue.length;
-        if (n == 1) {
-            return 0;
+    public int stoneGameVDFS(int[] s) {
+        stoneValue = s;
+        n = s.length;
+        prefixSum = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefixSum[i + 1] = prefixSum[i] + stoneValue[i];
         }
 
-        int[] prefixSum = new int[n + 1];
-        for (int i = 1; i <= n; i++) {
-            prefixSum[i] = prefixSum[i - 1] + stoneValue[i - 1];
-        }
-
-        int[][] mem = new int[n][n];
-        return dfs(stoneValue, prefixSum, mem, 0, n - 1);
+        mem = new int[n][n];
+        int score = dfs(0, n - 1);
+        return score;
     }
 
-    private static int dfs(int[] stoneValue, int[] prefixSum, int[][] mem, int start, int end) {
-        if (start == end) {
-            // remaining just one stone
-            return 0;
-        } else if (mem[start][end] > 0) {
-            return mem[start][end];
+    private int dfs(int i, int j) {
+        if (i == j) {
+            return 0; // one stone remaining
+        } else if (mem[i][j] > 0) {
+            return mem[i][j];
         }
 
-        int max = 0;
-        for (int i = start; i < end; i++) {
-            int sum = 0;
-            int left = prefixSum[i + 1] - prefixSum[start];
-            int right = prefixSum[end + 1] - prefixSum[i + 1];
-            if (left > right) {
-                // throw left
-                sum = right + dfs(stoneValue, prefixSum, mem, i + 1, end);
-            } else if (left < right) {
-                // throw right
-                sum = left + dfs(stoneValue, prefixSum, mem, start, i);
+        int maxScore = 0;
+        for (int k = i; k < j; k++) {
+            int score = 0;
+            int leftScore = prefixSum[k + 1] - prefixSum[i]; //[i,k]
+            int rightScore = prefixSum[j + 1] - prefixSum[k + 1]; //[k+1,j]
+            if (leftScore < rightScore) {
+                score += leftScore;
+                score += dfs(i, k);
+            } else if (leftScore > rightScore) {
+                score += rightScore;
+                score += dfs(k + 1, j);
             } else {
-                // left == right
-                // try both side
-                sum = Math.max(left + dfs(stoneValue, prefixSum, mem, start, i),
-                        right + dfs(stoneValue, prefixSum, mem, i + 1, end));
+                score += rightScore;
+                score += Math.max(dfs(i, k), dfs(k + 1, j));
             }
-            max = Math.max(max, sum);
+            maxScore = Math.max(maxScore, score);
         }
-        mem[start][end] = max;
-        return max;
-    }
 
-
-    public static void main(String[] args) {
-        // 18
-        int m1 = stoneGameV(
-                new int[]{6, 2, 3, 4, 5, 5});
-
-        // 28
-        int m2 = stoneGameV(
-                new int[]{7, 7, 7, 7, 7, 7, 7});
-
-        // 0
-        int m3 = stoneGameV(
-                new int[]{4});
+        mem[i][j] = maxScore;
+        return maxScore;
     }
 }
