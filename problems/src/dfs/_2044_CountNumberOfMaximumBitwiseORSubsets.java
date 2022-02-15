@@ -3,16 +3,20 @@ package dfs;
 // https://leetcode.com/problems/count-number-of-maximum-bitwise-or-subsets/
 public class _2044_CountNumberOfMaximumBitwiseORSubsets {
 
-    private int maxOr = 0;
-    private int maxCnt = 0;
+    int maxOr = 0;
+    int maxCnt = 0;
+    int[] nums;
+    int n;
 
     public int countMaxOrSubsets(int[] nums) {
-        dfs(nums, 0, 0);
+        this.nums = nums;
+        n = nums.length;
+        dfs(0, 0);
         return maxCnt;
     }
 
-    private void dfs(int[] nums, int or, int pos) {
-        if (pos == nums.length) {
+    private void dfs(int or, int i) {
+        if (i == n) {
             if (or > maxOr) {
                 maxOr = or;
                 maxCnt = 1;
@@ -22,27 +26,7 @@ public class _2044_CountNumberOfMaximumBitwiseORSubsets {
             return;
         }
 
-        // use nums[pos]
-        dfs(nums, or | nums[pos], pos + 1);
-
-        // not use nums[pos]
-        dfs(nums, or, pos + 1);
+        dfs(or | nums[i], i + 1);
+        dfs(or, i + 1);
     }
-
-    public static void main(String[] args) {
-        // 7
-        int c1 = new _2044_CountNumberOfMaximumBitwiseORSubsets().countMaxOrSubsets(
-                new int[]{2, 2, 2}
-        );
-        // 2
-        int c2 = new _2044_CountNumberOfMaximumBitwiseORSubsets().countMaxOrSubsets(
-                new int[]{3, 1}
-        );
-        // 6
-        int c3 = new _2044_CountNumberOfMaximumBitwiseORSubsets().countMaxOrSubsets(
-                new int[]{3, 2, 1, 5}
-        );
-    }
-
-
 }
