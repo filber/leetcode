@@ -1,13 +1,48 @@
 package math;
 
+import java.util.Arrays;
 import java.util.BitSet;
 
 // https://leetcode.com/problems/merge-intervals/
-//[Bit Manipulation]
 // TIPS: Using bit set to handle overlapping numbers
 public class _56_MergeIntervals {
 
+    //    Constraints:
+//        1 <= intervals.length <= 10^4
+//        intervals[i].length == 2
+//        0 <= starti <= endi <= 10^4
     public static int[][] merge(int[][] intervals) {
+        int n = intervals.length;
+        // sort by beginning
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+
+        int start = intervals[0][0], end = intervals[0][1];
+        int count = 1;
+        for (int i = 1; i < n; i++) {
+            int[] inter = intervals[i];
+            if (inter[0] <= end) {
+                // merge
+                end = Math.max(end, inter[1]);
+            } else {
+                intervals[count-1][0] = start;
+                intervals[count-1][1] = end;
+                start = inter[0];
+                end = inter[1];
+                count++;
+            }
+        }
+
+        intervals[count-1][0] = start;
+        intervals[count-1][1] = end;
+
+        int[][] ans = new int[count][2];
+        for (int i = 0; i < count; i++) {
+            ans[i] = intervals[i];
+        }
+        return ans;
+    }
+
+    public static int[][] mergeBitSet(int[][] intervals) {
         BitSet bitSet = new BitSet();
         for (int i = 0; i < intervals.length; i++) {
             int start = intervals[i][0] * 2;
@@ -15,8 +50,8 @@ public class _56_MergeIntervals {
             bitSet.set(start, end);
         }
 
-        int start = 0;
-        int end = 0;
+        int start;
+        int end;
         int count = 0;
         for (start = bitSet.nextSetBit(0);
              start > -1;
@@ -34,23 +69,4 @@ public class _56_MergeIntervals {
         return result;
     }
 
-    public static void main(String[] args) {
-        int[][] m6 = new int[][]{{1, 4}, {0, 4}};
-        m6 = merge(m6);
-
-        int[][] m1 = new int[][]{{1, 2}};
-        m1 = merge(m1);
-
-        int[][] m2 = new int[][]{{1, 3}, {4, 5}};
-        m2 = merge(m2);
-
-        int[][] m3 = new int[][]{{1, 4}, {4, 5}};
-        m3 = merge(m3);
-
-        int[][] m4 = new int[][]{{1, 3}, {2, 6}, {8, 10}, {15, 18}};
-        m4 = merge(m4);
-
-        int[][] m5 = new int[][]{{2,3},{2,2},{3,3},{1,3},{5,7},{2,2},{4,6}};
-        m5 = merge(m5);
-    }
 }
