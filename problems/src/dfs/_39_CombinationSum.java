@@ -8,7 +8,6 @@ public class _39_CombinationSum {
 
     private List<List<Integer>> ans = new ArrayList<>();
     private int[] candidates;
-    private int[] map = new int[201];
     private int target;
 
     public List<List<Integer>> combinationSum(int[] candidates, int t) {
@@ -16,10 +15,6 @@ public class _39_CombinationSum {
 
         Arrays.sort(candidates);
         this.candidates = candidates;
-
-        for (int num : candidates) {
-            map[num] = 1;
-        }
 
         List<Integer> list = new ArrayList<>();
         dfs(list, 0, 0);
@@ -39,19 +34,13 @@ public class _39_CombinationSum {
             return;
         }
 
-        if (sum + candidates[i] == target) {
-            // use Ci
-            List tmp = new ArrayList(list);
-            tmp.add(candidates[i]);
-            ans.add(tmp);
-        } else {
-            // use Ci
-            list.add(candidates[i]);
-            dfs(list, i, sum + candidates[i]);
-            list.remove(list.size() - 1);
 
-            // skip Ci
-            dfs(list, i + 1, sum);
-        }
+        // use Ci
+        list.add(candidates[i]);
+        dfs(list, i, sum + candidates[i]);
+        list.remove(list.size() - 1);
+
+        // skip Ci
+        dfs(list, i + 1, sum);
     }
 }
