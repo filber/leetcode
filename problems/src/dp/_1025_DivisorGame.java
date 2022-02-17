@@ -1,7 +1,7 @@
 package dp;
 // https://leetcode.com/problems/divisor-game/
 
-public class _1015_DivisorGame {
+public class _1025_DivisorGame {
 
     // Makes a move consisting of:
     //  Choosing any x with 0 < x < n and n % x == 0.
