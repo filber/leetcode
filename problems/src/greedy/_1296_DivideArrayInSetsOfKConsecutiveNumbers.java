@@ -60,16 +60,4 @@ public class _1296_DivideArrayInSetsOfKConsecutiveNumbers {
             return true;
         }
     }
-
-    public static void main(String[] args) {
-        // [1,2,3,4],[3,4,5,6]
-        boolean b1 = isPossibleDivide(new int[]{1, 2, 3, 3, 4, 4, 5, 6}, 4);
-
-        // [1,2,3,], [2,3,4], [3,4,5], [9,10,11]
-        boolean b2 = isPossibleDivide(new int[]{3, 2, 1, 2, 3, 4, 3, 4, 5, 9, 10, 11}, 3);
-        // false
-        boolean b3 = isPossibleDivide(new int[]{1, 2, 3, 4}, 3);
-        // false
-        boolean b4 = isPossibleDivide(new int[]{16,21,26,35}, 4);
-    }
 }
