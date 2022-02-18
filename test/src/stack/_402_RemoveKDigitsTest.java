@@ -22,8 +22,8 @@ public class _402_RemoveKDigitsTest {
 
     @Test
     public void testRemoveKdigits1() throws Exception {
-        String s = target.removeKdigits("1432219", 3);
-        assertEquals("1219", s);
+        String s = target.removeKdigits("10432219", 3);
+        assertEquals("2219", s);
     }
 
     @Test
@@ -66,5 +66,11 @@ public class _402_RemoveKDigitsTest {
     public void testRemoveKdigits8() throws Exception {
         String s = target.removeKdigits("10001", 1);
         assertEquals("1", s);
+    }
+
+    @Test
+    public void testRemoveKdigits9() throws Exception {
+        String s = target.removeKdigits("1432219", 3);
+        assertEquals("1219", s);
     }
 }
