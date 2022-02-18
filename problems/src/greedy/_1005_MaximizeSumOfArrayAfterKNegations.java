@@ -11,52 +11,47 @@ public class _1005_MaximizeSumOfArrayAfterKNegations {
     //      1 <= K <= 10000
     //      -100 <= A[i] <= 100
     public static int largestSumAfterKNegations(int[] nums, int k) {
-        int sum = 0;
         Arrays.sort(nums);
-
-        for (int i = 0; i < nums.length; i++) {
-            int num = nums[i];
+        int n = nums.length;
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
             if (k != 0) {
-                if (num < 0) {
-                    if (i == nums.length - 1) {
-                        if (k % 2 == 0) {
-                            sum += num;
+                if (nums[i] == 0) {
+                    // consuming all negations
+                    k = 0;
+                } else if (nums[i] > 0) {
+                    // double negations take no effect
+                    if (k % 2 != 0) {
+                        // before Ni, we have no zero, otherwise all negations would be consumed
+                        if (i == 0) {
+                            // Ni is the first positive number
+                            nums[i] = -nums[i];
                         } else {
-                            sum -= num;
+                            // before Ni is the biggest negative numbers, which has already been negated
+                            if (nums[i] > nums[i - 1]) {
+                                sum -= 2 * nums[i - 1]; // counter effect
+                            } else {
+                                nums[i] = -nums[i];
+                            }
                         }
-                        k = 0;
-                    } else {
-                        sum -= num;
-                        k--;
-                    }
-                } else if (num == 0) {
-                    k = 0;
-                } else if (num > 0) {
-                    if (k % 2 == 0) {
-                        sum += num;
-                    } else if (i == 0) {
-                        // k is odd
-                        sum -= num;
-                    } else {
-                        // nums[i-1] negative, nums[i] positive, k is odd
-                        sum += nums[i - 1]; // subtract nums[i-1] from sum
-                        sum += Math.abs(nums[i - 1] + nums[i]);
+                        // consume all negations
                     }
                     k = 0;
+                } else {
+                    // nums[i] < 0
+                    nums[i] = -nums[i];
+                    k--;
                 }
-            } else {
-                sum += num;
             }
+
+            sum += nums[i];
+        }
+
+        if (k % 2 != 0) {
+            // all numbers are negative, still need some more negations
+            sum -= 2 * nums[n - 1];
         }
 
         return sum;
-    }
-
-    public static void main(String[] args) {
-        int s1 = largestSumAfterKNegations(new int[]{4, 2, 3}, 1); // 5
-        int s2 = largestSumAfterKNegations(new int[]{3, -1, 0, 2}, 3); // 6
-        int s3 = largestSumAfterKNegations(new int[]{2, -3, -1, 5, -4}, 2); // 13
-        int s4 = largestSumAfterKNegations(new int[]{-8, 3, -5, -3, -5, -2}, 6); // 22
-        int s5 = largestSumAfterKNegations(new int[]{-4, -2, -3}, 4); // 5
     }
 }
