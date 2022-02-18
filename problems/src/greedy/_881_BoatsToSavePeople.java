@@ -10,40 +10,51 @@ public class _881_BoatsToSavePeople {
 
     public static int numRescueBoats(int[] people, int limit) {
         int[] cnt = new int[30001];
-        int n = people.length;
-        int l = Integer.MAX_VALUE;
-        int r = Integer.MIN_VALUE;
         for (int p : people) {
             cnt[p]++;
-            l = Math.min(l, p);
-            r = Math.max(r, p);
         }
 
-        int boatCnt = 0;
-        int wait = n;
-        while (l <= r && wait > 0) {
-            if (l + r <= limit) {
-                cnt[l]--;
-                wait--;
-            }
-            cnt[r]--;
-            wait--;
-            while (wait != 0 && cnt[l] == 0) {
+        int l = 1;
+        while (l <= limit && cnt[l] == 0) {
+            l++;
+        }
+        int r = limit;
+        while (r >= 1 && cnt[r] == 0) {
+            r--;
+        }
+        int boats = 0;
+        while (l <= r) {
+            if (l==r) {
+                if (l * 2 <= limit) {
+                    boats += cnt[l] / 2;
+                    boats += cnt[l] % 2;
+                } else {
+                    boats += cnt[l];
+                }
                 l++;
+            } else {
+                // l<r
+                if (l + r > limit) {
+                    boats += cnt[r];
+                    cnt[r] = 0;
+                    while (r >= l && cnt[r] == 0) {
+                        r--;
+                    }
+                } else {
+                    // l + r <= limit
+                    int mP = Math.min(cnt[l], cnt[r]);
+                    boats += mP;
+                    cnt[l] -= mP;
+                    cnt[r] -= mP;
+                    while (r >= l && cnt[r] == 0) {
+                        r--;
+                    }
+                    while (l <= r && cnt[l] == 0) {
+                        l++;
+                    }
+                }
             }
-            while (wait != 0 && cnt[r] == 0) {
-                r--;
-            }
-            boatCnt ++;
         }
-        return boatCnt;
-    }
-
-    public static void main(String[] args) {
-        int n1 = numRescueBoats(new int[]{1, 2}, 3); // 1
-        int n2 = numRescueBoats(new int[]{3, 2, 2, 1}, 3); // 3
-        int n3 = numRescueBoats(new int[]{3, 5, 3, 4}, 5); // 4
-        int n4 = numRescueBoats(new int[]{2, 4}, 5); // 2
-        int n5 = numRescueBoats(new int[]{2, 2}, 6); // 1
+        return boats;
     }
 }
