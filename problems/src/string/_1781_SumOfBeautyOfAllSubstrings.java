@@ -68,11 +68,4 @@ public class _1781_SumOfBeautyOfAllSubstrings {
 
         return sum;
     }
-
-
-    public static void main(String[] args) {
-        int s1 = beautySum("aabcb"); // 5
-        int s2 = beautySum("aabcbaa"); // 17
-        int s3 = beautySum("aabzzcbzzzz"); // 91
-    }
 }
