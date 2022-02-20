@@ -1,45 +1,29 @@
 package string;
-// TOPICS:
-// [Sliding Window], [String]
 
-// TIPS:
-// Move winStart and winEnd separately
-// Record&Refresh the window state
+//https://leetcode.com/problems/number-of-substrings-containing-all-three-characters/
+
 public class _1358_NumberOfSubstringsContainingAllThreeCharacters {
 
     public static int numberOfSubstrings(String s) {
-        int n = s.length();
-        int l = 0;
-        int r = -1; // start from -1
+        char[] chars = s.toCharArray();
+        int n = chars.length;
+        int l = 0, r = 0;
+        int res = 0;
         int[] cnt = new int[3];
-        int ans = 0;
-
+        cnt[chars[0] - 'a']++;
         while (r < n) {
-            if (cnt[0] >= 1 && cnt[1] >= 1 && cnt[2] >= 1) {
-                // satisfied
-                int remain = n - 1 - r;
-                ans += remain + 1;
-                char lch = s.charAt(l);
-                cnt[lch - 'a']--;
+            if (cnt[0] > 0 && cnt[1] > 0 && cnt[2] > 0) {
+                res += n - r;
+                cnt[chars[l] - 'a']--;
                 l++;
             } else {
                 r++;
                 if (r < n) {
-                    // not satisfied
-                    char rch = s.charAt(r);
-                    cnt[rch - 'a']++;
+                    cnt[chars[r] - 'a']++;
                 }
             }
         }
 
-        return ans;
-    }
-
-    public static void main(String[] args) {
-        int c1 = numberOfSubstrings("aaa"); // 0
-        int c2 = numberOfSubstrings("aab"); // 0
-        int c3 = numberOfSubstrings("abc"); // 1
-        int c4 = numberOfSubstrings("aaacb"); // 3
-        int c5 = numberOfSubstrings("abcabc"); // 10
+        return res;
     }
 }
