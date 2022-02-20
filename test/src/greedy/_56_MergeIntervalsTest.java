@@ -1,5 +1,6 @@
-package math;
+package greedy;
 
+import greedy._56_MergeIntervals;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
