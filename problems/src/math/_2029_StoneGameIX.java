@@ -1,4 +1,4 @@
-package greedy;
+package math;
 
 // https://leetcode.com/problems/stone-game-ix/
 
