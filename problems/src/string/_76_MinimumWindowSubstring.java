@@ -4,51 +4,64 @@ package string;
 
 public class _76_MinimumWindowSubstring {
 
-    public static String minWindow(String s, String t) {
-        int[] counter = new int[128];
-        int cnt = t.length();
-        for (char c : t.toCharArray()) {
-            counter[c]++;
+    int[] sCnt;
+    int[] tCnt;
+
+    public String minWindow(String s, String t) {
+        if (s.length() < t.length()) {
+            return "";
         }
+        tCnt = new int[128];
+        for (char ch : t.toCharArray()) {
+            tCnt[ch]++;
+        }
+
+        sCnt = new int[128];
+        char[] chars = s.toCharArray();
+        int n = chars.length;
+        int l = 0, r = 0;
         int minLen = Integer.MAX_VALUE;
-        int minIdx = 0;
-        int l = 0;
-        int r = 0;
-        int n = s.length();
-        char[] sChars = s.toCharArray();
-        while (r < n) {
-            if (counter[sChars[r]] > 0) {
-                cnt --;
-            }
-            counter[sChars[r]]--;
-            r++;
-            while (cnt == 0) {
-                int len = r - l;
-                if (len < minLen) {
-                    minLen = len;
-                    minIdx = l;
+        int minL = 0, minR = 0;
+        boolean equals = false;
+        while (r < n || equals) {
+            if (!equals) {
+                sCnt[chars[r]]++;
+                r++;
+            } else {
+                if ((r - l) < minLen) {
+                    minLen = r - l;
+                    minL = l;
+                    minR = r;
                 }
-                counter[sChars[l]]++;
-                if (counter[sChars[l]] > 0) {
-                    cnt ++;
-                }
+                sCnt[chars[l]]--;
                 l++;
             }
+            equals = compare();
         }
 
-        return minLen == Integer.MAX_VALUE ? "" : s.substring(minIdx, minIdx + minLen);
+        if (minLen == Integer.MAX_VALUE) {
+            return "";
+        } else {
+            return s.substring(minL, minR);
+        }
     }
 
-    public static void main(String[] args) {
-        // BANC
-        String m1 = minWindow("ADOBECODEBANC", "ABC");
-        // a
-        String m2 = minWindow("a", "a");
-        // ""
-        String m3 = minWindow("a", "aa");
-        // ab
-        String m4 = minWindow("abc", "ab");
-        // ba
-        String m5 = minWindow("bba", "ab");
+    private boolean compare() {
+        boolean equals = true;
+        for (int i = 'a'; i <= 'z'; i++) {
+            if (sCnt[i] < tCnt[i]) {
+                equals = false;
+                break;
+            }
+        }
+        if (equals) {
+            for (int i = 'A'; i <= 'Z'; i++) {
+                if (sCnt[i] < tCnt[i]) {
+                    equals = false;
+                    break;
+                }
+            }
+        }
+        return equals;
     }
 }
