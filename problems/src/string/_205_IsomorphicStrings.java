@@ -7,44 +7,35 @@ import java.util.Arrays;
 public class _205_IsomorphicStrings {
 
     // Bijection
-    public static boolean isIsomorphic(String left, String right) {
+    public boolean isIsomorphic(String left, String right) {
         if (left.length() != right.length()) {
             return false;
         }
 
-        int[] left2right = new int[128];
-        Arrays.fill(left2right, -1);
-        int[] right2left = new int[128];
-        Arrays.fill(right2left, -1);
+        int[] lProjection = new int[128];
+        Arrays.fill(lProjection, -1);
+        int[] rProjection = new int[128];
+        Arrays.fill(rProjection, -1);
+        char[] lChars = left.toCharArray();
+        char[] rChars = right.toCharArray();
+        int n = lChars.length;
 
-        for (int i = 0; i < left.length(); i++) {
-            int leftCh = left.charAt(i);
-            int rightCh = right.charAt(i);
-
-            if (left2right[leftCh] == -1) {
-                left2right[leftCh] = rightCh;
-            } else {
-                if (left2right[leftCh] != rightCh) {
-                    return false;
-                }
+        for (int i = 0; i < n; i++) {
+            int lChar = lChars[i];
+            int rChar = rChars[i];
+            if (lProjection[lChar] == -1) {
+                lProjection[lChar] = rChar;
+            } else if (lProjection[lChar] != rChar) {
+                return false;
             }
 
-            if (right2left[rightCh] == -1) {
-                right2left[rightCh] = leftCh;
-            } else {
-                if (right2left[rightCh] != leftCh) {
-                    return false;
-                }
+            if (rProjection[rChar] == -1) {
+                rProjection[rChar] = lChar;
+            } else if (rProjection[rChar] != lChar) {
+                return false;
             }
         }
 
         return true;
-    }
-
-    public static void main(String[] args) {
-        boolean b1 = isIsomorphic("egg", "add"); // true
-        boolean b2 = isIsomorphic("foo", "bar"); // false
-        boolean b3 = isIsomorphic("bar", "foo"); // false
-        boolean b4 = isIsomorphic("paper", "title"); // true
     }
 }
