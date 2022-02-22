@@ -5,13 +5,11 @@ package stack;
 public class _402_RemoveKDigits {
 
     public String removeKdigits(String num, int k) {
-        char[] numChars = num.toCharArray();
-        char[] stack = new char[numChars.length];
+        char[] chars = num.toCharArray();
+        char[] stack = new char[chars.length];
         int top = -1;
-
-        for (int i = 0; i < numChars.length; i++) {
-            char ch = numChars[i];
-            while (top != -1 && stack[top] > ch && k > 0) {
+        for (char ch : chars) {
+            while (top != -1 && stack[top] > ch & k > 0) {
                 top--;
                 k--;
             }
@@ -22,10 +20,10 @@ public class _402_RemoveKDigits {
         int stackSize = top + 1 - k;
         for (int i = 0; i < stackSize; i++) {
             if (stack[i] != '0') {
-                String res = new String(stack, i, stackSize - i);
-                return res;
+                return new String(stack, i, stackSize - i);
             }
         }
+
         return "0";
     }
 }
