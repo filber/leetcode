@@ -23,31 +23,46 @@ public class _301_RemoveInvalidParenthesesTest {
     public void after() throws Exception {
     }
 
-//
-//@Test
-//public void testRemoveInvalidParentheses1() throws Exception {
-//    target.removeInvalidParentheses(String s);
-//}
-//
-//@Test
-//public void testRemoveInvalidParentheses2() throws Exception {
-//    target.removeInvalidParentheses(String s);
-//}
-//
-//@Test
-//public void testRemoveInvalidParentheses3() throws Exception {
-//    target.removeInvalidParentheses(String s);
-//}
-//
-//@Test
-//public void testRemoveInvalidParentheses4() throws Exception {
-//    target.removeInvalidParentheses(String s);
-//}
-//
-//@Test
-//public void testRemoveInvalidParentheses5() throws Exception {
-//    target.removeInvalidParentheses(String s);
-//}
+
+    @Test
+    public void testRemoveInvalidParentheses1() throws Exception {
+        List<String> list = target.removeInvalidParentheses("()()()");
+        assertEquals(1, list.size());
+        assertEquals("()()()", list.get(0));
+    }
+
+    @Test
+    public void testRemoveInvalidParentheses2() throws Exception {
+        // [""]
+        List<String> list = target.removeInvalidParentheses(")(");
+        assertEquals(1, list.size());
+        assertEquals("", list.get(0));
+    }
+
+    @Test
+    public void testRemoveInvalidParentheses3() throws Exception {
+        List<String> list = target.removeInvalidParentheses("()())()");
+        assertEquals(2, list.size());
+        Set<String> set = new HashSet<>(list);
+        assertTrue(set.contains("()()()"));
+        assertTrue(set.contains("(())()"));
+    }
+
+    @Test
+    public void testRemoveInvalidParentheses4() throws Exception {
+        List<String> list = target.removeInvalidParentheses("(a)())()");
+        assertEquals(2, list.size());
+        Set<String> set = new HashSet<>(list);
+        assertTrue(set.contains("(a)()()"));
+        assertTrue(set.contains("(a())()"));
+    }
+
+    @Test
+    public void testRemoveInvalidParentheses5() throws Exception {
+        List<String> list = target.removeInvalidParentheses("n");
+        assertEquals(1, list.size());
+        assertEquals("n", list.get(0));
+    }
 
     @Test
     public void testRemoveInvalidParenthesesBFS1() throws Exception {

@@ -10,7 +10,7 @@ public class _301_RemoveInvalidParentheses {
     //    1 <= s.length <= 25
     //    s consists of lowercase English letters and parentheses '(' and ')'.
     //    There will be at most 20 parentheses in s.
-    public static List<String> removeInvalidParentheses(String s) {
+    public List<String> removeInvalidParentheses(String s) {
         List<String> list = new ArrayList<>();
         remove(s, '(', ')', 0, 0, list);
         return list;
