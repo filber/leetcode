@@ -4,7 +4,7 @@ package stack;
 
 public class _84_LargestRectangleInHistogram {
 
-    public static int largestRectangleArea(int[] heights) {
+    public int largestRectangleArea(int[] heights) {
         int n = heights.length + 2;
         int[] h = new int[n];
         for (int i = 0; i < heights.length; i++) {
