@@ -13,23 +13,17 @@ public class _84_LargestRectangleInHistogram {
 
         int maxArea = 0;
         int[] stack = new int[n];
-        int sIdx = -1;
+        int top = -1;
         for (int i = 0; i < n; i++) {
-            while (sIdx != -1 && h[stack[sIdx]] > h[i]) {
-                int height = h[stack[sIdx--]];
-                int width = i - 1 - stack[sIdx];
-                maxArea = Math.max(maxArea, height*width);
+            while (top != -1 && h[stack[top]] > h[i]) {
+                int height = h[stack[top--]];
+                int width = i - 1 - stack[top];
+                maxArea = Math.max(maxArea, height * width);
             }
-            stack[++sIdx] = i;
+            stack[++top] = i;
         }
 
         return maxArea;
     }
 
-    public static void main(String[] args) {
-        // 4 [2,4]/[4]
-        int m2 = largestRectangleArea(new int[]{2, 4});
-        // 10 [5,6]
-        int m1 = largestRectangleArea(new int[]{2, 1, 5, 6, 2, 3});
-    }
 }
