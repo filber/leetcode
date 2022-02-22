@@ -4,94 +4,72 @@ package bfs;
 
 import java.util.*;
 
-//[Breadth-First Search]
 public class _1345_JumpGameIV {
 
-//    Given an array of integers arr, you are initially positioned at the first index of the array.
-//    In one step you can jump from index i to index:
-//            i + 1 where: i + 1 < arr.length.
-//            i - 1 where: i - 1 >= 0.
-//            j where: arr[i] == arr[j] and i != j.
-//    Return the minimum number of steps to reach the last index of the array.
-
-    public static int minJumps(int[] arr) {
+    public int minJumps(int[] arr) {
         int n = arr.length;
-        if (n==1) {
+        if (n == 1)
             return 0;
-        }
-        boolean[] visited = new boolean[n];
+        if (arr[0] == arr[n - 1] || arr.length == 2)
+            return 1;
+        if (arr[0] == arr[n - 2])
+            return 2;
+
+        Map<Integer, List<Integer>> map = new HashMap<>();
         Map<Integer, Boolean> valVisited = new HashMap<>();
+        Queue<Integer> queue = new ArrayDeque<>();
+        boolean[] visited = new boolean[n];
 
-        Map<Integer, Set<Integer>> valMap = new HashMap<>();
-        for (int i = 0; i < n; i++) {
-            int num = arr[i];
-            Set<Integer> set = valMap.get(num);
-            if (set == null) {
-                set = new HashSet<>();
-                valMap.put(num,set);
-            }
-            set.add(i);
+        for (int i = 0; i < arr.length; i++) {
+            List<Integer> list = map.computeIfAbsent(arr[i], k -> new ArrayList<>());
+            list.add(i);
         }
 
-        Queue<Integer> queue = new LinkedList<>();
         queue.add(0);
-        int level = 0;
-        int levelCnt = 1;
-        int tempCnt = 0;
-
+        visited[0] = true;
+        int curLevelCnt = 1;
+        int nextLevelCnt = 0;
+        int jumps = 0;
         while (!queue.isEmpty()) {
-            int elem = queue.poll();
-            if (elem == n-1) {
-                break;
+            int idx = queue.poll();
+            if (idx == n - 1) {
+                return jumps;
             }
-            levelCnt--;
-            visited[elem] = true;
-            // search left
-            if (elem > 0 && !visited[elem - 1]) {
-                queue.add(elem - 1);
-                visited[elem - 1] = true;
-                tempCnt++;
+            curLevelCnt--;
+
+            int left = idx - 1;
+            if (left >= 0 && !visited[left]) {
+                queue.add(left);
+                visited[left] = true;
+                nextLevelCnt++;
             }
-            // search right
-            if (elem < n - 1 && !visited[elem + 1]) {
-                queue.add(elem + 1);
-                visited[elem + 1] = true;
-                tempCnt++;
+            int right = idx + 1;
+            if (right < n && !visited[right]) {
+                queue.add(right);
+                visited[right] = true;
+                nextLevelCnt++;
             }
+
             // search elements of the same value
-            if (valVisited.get(arr[elem]) == null) {
-                for (int neighbor : valMap.get(arr[elem])) {
-                    if (!visited[neighbor]) {
-                        queue.add(neighbor);
-                        visited[neighbor] = true;
-                        tempCnt++;
+            if (!valVisited.containsKey(arr[idx])) {
+                List<Integer> list = map.get(arr[idx]);
+                for (int i : list) {
+                    if (!visited[i]) {
+                        queue.add(i);
+                        visited[i] = true;
+                        nextLevelCnt++;
                     }
                 }
-                valVisited.put(arr[elem], true);
+                valVisited.put(arr[idx], true);
             }
 
-            if (levelCnt == 0) {
-                level++;
-                levelCnt = tempCnt;
-                tempCnt = 0;
+            if (curLevelCnt == 0) {
+                curLevelCnt = nextLevelCnt;
+                nextLevelCnt = 0;
+                jumps++;
             }
         }
 
-        return level;
-    }
-
-    public static void main(String[] args) {
-        // 0
-        int m2 = minJumps(new int[]{7});
-
-        // 1 - [0-->7]
-        int m3 = minJumps(new int[]{7, 6, 9, 6, 9, 6, 9, 7});
-
-        // 3 - [0-->4-->3-->9]
-        int m1 = minJumps(new int[]{100, -23, -23, 404, 100, 23, 23, 23, 3, 404});
-
-
-        // 2 - [0-->n-2-->n-1]
-        int m4 = minJumps(new int[]{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 11});
+        return jumps;
     }
 }
