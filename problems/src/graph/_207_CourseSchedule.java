@@ -1,31 +1,34 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // https://leetcode.com/problems/course-schedule/
 public class _207_CourseSchedule {
 
-    public static boolean canFinish(int numCourses, int[][] prerequisites) {
-        // 0: not visited
-        // 1: try to visit
-        // 2: already visited
-        int[] visited = new int[numCourses];
-        List<Integer>[] graph = new List[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            graph[i] = new ArrayList<>();
+    List<Integer>[] edges;
+
+    // 0:not visit, 1:try to visit, 2: already visited
+    int[] status;
+
+    public boolean canFinish(int n, int[][] prerequisites) {
+        edges = new List[n];
+        status = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            edges[i] = new ArrayList<>();
         }
         for (int i = 0; i < prerequisites.length; i++) {
             int[] pre = prerequisites[i];
-            graph[pre[0]].add(pre[1]);
+            edges[pre[0]].add(pre[1]);
         }
 
-        // Learn all courses
         for (int i = 0; i < prerequisites.length; i++) {
-            int[] pre = prerequisites[i];
-            int cid = pre[0];
-            if (visited[cid] == 0) {
-                if (isCyclic(visited, graph, cid)) {
+            int id = prerequisites[i][0];
+            if (status[id] == 0) {
+                if (!dfs(id)) {
                     return false;
                 }
             }
@@ -34,40 +37,21 @@ public class _207_CourseSchedule {
         return true;
     }
 
-    private static boolean isCyclic(int[] visi, List<Integer>[] graph, int cur) {
-        if (visi[cur] == 1)
+    private boolean dfs(int i) {
+        if (status[i] == 2) {
             return true;
-
-        visi[cur] = 1;
-        for (int i = 0; i < graph[cur].size(); i++) {
-            if (visi[graph[cur].get(i)] != 2)
-                if (isCyclic(visi, graph, graph[cur].get(i)))
-                    return true;
+        } else if (status[i] == 1) {
+            return false;
         }
-        visi[cur] = 2;
-        return false;
-    }
+        status[i] = 1;
 
-    public static void main(String[] args) {
-        boolean f1 = canFinish(2, new int[][]{{1, 0}});
+        for (int neighbor : edges[i]) {
+            if (status[neighbor] == 0 && !dfs(neighbor) || status[neighbor] == 1) {
+                return false;
+            }
+        }
 
-        boolean f2 = canFinish(2, new int[][]{{1, 0}, {0, 1}});
-
-        boolean f3 = canFinish(2, new int[][]{});
-
-        boolean f4 = canFinish(5, new int[][]{
-                {1, 0},
-                {1, 4},
-                {0, 3},
-                {4, 3},
-        });
-
-        boolean f5 = canFinish(5, new int[][]{
-                {1, 0},
-                {1, 4},
-                {0, 3},
-                {4, 3},
-                {3, 1},
-        });
+        status[i] = 2;
+        return true;
     }
 }
