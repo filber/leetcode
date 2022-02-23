@@ -21,7 +21,6 @@ public class _127_WordLadderTest {
     }
 
     @Test
-    @Parameterized.Parameters
     public void testZeroLen() throws Exception {
         List<String> list = Arrays.asList("hot", "dot", "dog", "lot", "log");
         int len = ladder.ladderLength("hit", "cog", list);
@@ -29,7 +28,6 @@ public class _127_WordLadderTest {
     }
 
     @Test
-    @Parameterized.Parameters
     public void testTwoLen() throws Exception {
         List<String> list = Arrays.asList("cog");
         int len = ladder.ladderLength("cot", "cog", list);
@@ -37,7 +35,6 @@ public class _127_WordLadderTest {
     }
 
     @Test
-    @Parameterized.Parameters
     public void testTwoLenInList() throws Exception {
         List<String> list = Arrays.asList("cot", "cog");
         int len = ladder.ladderLength("cot", "cog", list);
@@ -45,11 +42,17 @@ public class _127_WordLadderTest {
     }
 
     @Test
-    @Parameterized.Parameters
     public void testFiveLen() throws Exception {
         List<String> list = Arrays.asList("hot", "dot", "dog", "lot", "log", "cog");
         int len = ladder.ladderLength("hit", "cog", list);
         Assert.assertEquals(5,len);
     }
 
-} 
+
+    @Test
+    public void testLadderLength3() throws Exception {
+        List<String> list = Arrays.asList("hot", "dog");
+        int len = ladder.ladderLength("hot", "dog", list);
+        Assert.assertEquals(0, len);
+    }
+}
