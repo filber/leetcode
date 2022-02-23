@@ -32,6 +32,7 @@ public class _127_WordLadder {
                         chars[i] = j;
                         String candidate = new String(chars);
                         if (endSet.contains(candidate)) {
+                            // contains must locate at here!
                             return jumps;
                         } else if (wordSet.contains(candidate)) {
                             nextSet.add(candidate);
