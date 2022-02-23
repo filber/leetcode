@@ -5,100 +5,56 @@ import java.util.*;
 
 public class _1462_CourseScheduleIV {
 
-    public static List<Boolean> checkIfPrerequisiteBFS(int n, int[][] prerequisites, int[][] queries) {
-        int[] indegree = new int[n];
-        Set<Integer>[] adj = new Set[n];
-        Set<Integer>[] pre = new Set[n];
+    List<Integer>[] edges;
+    boolean[] complete;
+    Set<Integer>[] sets;
+
+    public List<Boolean> checkIfPrerequisite(int n, int[][] prerequisites, int[][] queries) {
+        complete = new boolean[n];
+        edges = new List[n];
+        sets = new Set[n];
         for (int i = 0; i < n; i++) {
-            adj[i] = new HashSet<>();
-            pre[i] = new HashSet<>();
+            edges[i] = new ArrayList<>();
+            sets[i] = new HashSet<>();
         }
 
-        for (int[] prerequisite : prerequisites) {
-            indegree[prerequisite[1]]++;
-            adj[prerequisite[0]].add(prerequisite[1]);
+        int[] indegree = new int[n];
+        for (int i = 0; i < prerequisites.length; i++) {
+            int[] pre = prerequisites[i];
+            indegree[pre[1]]++;
+            edges[pre[0]].add(pre[1]);
         }
-
-        // store nodes of inDegree==0
-        Queue<Integer> queue = new LinkedList<>();
         for (int i = 0; i < n; i++) {
             if (indegree[i] == 0) {
-                queue.add(i);
-            }
-        }
-        // Breadth-First Search
-        while (!queue.isEmpty()) {
-            int node = queue.poll();
-            Set<Integer> set = adj[node];
-            for (int next : set) {
-                pre[next].add(node);
-                pre[next].addAll(pre[node]);
-                indegree[next]--;
-                if (indegree[next] == 0) {
-                    queue.offer(next);
-                }
+                dfs(i);
             }
         }
 
-        List<Boolean> ans = new ArrayList<>(queries.length);
-        for (int[] query : queries) {
-            ans.add(pre[query[1]].contains(query[0]));
+        List<Boolean> ans = new ArrayList<>();
+        for (int i = 0; i < queries.length; i++) {
+            int[] query = queries[i];
+            if (sets[query[0]].contains(query[1])) {
+                ans.add(true);
+            } else {
+                ans.add(false);
+            }
         }
+
         return ans;
     }
 
-    public static List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
-        Set<Integer>[] preSet = new Set[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            preSet[i] = new HashSet<>();
+    private void dfs(int i) {
+        if (complete[i]) {
+            return;
         }
 
-        for (int[] pre : prerequisites) {
-            preSet[pre[0]].add(pre[1]);
+        for (int neighbor : edges[i]) {
+            sets[i].add(neighbor);
+            dfs(neighbor);
+            sets[i].addAll(sets[neighbor]);
         }
 
-        boolean[] mem = new boolean[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            dfs(preSet, mem, i);
-        }
-
-        List<Boolean> ans = new ArrayList<>(queries.length);
-        for (int[] query : queries) {
-            ans.add(preSet[query[0]].contains(query[1]));
-        }
-        return ans;
+        complete[i] = true;
     }
 
-    private static Set<Integer> dfs(Set<Integer>[] preSet, boolean[] mem, int id) {
-        if (mem[id]) {
-            return preSet[id];
-        }
-        Set<Integer> set = new HashSet<>();
-        for (int course : preSet[id]) {
-            set.addAll(dfs(preSet, mem, course));
-        }
-        mem[id] = true;
-        preSet[id].addAll(set);
-        return preSet[id];
-    }
-
-    public static void main(String[] args) {
-        // [false,true]
-        List<Boolean> l1 = checkIfPrerequisite(
-                2,
-                new int[][]{{1, 0}},
-                new int[][]{{0, 1}, {1, 0}});
-
-        // [false,false]
-        List<Boolean> l2 = checkIfPrerequisite(
-                2,
-                new int[][]{},
-                new int[][]{{0, 1}, {1, 0}});
-
-        // [true,true]
-        List<Boolean> l3 = checkIfPrerequisite(
-                3,
-                new int[][]{{1, 2}, {1, 0}, {2, 0}},
-                new int[][]{{1, 0}, {1, 2}});
-    }
 }
