@@ -54,4 +54,13 @@ public class _1462_CourseScheduleIVTest {
         assertTrue(list.get(0));
         assertTrue(list.get(1));
     }
+
+    @Test
+    public void testCheckIfPrerequisite4() throws Exception {
+        List<Boolean> list = target.checkIfPrerequisite(5,
+                new int[][]{{4, 3}, {4, 1}, {4, 0}, {3, 2}, {3, 1}, {3, 0}, {2, 1}, {2, 0}, {1, 0}},
+                new int[][]{{1, 4}, {4, 2}, {0, 1}, {4, 0}, {0, 2}, {1, 3}, {0, 1}});
+
+        assertArrayEquals(new Boolean[]{false, true, false, true, false, false, false}, list.toArray(new Boolean[0]));
+    }
 }

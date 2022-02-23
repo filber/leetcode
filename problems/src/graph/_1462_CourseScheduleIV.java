@@ -56,5 +56,4 @@ public class _1462_CourseScheduleIV {
 
         complete[i] = true;
     }
-
 }
