@@ -4,11 +4,6 @@ package stack;
 
 public class _321_CreateMaximumNumber {
 
-    /*
-假设数组一为[3,4,6,5]、数组二为[9,1,2,5,8,3]、k = 5;
-组合情况有0 + 5、1 + 4、2 + 3、3 + 2、4 + 1五种情况,就是从此五种情况取出组合最大的一种;
-Math.max(0, k - n)表示若数组二的元素个数 >= k,则数组一的元素个数可以从0开始取,否则在数组二的大小基础上补.
-*/
     public int[] maxNumber(int[] nums1, int[] nums2, int k) {
         int m = nums1.length, n = nums2.length;
         int[] res = new int[k];
@@ -23,21 +18,22 @@ Math.max(0, k - n)表示若数组二的元素个数 >= k,则数组一的元素�
 
     private int[] maxArr(int[] nums, int k) {
         int n = nums.length;
-        int[] res = new int[k];
-        for (int i = 0, j = 0; i < n; i++) {
+        int[] stack = new int[k];
+        int top = -1;
+        for (int i = 0; i < n; i++) {
             // n-i : elements remain not processed in nums
-            // j : elements already added to res
-            // n-i+j : potential elements being added to res
+            // top + 1 : stack size
+            // n-i+j : potential elements being added to stack
             // if n-i+j<=k, we can't pop
-            while (n - i + j > k && j > 0 && nums[i] > res[j - 1]) {
+            while (n - i + top + 1 > k && top >= 0 && nums[i] > stack[top]) {
                 // keep poping until Ni > Peek
-                j--;
+                top--;
             }
-            if (j < k) {
-                res[j++] = nums[i];
+            if (top + 1 < k) {
+                stack[++top] = nums[i];
             }
         }
-        return res;
+        return stack;
     }
 
     // merge nums1 and nums2
