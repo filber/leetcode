@@ -58,4 +58,12 @@ public class _1001_GridIlluminationTest {
                 new int[][]{{4, 3}, {3, 1}, {5, 3}, {0, 5}, {4, 4}, {3, 3}});
         assertArrayEquals(new int[]{1, 0, 1, 1, 0, 1}, ans);
     }
+
+    @Test
+    public void testGridIllumination6() throws Exception {
+        int[] ans = target.gridIllumination(1,
+                new int[][]{{0, 0}, {0, 0}},
+                new int[][]{{0, 0}, {0, 0}});
+        assertArrayEquals(new int[]{1, 0}, ans);
+    }
 }

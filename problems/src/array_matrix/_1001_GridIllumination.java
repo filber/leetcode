@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class _1001_GridIllumination {
 
-    Map<Integer, Set<Integer>> lampsMap = new HashMap<>();
+    Set<Integer> lampsSet = new HashSet<>();
     Map<Integer, Integer> row = new HashMap<>();
     Map<Integer, Integer> col = new HashMap<>();
     Map<Integer, Integer> slash = new HashMap<>();
@@ -20,14 +20,10 @@ public class _1001_GridIllumination {
             // store to lamps map
             int r = lamps[i][0];
             int c = lamps[i][1];
-            Set<Integer> colSet = lampsMap.get(r);
-            if (colSet == null) {
-                colSet = new HashSet<>();
-                lampsMap.put(r, colSet);
-            }
 
-            if (!colSet.contains(c)) {
-                colSet.add(c);
+            int pos = r * n + c;
+            if (!lampsSet.contains(pos)) {
+                lampsSet.add(pos);
 
                 // illuminate grid
                 row.put(r, row.getOrDefault(r, 0) + 1);
@@ -42,10 +38,10 @@ public class _1001_GridIllumination {
             int r = queries[i][0];
             int c = queries[i][1];
             // check if illuminated
-            if (row.containsKey(r) ||
-                    col.containsKey(c) ||
-                    slash.containsKey(r + c) ||
-                    backslash.containsKey(c - r)
+            if (row.getOrDefault(r, 0) > 0 ||
+                    col.getOrDefault(c, 0) > 0 ||
+                    slash.getOrDefault(r + c, 0) > 0 ||
+                    backslash.getOrDefault(c - r, 0) > 0
             ) {
                 ans[i] = 1;
             } else {
@@ -57,29 +53,20 @@ public class _1001_GridIllumination {
                 for (int m = -1; m <= 1; m++) {
                     int lightR = r + k;
                     int lightC = c + m;
-                    Set<Integer> set = lampsMap.get(lightR);
-                    if (set != null && set.contains(lightC)) {
+                    int pos = lightR * n + lightC;
+                    if (lightR >= 0 && lightR < n && lightC >= 0 && lightC < n && lampsSet.contains(pos)) {
                         // turn off lights
-                        decMap(row, lightR);
-                        decMap(col, lightC);
-                        decMap(slash, lightR + lightC);
-                        decMap(backslash, lightC - lightR);
+                        row.put(lightR, row.getOrDefault(lightR, 1) - 1);
+                        col.put(lightC, col.getOrDefault(lightC, 1) - 1);
+                        slash.put(lightR + lightC, slash.getOrDefault(lightR + lightC, 1) - 1);
+                        backslash.put(lightC - lightR, backslash.getOrDefault(lightC - lightR, 1) - 1);
                         // remove lamps
-                        set.remove(lightC);
+                        lampsSet.remove(pos);
                     }
                 }
             }
         }
 
         return ans;
-    }
-
-    private void decMap(Map<Integer, Integer> map, int key) {
-        Integer cnt = map.get(key);
-        if (cnt != null && cnt.equals(1)) {
-            map.remove(key);
-        } else if (cnt != null) {
-            map.put(key, cnt - 1);
-        }
     }
 }
