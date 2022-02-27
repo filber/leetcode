@@ -12,72 +12,78 @@ public class _165_CompareVersionNumbers {
     }
 
     private int cmpRevisions(String[] revisions1, String[] revisions2) {
-        int i = 0, j = 0;
-        int rst;
-        while (i < revisions1.length && j < revisions2.length) {
-            rst = cmpRevision(revisions1[i], revisions2[j]);
+        int l = 0;
+        int r = 0;
+        int rst = 0;
+        while (l < revisions1.length
+                && r < revisions2.length) {
+            rst = cmpRevision(revisions1[l], revisions2[r]);
             if (rst != 0) {
                 return rst;
             }
-            i++;
-            j++;
+            l++;
+            r++;
         }
-        if (i == revisions1.length && j == revisions2.length) {
+
+        if (l == revisions1.length && r == revisions2.length) {
             return 0;
-        } else if (i == revisions1.length) {
-            for (int k = j; k < revisions2.length; k++) {
-                if (!isAllZero(revisions2[k])) {
-                    return -1;
-                }
+        } else if (l == revisions1.length) {
+            if (isAllZero(revisions2, r)) {
+                return 0;
             }
+            return -1;
+        } else if (r == revisions2.length) {
+            if (isAllZero(revisions1, l)) {
+                return 0;
+            }
+            return 1;
         } else {
-            // j == revisions2.length
-            for (int k = i; k < revisions1.length; k++) {
-                if (!isAllZero(revisions1[k])) {
-                    return 1;
-                }
-            }
+            return rst;
         }
-        return 0;
     }
 
     private int cmpRevision(String revision1, String revision2) {
-        int i = 0, j = 0;
-        char[] leftChars = revision1.toCharArray(), rightChars = revision2.toCharArray();
+        int l = 0, r = 0;
+        char[] chars1 = revision1.toCharArray();
+        char[] chars2 = revision2.toCharArray();
 
-        while (i < leftChars.length && leftChars[i] == '0') {
-            i++;
+        while (l < chars1.length && chars1[l] == '0') {
+            l++;
         }
-        while (j < rightChars.length && rightChars[j] == '0') {
-            j++;
+
+        while (r < chars2.length && chars2[r] == '0') {
+            r++;
         }
-        while (i < leftChars.length && j < rightChars.length && leftChars[i] == rightChars[j]) {
-            i++;
-            j++;
+
+        while (l < chars1.length && r < chars2.length && chars1[l] == chars2[r]) {
+            l++;
+            r++;
         }
-        if (i == leftChars.length && j == rightChars.length) {
+
+        if (l == chars1.length && r == chars2.length) {
             return 0;
-        } else if (i == leftChars.length) {
+        } else if (l == chars1.length) {
             return -1;
-        } else if (j == rightChars.length) {
+        } else if (r == chars2.length) {
             return 1;
         } else {
-            if (leftChars.length - i == rightChars.length - j) {
-                return Integer.compare(leftChars[i], rightChars[j]);
+            if (chars1.length - l == chars2.length - r) {
+                return Integer.compare(chars1[l], chars2[r]);
             } else {
-                return Integer.compare(leftChars.length - i, rightChars.length - j);
+                return Integer.compare(chars1.length - l, chars2.length - r);
             }
         }
     }
 
-    private boolean isAllZero(String revision) {
-        char[] chars = revision.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] != '0') {
-                return false;
+    private boolean isAllZero(String[] revisions, int start) {
+        for (int i = start; i < revisions.length; i++) {
+            char[] chars = revisions[i].toCharArray();
+            for (int j = 0; j < chars.length; j++) {
+                if (chars[j] != '0') {
+                    return false;
+                }
             }
         }
-
         return true;
     }
 
