@@ -14,26 +14,26 @@ public class _228_SummaryRanges {
         if (n == 0) {
             return ans;
         }
-        int start = nums[0];
-        int end;
-        for (int i = 0; i < n; i++) {
-            end = nums[i];
-            if (i == n - 1) {
-                addRange(start, end);
-            } else if (nums[i] + 1 != nums[i + 1]) {
-                addRange(start, end);
-                start = nums[i + 1];
+
+        StringBuffer sb = new StringBuffer();
+        for (int end = 0; end < n; end++) {
+            sb.setLength(0); // clear string buffer
+            int start = end;
+
+            while (end < n - 1 && nums[end] + 1 == nums[end + 1]) {
+                end++;
             }
+            if (start == end) {
+                sb.append(nums[start]);
+            } else {
+                sb.append(nums[start]);
+                sb.append("->");
+                sb.append(nums[end]);
+            }
+
+            ans.add(sb.toString());
         }
 
         return ans;
-    }
-
-    private void addRange(int start, int end) {
-        if (start == end) {
-            ans.add(String.valueOf(start));
-        } else {
-            ans.add(String.format("%d%s%d", start, "->", end));
-        }
     }
 }
