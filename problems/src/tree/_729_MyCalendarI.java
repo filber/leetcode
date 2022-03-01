@@ -2,9 +2,32 @@ package tree;
 
 //https://leetcode.com/problems/my-calendar-i/
 
+import java.util.TreeMap;
+
 public class _729_MyCalendarI {
 
+
     public static class MyCalendar {
+
+        TreeMap<Integer, Integer> treeMap;
+
+        MyCalendar() {
+            treeMap = new TreeMap<>();
+        }
+
+        public boolean book(int start, int end) {
+            Integer pre = treeMap.floorKey(start);
+            Integer next = treeMap.ceilingKey(start);
+            if ((pre == null || treeMap.get(pre) <= start) &&
+                    (next == null || end <= next)) {
+                treeMap.put(start, end);
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public static class MyCalendarSegmentTree {
         public static class Node {
             int begin;
             int end;
@@ -42,7 +65,7 @@ public class _729_MyCalendarI {
 
         Node root = null;
 
-        public MyCalendar() {
+        public MyCalendarSegmentTree() {
         }
 
         public boolean book(int start, int end) {
