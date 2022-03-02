@@ -7,19 +7,14 @@ import java.util.List;
 
 public class _228_SummaryRanges {
 
-    private List<String> ans = new ArrayList<>();
-
     public List<String> summaryRanges(int[] nums) {
-        int n = nums.length;
-        if (n == 0) {
-            return ans;
-        }
-
+        List<String> ans = new ArrayList<>();
         StringBuffer sb = new StringBuffer();
-        for (int end = 0; end < n; end++) {
-            sb.setLength(0); // clear string buffer
-            int start = end;
+        int n = nums.length;
+        for (int start = 0; start < n; start++) {
+            sb.setLength(0);
 
+            int end = start;
             while (end < n - 1 && nums[end] + 1 == nums[end + 1]) {
                 end++;
             }
@@ -30,8 +25,9 @@ public class _228_SummaryRanges {
                 sb.append("->");
                 sb.append(nums[end]);
             }
-
             ans.add(sb.toString());
+
+            start = end;
         }
 
         return ans;
