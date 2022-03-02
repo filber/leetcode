@@ -2,75 +2,86 @@ package tree;
 
 //https://leetcode.com/problems/my-calendar-i/
 
-import java.util.TreeMap;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 public class _729_MyCalendarI {
 
+    public static abstract class MyCalendar {
+        public abstract boolean book(int start, int end);
+    }
 
-    public static class MyCalendar {
+    // Tree Map
+    public static class TMCalendar extends MyCalendar {
 
-        TreeMap<Integer, Integer> treeMap;
-
-        MyCalendar() {
-            treeMap = new TreeMap<>();
-        }
+        TreeSet<int[]> treeSet = new TreeSet<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                return a[0] == b[0] ? a[1] - b[1] : a[0] - b[0];
+            }
+        });
 
         public boolean book(int start, int end) {
-            Integer pre = treeMap.floorKey(start);
-            Integer next = treeMap.ceilingKey(start);
-            if ((pre == null || treeMap.get(pre) <= start) &&
-                    (next == null || end <= next)) {
-                treeMap.put(start, end);
+            int[] range = {start, end};
+            int[] floor = treeSet.floor(range);
+            int[] ceil = treeSet.ceiling(range);
+            if (touchCeil(range, ceil) || touchFloor(range, floor)) {
+                return false;
+            } else {
+                treeSet.add(range);
                 return true;
             }
-            return false;
+        }
+
+        private boolean touchFloor(int[] range, int[] floor) {
+            return floor != null && range[0] < floor[1];
+        }
+
+        private boolean touchCeil(int[] range, int[] ceil) {
+            return ceil != null && range[1] > ceil[0];
         }
     }
 
-    public static class MyCalendarSegmentTree {
-        public static class Node {
-            int begin;
+    // Segment Tree
+    public static class SMCalendar extends MyCalendar {
+        class SegmentTree {
+            int start;
             int end;
+            SegmentTree left;
+            SegmentTree right;
 
-            Node left;
-            Node right;
-
-            public Node(int begin, int end) {
-                this.begin = begin;
+            public SegmentTree(int start, int end) {
+                this.start = start;
                 this.end = end;
-                left = null;
-                right = null;
             }
 
             public boolean add(int L, int R) {
-                if (L >= end) {
-                    if (right == null) {
-                        right = new Node(L, R);
-                        return true;
-                    } else {
-                        return right.add(L, R);
-                    }
-                } else if (R <= begin) {
+                if (R <= start) {
                     if (left == null) {
-                        left = new Node(L, R);
+                        left = new SegmentTree(L, R);
                         return true;
                     } else {
                         return left.add(L, R);
                     }
+                } else if (end <= L) {
+                    if (right == null) {
+                        right = new SegmentTree(L, R);
+                        return true;
+                    } else {
+                        return right.add(L, R);
+                    }
                 } else {
+                    // L < root.end && R > root.start
                     return false;
                 }
             }
         }
 
-        Node root = null;
-
-        public MyCalendarSegmentTree() {
-        }
+        SegmentTree root = null;
 
         public boolean book(int start, int end) {
             if (root == null) {
-                root = new Node(start, end);
+                root = new SegmentTree(start, end);
                 return true;
             } else {
                 return root.add(start, end);
