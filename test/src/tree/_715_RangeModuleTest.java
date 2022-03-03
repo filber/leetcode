@@ -13,7 +13,7 @@ public class _715_RangeModuleTest {
 
     @Before
     public void before() throws Exception {
-        target = new TMRangeModule();
+        target = new STRangeModule();
     }
 
     @After
@@ -35,7 +35,8 @@ public class _715_RangeModuleTest {
         target.addRange(20, 30);
 
         int[][] ranges = target.ranges();
-        assertArrayEquals(new int[][]{{10, 30}}, ranges);
+//        assertArrayEquals(new int[][]{{10, 30}}, ranges);
+        assertArrayEquals(new int[][]{{10, 20}, {20, 30}}, ranges);
     }
 
     @Test
@@ -62,7 +63,8 @@ public class _715_RangeModuleTest {
         target.addRange(1, 30);
 
         int[][] ranges = target.ranges();
-        assertArrayEquals(new int[][]{{1, 30}}, ranges);
+//        assertArrayEquals(new int[][]{{1, 30}}, ranges);
+        assertArrayEquals(new int[][]{{1, 10}, {10, 20}, {20, 30}}, ranges);
     }
 
     @Test
@@ -71,7 +73,8 @@ public class _715_RangeModuleTest {
         target.addRange(1, 15);
 
         int[][] ranges = target.ranges();
-        assertArrayEquals(new int[][]{{1, 20}}, ranges);
+//        assertArrayEquals(new int[][]{{1, 20}}, ranges);
+        assertArrayEquals(new int[][]{{1, 10}, {10, 20}}, ranges);
     }
 
 
@@ -91,6 +94,14 @@ public class _715_RangeModuleTest {
     public void testRangeQueryRange3() throws Exception {
         target.addRange(10, 20);
         assertFalse(target.queryRange(15, 21));
+    }
+
+    @Test
+    public void testRangeQueryRange4() throws Exception {
+        target.addRange(10, 20);
+        target.addRange(1, 6);
+        boolean rst = target.queryRange(7, 9);
+        assertFalse(rst);
     }
 
     @Test
