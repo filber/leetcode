@@ -7,51 +7,82 @@ import java.util.TreeMap;
 
 public class _715_RangeModule {
 
-    public static class RangeModule {
-        TreeMap<Integer, Integer> tree = new TreeMap<>();
+    public abstract static class RangeModule {
 
-        public RangeModule() {
-        }
+        public abstract void addRange(int left, int right);
+
+        public abstract boolean queryRange(int left, int right);
+
+        public abstract void removeRange(int left, int right);
+    }
+
+    public static class TMRangeModule extends RangeModule {
+        TreeMap<Integer, Integer> treeMap = new TreeMap<>();
 
         public void addRange(int left, int right) {
-            while (true) {
-                Map.Entry<Integer, Integer> entry = tree.floorEntry(right);
-                if (entry != null && entry.getValue() >= left) {
-                    right = Math.max(entry.getValue(), right);
-                    left = Math.min(entry.getKey(), left);
-                    tree.remove(entry.getKey());
+            Map.Entry<Integer, Integer> preEntry = treeMap.floorEntry(left);
+            if (preEntry != null) {
+                if (preEntry.getValue() < left) {
+                    // no overlapping
+                } else if (preEntry.getValue() < right) {
+                    treeMap.remove(preEntry.getKey());
+                    left = preEntry.getKey();// merge
                 } else {
-                    break;
+                    //preEntry.getValue() >= right
+                    return; // no need to add
                 }
             }
-            tree.put(left, right);
+
+            Map.Entry<Integer, Integer> postEntry = treeMap.ceilingEntry(left);
+            while (postEntry != null && postEntry.getKey() <= right) {
+                treeMap.remove(postEntry.getKey());
+                right = Math.max(right, postEntry.getValue());
+                postEntry = treeMap.ceilingEntry(left);
+            }
+
+            treeMap.put(left, right);
         }
 
         public boolean queryRange(int left, int right) {
-            Map.Entry<Integer, Integer> entry = tree.floorEntry(left);
-            return entry != null && entry.getValue() >= right;
+            Map.Entry<Integer, Integer> preEntry = treeMap.floorEntry(left);
+            return preEntry != null && right <= preEntry.getValue();
         }
 
         public void removeRange(int left, int right) {
-            Map.Entry<Integer, Integer> entry = tree.lowerEntry(left);
-            if (entry != null && entry.getValue() > left) {
-                tree.put(entry.getKey(), left);
-                if (entry.getValue() > right) {
-                    tree.put(right, entry.getValue());
-                    return;
-                }
-            }
-            while (true) {
-                entry = tree.ceilingEntry(left);
-                if (entry != null && entry.getKey() < right) {
-                    tree.remove(entry.getKey());
-                    if (entry.getValue() > right) {
-                        tree.put(right, entry.getValue());
-                        return;
+            Map.Entry<Integer, Integer> preEntry = treeMap.floorEntry(left);
+            if (preEntry != null) {
+                if (preEntry.getValue() <= left) {
+                    // no overlapping
+                } else if (preEntry.getValue() < right) {
+                    if (preEntry.getKey().equals(left)) {
+                        treeMap.remove(preEntry.getKey());
+                    } else {
+                        treeMap.replace(preEntry.getKey(), left);
                     }
                 } else {
-                    break;
+                    // pre.END >= right
+                    if (preEntry.getKey().equals(left) && preEntry.getValue().equals(right)) {
+                        treeMap.remove(preEntry.getKey());
+                    } else if (preEntry.getKey().equals(left)) {
+                        treeMap.remove(preEntry.getKey());
+                        treeMap.put(right, preEntry.getValue());
+                    } else if (preEntry.getValue().equals(right)) {
+                        treeMap.replace(preEntry.getKey(), left);
+                    } else {
+                        treeMap.replace(preEntry.getKey(), left);
+                        treeMap.put(right, preEntry.getValue());
+                    }
                 }
+            }
+
+            Map.Entry<Integer, Integer> postEntry = treeMap.ceilingEntry(left);
+            while (postEntry != null && postEntry.getKey() < right) {
+                treeMap.remove(postEntry.getKey());
+                if (right < postEntry.getValue()) {
+                    treeMap.put(right, postEntry.getValue()); // cut range
+                }
+
+                postEntry = treeMap.ceilingEntry(left);
             }
         }
     }
