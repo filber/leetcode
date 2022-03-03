@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class _715_RangeModuleTest {
 
-    TMRangeModule target = null;
+    RangeModule target = null;
 
     @Before
     public void before() throws Exception {
@@ -24,46 +24,54 @@ public class _715_RangeModuleTest {
     public void testRangeAddRange1() throws Exception {
         target.addRange(10, 20);
         target.addRange(21, 30);
-        assertEquals(2, target.treeMap.size());
+
+        int[][] ranges = target.ranges();
+        assertArrayEquals(new int[][]{{10, 20}, {21, 30}}, ranges);
     }
 
     @Test
     public void testRangeAddRange2() throws Exception {
         target.addRange(10, 20);
         target.addRange(20, 30);
-        assertEquals(1, target.treeMap.size());
-        assertEquals(30, target.treeMap.get(10).intValue());
+
+        int[][] ranges = target.ranges();
+        assertArrayEquals(new int[][]{{10, 30}}, ranges);
     }
 
     @Test
     public void testRangeAddRange3() throws Exception {
         target.addRange(10, 20);
         target.addRange(10, 19);
-        assertEquals(1, target.treeMap.size());
-        assertEquals(20, target.treeMap.get(10).intValue());
+
+        int[][] ranges = target.ranges();
+        assertArrayEquals(new int[][]{{10, 20}}, ranges);
     }
 
     @Test
     public void testRangeAddRange4() throws Exception {
         target.addRange(10, 20);
         target.addRange(1, 5);
-        assertEquals(2, target.treeMap.size());
+
+        int[][] ranges = target.ranges();
+        assertArrayEquals(new int[][]{{1, 5}, {10, 20}}, ranges);
     }
 
     @Test
     public void testRangeAddRange5() throws Exception {
         target.addRange(10, 20);
         target.addRange(1, 30);
-        assertEquals(1, target.treeMap.size());
-        assertEquals(30, target.treeMap.get(1).intValue());
+
+        int[][] ranges = target.ranges();
+        assertArrayEquals(new int[][]{{1, 30}}, ranges);
     }
 
     @Test
     public void testRangeAddRange6() throws Exception {
         target.addRange(10, 20);
         target.addRange(1, 15);
-        assertEquals(1, target.treeMap.size());
-        assertEquals(20, target.treeMap.get(1).intValue());
+
+        int[][] ranges = target.ranges();
+        assertArrayEquals(new int[][]{{1, 20}}, ranges);
     }
 
 
@@ -89,39 +97,40 @@ public class _715_RangeModuleTest {
     public void testRangeRemoveRange1() throws Exception {
         target.addRange(10, 20);
         target.removeRange(25, 30);
-        assertEquals(1, target.treeMap.size());
+
+        int[][] ranges = target.ranges();
+        assertArrayEquals(new int[][]{{10, 20}}, ranges);
     }
 
     @Test
     public void testRangeRemoveRange2() throws Exception {
         target.addRange(10, 20);
         target.removeRange(10, 30);
-        assertEquals(0, target.treeMap.size());
+        assertEquals(0, target.ranges().length);
 
         target.addRange(10, 20);
         target.removeRange(15, 30);
-        assertEquals(1, target.treeMap.size());
-        assertEquals(15, target.treeMap.get(10).intValue());
+        int[][] ranges = target.ranges();
+        assertArrayEquals(new int[][]{{10, 15}}, ranges);
     }
 
     @Test
     public void testRangeRemoveRange3() throws Exception {
         target.addRange(10, 20);
         target.removeRange(10, 20);
-        assertTrue(target.treeMap.isEmpty());
+        assertEquals(0, target.ranges().length);
 
         target.addRange(10, 20);
         target.removeRange(15, 20);
-        assertEquals(15, target.treeMap.get(10).intValue());
+        assertArrayEquals(new int[][]{{10, 15}}, target.ranges());
 
         target.addRange(10, 20);
         target.removeRange(10, 15);
-        assertEquals(20, target.treeMap.get(15).intValue());
+        assertArrayEquals(new int[][]{{15, 20}}, target.ranges());
 
         target.addRange(10, 20);
         target.removeRange(15, 17);
-        assertEquals(15, target.treeMap.get(10).intValue());
-        assertEquals(20, target.treeMap.get(17).intValue());
+        assertArrayEquals(new int[][]{{10, 15}, {17, 20}}, target.ranges());
     }
 
 
@@ -129,7 +138,7 @@ public class _715_RangeModuleTest {
     public void testRangeRemoveRange4() throws Exception {
         target.addRange(10, 20);
         target.removeRange(1, 10);
-        assertEquals(1, target.treeMap.size());
+        assertArrayEquals(new int[][]{{10, 20}}, target.ranges());
     }
 
     @Test
@@ -137,7 +146,7 @@ public class _715_RangeModuleTest {
         target.addRange(10, 20);
         target.addRange(25, 30);
         target.removeRange(5, 30);
-        assertTrue(target.treeMap.isEmpty());
+        assertEquals(0, target.ranges().length);
     }
 
     @Test
@@ -145,9 +154,8 @@ public class _715_RangeModuleTest {
         target.addRange(10, 20);
         target.addRange(25, 30);
         target.removeRange(15, 27);
-        assertEquals(2, target.treeMap.size());
-        assertEquals(15, target.treeMap.get(10).intValue());
-        assertEquals(30, target.treeMap.get(27).intValue());
+
+        assertArrayEquals(new int[][]{{10, 15}, {27, 30}}, target.ranges());
     }
 
     @Test

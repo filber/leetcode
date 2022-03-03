@@ -14,10 +14,16 @@ public class _715_RangeModule {
         public abstract boolean queryRange(int left, int right);
 
         public abstract void removeRange(int left, int right);
+
+        public abstract int[][] ranges();
     }
 
     public static class TMRangeModule extends RangeModule {
         TreeMap<Integer, Integer> treeMap = new TreeMap<>();
+
+        private void removeEntry(Map.Entry<Integer, Integer> entry) {
+            treeMap.remove(entry.getKey());
+        }
 
         public void addRange(int left, int right) {
             Map.Entry<Integer, Integer> preEntry = treeMap.floorEntry(left);
@@ -25,17 +31,16 @@ public class _715_RangeModule {
                 if (preEntry.getValue() < left) {
                     // no overlapping
                 } else if (preEntry.getValue() < right) {
-                    treeMap.remove(preEntry.getKey());
+                    removeEntry(preEntry);
                     left = preEntry.getKey();// merge
                 } else {
-                    //preEntry.getValue() >= right
                     return; // no need to add
                 }
             }
 
             Map.Entry<Integer, Integer> postEntry = treeMap.ceilingEntry(left);
             while (postEntry != null && postEntry.getKey() <= right) {
-                treeMap.remove(postEntry.getKey());
+                removeEntry(postEntry);
                 right = Math.max(right, postEntry.getValue());
                 postEntry = treeMap.ceilingEntry(left);
             }
@@ -48,42 +53,47 @@ public class _715_RangeModule {
             return preEntry != null && right <= preEntry.getValue();
         }
 
+        private void add(int L, int R) {
+            if (L < R) {
+                treeMap.put(L, R);
+            }
+        }
+
         public void removeRange(int left, int right) {
             Map.Entry<Integer, Integer> preEntry = treeMap.floorEntry(left);
             if (preEntry != null) {
                 if (preEntry.getValue() <= left) {
                     // no overlapping
                 } else if (preEntry.getValue() < right) {
-                    if (preEntry.getKey().equals(left)) {
-                        treeMap.remove(preEntry.getKey());
-                    } else {
-                        treeMap.replace(preEntry.getKey(), left);
-                    }
+                    removeEntry(preEntry);
+                    add(preEntry.getKey(), left);
                 } else {
-                    // pre.END >= right
-                    if (preEntry.getKey().equals(left) && preEntry.getValue().equals(right)) {
-                        treeMap.remove(preEntry.getKey());
-                    } else if (preEntry.getKey().equals(left)) {
-                        treeMap.remove(preEntry.getKey());
-                        treeMap.put(right, preEntry.getValue());
-                    } else if (preEntry.getValue().equals(right)) {
-                        treeMap.replace(preEntry.getKey(), left);
-                    } else {
-                        treeMap.replace(preEntry.getKey(), left);
-                        treeMap.put(right, preEntry.getValue());
-                    }
+                    removeEntry(preEntry);
+                    add(preEntry.getKey(), left);
+                    add(right, preEntry.getValue());
                 }
             }
 
             Map.Entry<Integer, Integer> postEntry = treeMap.ceilingEntry(left);
             while (postEntry != null && postEntry.getKey() < right) {
-                treeMap.remove(postEntry.getKey());
-                if (right < postEntry.getValue()) {
-                    treeMap.put(right, postEntry.getValue()); // cut range
-                }
-
+                removeEntry(postEntry);
+                add(right, postEntry.getValue());
                 postEntry = treeMap.ceilingEntry(left);
             }
+        }
+
+        @Override
+        public int[][] ranges() {
+            int[][] ans = new int[treeMap.size()][2];
+
+            Map.Entry<Integer, Integer> cur = treeMap.firstEntry();
+            for (int i = 0; i < ans.length; i++) {
+                ans[i][0] = cur.getKey();
+                ans[i][1] = cur.getValue();
+                cur = treeMap.higherEntry(cur.getKey());
+            }
+
+            return ans;
         }
     }
 }
