@@ -217,7 +217,6 @@ public class _715_RangeModule {
             }
         }
 
-        @Override
         public int[][] ranges() {
             int[][] ans = new int[treeMap.size()][2];
 
