@@ -19,17 +19,20 @@ public class _740_DeleteAndEarn {
             max = Math.max(max, num);
         }
 
-        int[] dp = new int[max - min + 1];
-        if (dp.length == 1) {
+        int len = max - min + 1;
+        if (len == 1) {
             return map[min];
-        } else if (dp.length == 2) {
+        } else if (len == 2) {
             return Math.max(map[min], map[max]);
         }
-        dp[0] = map[min];
-        dp[1] = Math.max(map[min], map[min + 1]);
-        for (int i = 2; i < dp.length; i++) {
-            dp[i] = Math.max(dp[i - 1], dp[i - 2] + map[min + i]);
+        int dpPrePre = map[min];
+        int dpPre = Math.max(dpPrePre, map[min + 1]);
+        int dp = 0;
+        for (int i = 2; i < len; i++) {
+            dp = Math.max(dpPre, dpPrePre + map[min + i]);
+            dpPrePre = dpPre;
+            dpPre = dp;
         }
-        return dp[dp.length - 1];
+        return dp;
     }
 }
