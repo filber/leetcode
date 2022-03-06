@@ -31,4 +31,10 @@ public class _740_DeleteAndEarnTest {
         int points = target.deleteAndEarn(new int[]{2, 2, 3, 3, 3, 4});
         assertEquals(9, points);
     }
+
+    @Test
+    public void testDeleteAndEarn4() throws Exception {
+        int points = target.deleteAndEarn(new int[]{1, 1, 2, 2, 3, 3, 3, 4, 6});
+        assertEquals(17, points);
+    }
 }
