@@ -1,6 +1,7 @@
 package list;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class _1940_LongestCommonSubsequenceBetweenSortedArrays {
@@ -11,43 +12,44 @@ public class _1940_LongestCommonSubsequenceBetweenSortedArrays {
     // arr[i] is in strict increasing order
 
 
-    // Divide and conquer
     public List<Integer> longestCommonSubsequences(int[][] arr) {
-        List<Integer> ans = longestCommonSubsequences(arr, 0, arr.length - 1);
+        int[] subsequences = longestCommonSubsequences(arr, 0, arr.length - 1);
+
+        List<Integer> ans = new ArrayList<>(subsequences.length);
+        for (int val : subsequences) {
+            ans.add(val);
+        }
         return ans;
     }
 
-    public List<Integer> longestCommonSubsequences(int[][] arr, int i, int j) {
-        List<Integer> ans = new ArrayList<>();
+    // Divide and Conquer
+    public int[] longestCommonSubsequences(int[][] arr, int i, int j) {
         if (i == j) {
-            for (int val : arr[i]) {
-                ans.add(val);
-            }
-            return ans;
+            return arr[i];
         }
 
         int mid = (i + j) / 2;
-        List<Integer> left = longestCommonSubsequences(arr, i, mid);
-        List<Integer> right = longestCommonSubsequences(arr, mid + 1, j);
+        int[] left = longestCommonSubsequences(arr, i, mid);
+        int[] right = longestCommonSubsequences(arr, mid + 1, j);
+        int[] ans = new int[Math.max(left.length, right.length)];
+        int len = 0;
+
+        // Two Pointers
         int l = 0, r = 0;
-        int m = left.size(), n = right.size();
-
-        while (l < m && r < n) {
-            while (l < m && left.get(l) < right.get(r)) {
+        while (l < left.length && r < right.length) {
+            int leftVal = left[l];
+            int rightVal = right[r];
+            if (leftVal == rightVal) {
+                ans[len++] = leftVal;
                 l++;
-            }
-
-            while (r < n && l < m && right.get(r) < left.get(l)) {
                 r++;
-            }
-
-            if (l < m && r < n && left.get(l).equals(right.get(r))) {
-                ans.add(left.get(l));
+            } else if (leftVal < rightVal) {
                 l++;
+            } else {
                 r++;
             }
         }
 
-        return ans;
+        return Arrays.copyOf(ans, len);
     }
 }
