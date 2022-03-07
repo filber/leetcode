@@ -10,7 +10,7 @@ public class _1359_CountAllValidPickupAndDeliveryOptions {
         long dp = 1;
 
         for (int i = 2; i <= n; i++) {
-            sum = sum + 4 * i - 3;
+            sum = i * (2 * i - 1);
             dp = (sum * dp) % modulo;
         }
 
