@@ -3,7 +3,8 @@ package tree;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
-import tree._731_MyCalendarII.MyCalendarTwo;
+
+import tree._731_MyCalendarII.*;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +14,7 @@ public class _731_MyCalendarIITest {
 
     @Before
     public void before() throws Exception {
-        target = new MyCalendarTwo();
+        target = new TMCalendar();
     }
 
     @After
@@ -26,24 +27,22 @@ public class _731_MyCalendarIITest {
         assertTrue(target.book(10, 20));
         assertTrue(target.book(50, 60));
         assertTrue(target.book(10, 40));
-        int[][] firstRanges = target.ranges(target.firstTM);
-        assertArrayEquals(new int[][]{{10, 40}, {50, 60}}, firstRanges);
-        int[][] secondRanges = target.ranges(target.secondTM);
-        assertArrayEquals(new int[][]{{10, 20}}, secondRanges);
+        int[][][] ranges = target.ranges();
+
+        assertArrayEquals(new int[][]{{10, 40}, {50, 60}}, ranges[0]);
+        assertArrayEquals(new int[][]{{10, 20}}, ranges[1]);
 
         assertFalse(target.book(5, 15));
 
         assertTrue(target.book(5, 10));
-        firstRanges = target.ranges(target.firstTM);
-        assertArrayEquals(new int[][]{{5, 40}, {50, 60}}, firstRanges);
-        secondRanges = target.ranges(target.secondTM);
-        assertArrayEquals(new int[][]{{10, 20}}, secondRanges);
+        ranges = target.ranges();
+        assertArrayEquals(new int[][]{{5, 40}, {50, 60}}, ranges[0]);
+        assertArrayEquals(new int[][]{{10, 20}}, ranges[1]);
 
         assertTrue(target.book(25, 55));
-        firstRanges = target.ranges(target.firstTM);
-        assertArrayEquals(new int[][]{{5, 60}}, firstRanges);
-        secondRanges = target.ranges(target.secondTM);
-        assertArrayEquals(new int[][]{{10, 20}, {25, 40}, {50, 55}}, secondRanges);
+        ranges = target.ranges();
+        assertArrayEquals(new int[][]{{5, 60}}, ranges[0]);
+        assertArrayEquals(new int[][]{{10, 20}, {25, 40}, {50, 55}}, ranges[1]);
     }
 
     @Test
