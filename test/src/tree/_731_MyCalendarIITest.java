@@ -14,7 +14,7 @@ public class _731_MyCalendarIITest {
 
     @Before
     public void before() throws Exception {
-        target = new TMCalendar();
+        target = new STCalendar();
     }
 
     @After
@@ -27,22 +27,9 @@ public class _731_MyCalendarIITest {
         assertTrue(target.book(10, 20));
         assertTrue(target.book(50, 60));
         assertTrue(target.book(10, 40));
-        int[][][] ranges = target.ranges();
-
-        assertArrayEquals(new int[][]{{10, 40}, {50, 60}}, ranges[0]);
-        assertArrayEquals(new int[][]{{10, 20}}, ranges[1]);
-
         assertFalse(target.book(5, 15));
-
         assertTrue(target.book(5, 10));
-        ranges = target.ranges();
-        assertArrayEquals(new int[][]{{5, 40}, {50, 60}}, ranges[0]);
-        assertArrayEquals(new int[][]{{10, 20}}, ranges[1]);
-
         assertTrue(target.book(25, 55));
-        ranges = target.ranges();
-        assertArrayEquals(new int[][]{{5, 60}}, ranges[0]);
-        assertArrayEquals(new int[][]{{10, 20}, {25, 40}, {50, 55}}, ranges[1]);
     }
 
     @Test
@@ -72,5 +59,19 @@ public class _731_MyCalendarIITest {
         assertTrue(target.book(35, 36));
         assertTrue(target.book(86, 87));
         assertTrue(target.book(72, 73));
+    }
+
+    @Test
+    public void testBook3() throws Exception {
+        assertTrue(target.book(24, 40));
+        assertTrue(target.book(43, 50));
+        assertTrue(target.book(27, 43));
+        assertTrue(target.book(5, 21));
+        assertFalse(target.book(30, 40));
+        assertFalse(target.book(14, 29));
+        assertTrue(target.book(3, 19));
+        assertFalse(target.book(3, 14));
+        assertFalse(target.book(25, 39));
+        assertFalse(target.book(6, 19));
     }
 }

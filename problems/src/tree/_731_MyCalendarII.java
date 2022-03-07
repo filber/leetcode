@@ -9,8 +9,102 @@ public class _731_MyCalendarII {
 
     public interface MyCalendarTwo {
         boolean book(int L, int R);
+    }
 
-        int[][][] ranges();
+    public static class STCalendar implements MyCalendarTwo {
+        SegmentTree root = null;
+
+        public boolean book(int L, int R) {
+            boolean isValid = validate(root, L, R);
+            if (!isValid) {
+                return false;
+            }
+            root = addRange(root, L, R);
+            return true;
+        }
+
+        private boolean validate(SegmentTree node, int L, int R) {
+            if (L >= R) {
+                return true;
+            } else if (node == null) {
+                return true;
+            } else if (R <= node.begin) {
+                return validate(node.left, L, R);
+            } else if (node.end <= L) {
+                return validate(node.right, L, R);
+            } else {
+                if (node.cnt == 2) {
+                    return false;
+                }
+                return validate(node.left, L, node.begin) &&
+                        validate(node.right, node.end, R);
+            }
+        }
+
+        private SegmentTree addRange(SegmentTree node, int L, int R) {
+            if (L >= R) {
+                return node;
+            } else if (node == null) {
+                return new SegmentTree(L, R);
+            } else if (R <= node.begin) {
+                node.left = addRange(node.left, L, R);
+                return node;
+            } else if (node.end <= L) {
+                node.right = addRange(node.right, L, R);
+                return node;
+            } else {
+                node.left = addRange(node.left, L, node.begin);
+                node.right = addRange(node.right, node.end, R);
+
+                if (L <= node.begin && node.end <= R) {
+                    node.cnt++;
+                } else if (node.begin < L && R < node.end) {
+                    SegmentTree leftST = new SegmentTree(node.begin, L, 1);
+                    leftST.left = node.left;
+                    node.left = leftST;
+                    node.begin = L;
+
+                    SegmentTree rightST = new SegmentTree(R, node.end, 1);
+                    rightST.right = node.right;
+                    node.right = rightST;
+                    node.end = R;
+
+                    node.cnt = 2;
+                } else if (R < node.end) {
+                    SegmentTree leftST = new SegmentTree(node.begin, R, 2);
+                    leftST.left = node.left;
+                    node.left = leftST;
+                    node.begin = R;
+                } else {
+                    //node.begin < L
+                    SegmentTree rightST = new SegmentTree(L, node.end, 2);
+                    rightST.right = node.right;
+                    node.right = rightST;
+                    node.end = L;
+                }
+                return node;
+            }
+        }
+
+        public static class SegmentTree {
+            int begin;
+            int end;
+            int cnt;
+
+            SegmentTree left = null;
+            SegmentTree right = null;
+
+            public SegmentTree(int begin, int end) {
+                this.begin = begin;
+                this.end = end;
+                cnt = 1;
+            }
+
+            public SegmentTree(int begin, int end, int cnt) {
+                this(begin, end);
+                this.cnt = cnt;
+            }
+        }
     }
 
     public static class TMCalendar implements MyCalendarTwo {
