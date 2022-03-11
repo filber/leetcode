@@ -10,7 +10,7 @@ public class _82_RemoveDuplicatesFromSortedListII {
         int dupVal = Integer.MIN_VALUE;
         while (head != null &&
                 (head.val == dupVal ||
-                (head.next != null && head.val == head.next.val)
+                        (head.next != null && head.val == head.next.val)
                 )) {
             if (head.next != null && head.val == head.next.val) {
                 dupVal = head.val;
@@ -18,16 +18,17 @@ public class _82_RemoveDuplicatesFromSortedListII {
             head = head.next;
         }
 
-        ListNode pre = head;
-        ListNode cur = head == null ? null : head.next;
-        while (cur != null) {
-            if (cur.val == dupVal || cur.next != null && cur.val == cur.next.val) {
-                pre.next = cur.next;
-                dupVal = cur.val;
+        // 2. Using Two Pointers to remove duplicates
+        ListNode l = head;
+        ListNode r = head == null ? null : head.next;
+        while (r != null) {
+            if (r.val == dupVal || r.next != null && r.val == r.next.val) {
+                l.next = r.next;
+                dupVal = r.val;
             } else {
-                pre = cur;
+                l = r;
             }
-            cur = cur.next;
+            r = r.next;
         }
 
         return head;
