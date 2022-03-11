@@ -5,43 +5,59 @@ package list;
 public class _2_AddTwoNumbers {
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        return addTwoNumbers(l1, l2, 0);
-    }
-
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2, int carry) {
-        if (l1 == null && l2 == null) {
-            if (carry > 0) {
-                return new ListNode(carry);
-            } else {
-                return null;
-            }
-        }
-
+        // 0. Guard condition
         if (l1 == null) {
-            return addNumbers(l2, carry);
+            return l2;
         } else if (l2 == null) {
-            return addNumbers(l1, carry);
+            return l1;
         }
 
-        l1.val += l2.val + carry;
-        l1.next = addTwoNumbers(l1.next, l2.next, l1.val / 10);
-        l1.val %= 10;
-        return l1;
-    }
-
-    public ListNode addNumbers(ListNode l, int carry) {
-        if (l == null) {
-            if (carry > 0) {
-                return new ListNode(carry);
-            } else {
-                return null;
+        ListNode ans = l1, l = l1, r = l2;
+        ListNode pre = null;
+        int carry = 0;
+        while (l != null || r != null) {
+            // 1. Add value to l1, move both l&r
+            if (l != null && r != null) {
+                l.val += r.val + carry;
+                carry = l.val / 10;
+                l.val %= 10;
+                pre = l;
+                l = l.next;
+                r = r.next;
+                // link tail of l1 to r
+                if (l == null) {
+                    pre.next = r;
+                }
+            }
+            // 2. Skip l2 and add value to l1, move l
+            else if (l != null) {
+                l.val += carry;
+                carry = l.val / 10;
+                l.val %= 10;
+                pre = l;
+                l = l.next;
+                if (carry == 0) {
+                    break;
+                }
+            }
+            // 3. Skip l1 and add value to l2, move r
+            else {
+                r.val += carry;
+                carry = r.val / 10;
+                r.val %= 10;
+                pre = r;
+                r = r.next;
+                if (carry == 0) {
+                    break;
+                }
             }
         }
-        l.val += carry;
-        if (l.val >= 10) {
-            l.next = addNumbers(l.next, l.val / 10);
-            l.val %= 10;
+
+        // 4. Append carry to tail if it's non-zero
+        if (carry != 0) {
+            pre.next = new ListNode(carry);
         }
-        return l;
+
+        return ans;
     }
 }
