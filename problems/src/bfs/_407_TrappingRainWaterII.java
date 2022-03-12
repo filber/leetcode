@@ -6,58 +6,63 @@ import java.util.PriorityQueue;
 
 public class _407_TrappingRainWaterII {
 
-    public class Pair {
+    public class Node {
         int row;
         int col;
-        int val;
+        int height;
 
-        Pair(int row, int col, int val) {
+        Node(int row, int col, int height) {
             this.row = row;
             this.col = col;
-            this.val = val;
+            this.height = height;
         }
     }
 
     public int trapRainWater(int[][] heights) {
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
         int m = heights.length;
         int n = heights[0].length;
-        boolean[][] vis = new boolean[m][n];
+        if (m <= 2 || n <= 2) {
+            return 0;
+        }
+
+        PriorityQueue<Node> queue = new PriorityQueue<>((a, b) -> a.height - b.height);
+        boolean[][] visited = new boolean[m][n];
 
         for (int i = 0; i < m; i++) {
-            pq.add(new Pair(i, 0, heights[i][0]));
-            pq.add(new Pair(i, n - 1, heights[i][n - 1]));
-            vis[i][0] = true;
-            vis[i][n - 1] = true;
+            queue.add(new Node(i, 0, heights[i][0]));
+            visited[i][0] = true;
+            queue.add(new Node(i, n - 1, heights[i][n - 1]));
+            visited[i][n - 1] = true;
         }
 
-        for (int j = 0; j < n; j++) {
-            pq.add(new Pair(0, j, heights[0][j]));
-            pq.add(new Pair(m - 1, j, heights[m - 1][j]));
-            vis[0][j] = true;
-            vis[m - 1][j] = true;
+        for (int j = 1; j < n - 1; j++) {
+            queue.add(new Node(0, j, heights[0][j]));
+            visited[0][j] = true;
+            queue.add(new Node(m - 1, j, heights[m - 1][j]));
+            visited[m - 1][j] = true;
         }
 
-        int ans = 0;
-        int[][] dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-        while (!pq.isEmpty()) {
-            Pair p = pq.remove();
+        int volume = 0;
+        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+            // try four directions
             for (int i = 0; i < 4; i++) {
-                int r = p.row + dir[i][0];
-                int c = p.col + dir[i][1];
-
-                if (r >= 0 && c >= 0 && r < m && c < n && !vis[r][c]) {
-                    vis[r][c] = true;
-                    if (p.val > heights[r][c]) {
-                        ans += p.val - heights[r][c];
-                        pq.add(new Pair(r, c, p.val));
+                int r = directions[i][0] + node.row;
+                int c = directions[i][1] + node.col;
+                if (r > 0 && r < m - 1 && c > 0 && c < n - 1 && !visited[r][c]) {
+                    int h = heights[r][c];
+                    if (h < node.height) {
+                        volume += node.height - h;
+                        queue.add(new Node(r, c, node.height));
                     } else {
-                        pq.add(new Pair(r, c, heights[r][c]));
+                        queue.add(new Node(r, c, h));
                     }
+                    visited[r][c] = true;
                 }
             }
         }
 
-        return ans;
+        return volume;
     }
 }
