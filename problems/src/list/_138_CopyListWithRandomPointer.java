@@ -24,16 +24,13 @@ public class _138_CopyListWithRandomPointer {
         if (head == null) {
             return null;
         }
-        Node cHead = map.get(head);
-        if (cHead != null) {
-            return cHead;
+        Node copy = map.get(head);
+        if (copy == null) {
+            copy = new Node(head.val);
+            map.put(head, copy);
+            copy.next = copyRandomList(head.next);
+            copy.random = copyRandomList(head.random);
         }
-
-        Node cNode = new Node(head.val);
-        map.put(head, cNode);
-
-        cNode.next = copyRandomList(head.next);
-        cNode.random = copyRandomList(head.random);
-        return cNode;
+        return copy;
     }
 }
