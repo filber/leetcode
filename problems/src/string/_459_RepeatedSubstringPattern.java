@@ -9,7 +9,7 @@ public class _459_RepeatedSubstringPattern {
         int[] prefix = new int[n];
         int j = 0;
         for (int i = 1; i < n; i++) {
-            while (j > 0 && chars[j] != chars[i]) {
+            while (j > 0 && chars[i] != chars[j]) {
                 j = prefix[j - 1];
             }
             if (chars[i] == chars[j]) {
@@ -18,7 +18,6 @@ public class _459_RepeatedSubstringPattern {
             prefix[i] = j;
         }
 
-        // n - prefix[n - 1] : length of cycle
         return prefix[n - 1] > 0 && n % (n - prefix[n - 1]) == 0;
     }
 }

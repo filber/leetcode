@@ -6,40 +6,38 @@ public class _28_ImplementStrStr {
     //KMP
 
     private int[] buildPrefix(char[] pattern) {
+        int j = 0;
         int n = pattern.length;
         int[] prefix = new int[n];
-        int len = 0;
         for (int i = 1; i < n; i++) {
-            while (len > 0 && pattern[len] != pattern[i]) {
-                len = prefix[len - 1];
+            while (j > 0 && pattern[i] != pattern[j]) {
+                j = prefix[j - 1];
             }
-            if (pattern[len] == pattern[i]) {
-                len++;
+            if (pattern[i] == pattern[j]) {
+                j++;
             }
-            prefix[i] = len;
+            prefix[i] = j;
         }
         return prefix;
     }
 
     public int strStr(String txt, String pattern) {
-        int m = txt.length();
-        int n = pattern.length();
-        if (n == 0) {
-            return 0;
-        } else if (m == 0) {
-            return -1;
-        }
         char[] tChars = txt.toCharArray();
+        int n = tChars.length;
         char[] pChars = pattern.toCharArray();
-
+        int m = pChars.length;
+        if (m == 0) {
+            return 0;
+        }
         int[] prefix = buildPrefix(pChars);
+
         int i = 0, j = 0;
-        while (i < m) {
+        while (i < n) {
             if (tChars[i] == pChars[j]) {
                 i++;
                 j++;
-                if (j == n) {
-                    return i - n;
+                if (j == m) {
+                    return i - m;
                 }
             } else {
                 if (j > 0) {
