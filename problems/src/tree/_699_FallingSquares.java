@@ -2,53 +2,55 @@ package tree;
 
 //https://leetcode.com/problems/falling-squares/
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class _699_FallingSquares {
 
     public List<Integer> fallingSquares(int[][] positions) {
-        int[] segments = new int[2 * positions.length];
-        for (int i = 0; i < positions.length; i++) {
+        int n = positions.length;
+        List<Integer> ans = new ArrayList<>(n);
+
+        // 1. Store all starts and ends into segments
+        int[] segments = new int[2 * n];
+        for (int i = 0; i < n; i++) {
             int[] pos = positions[i];
-            int x = pos[0];
-            int len = pos[1];
-            segments[2 * i] = x;
-            segments[2 * i + 1] = x + len;
+            segments[2 * i] = pos[0];
+            segments[2 * i + 1] = pos[0] + pos[1];
         }
 
+        // 2. Sort segments
         Arrays.sort(segments);
-        List<Integer> result = new ArrayList<>();
 
-        int[] slots = new int[2 * positions.length - 1];
-
+        // Slots store max heights of each position
+        int[] slots = new int[segments.length - 1];
         int maxHeight = 0;
-
-        for (int[] pos : positions) {
-            int begin = pos[0];
+        for (int i = 0; i < n; i++) {
+            int[] pos = positions[i];
+            int start = pos[0];
             int len = pos[1];
-            int end = begin + len;
-
-            int at = Arrays.binarySearch(segments, begin);
-            int max = 0;
-            for (int i = at; i < slots.length && segments[i] < end; i++) {
-                if (slots[i] > max) {
-                    max = slots[i];
+            int end = start + len;
+            int at = Arrays.binarySearch(segments, start);
+            int rangeMax = 0;
+            // Scan the max height of [start,end)
+            for (int j = at; segments[j] < end; j++) {
+                if (rangeMax < slots[j]) {
+                    rangeMax = slots[j];
                 }
             }
 
-            int height = max + len;
+            // Update the max height of [start,end)
+            int height = rangeMax + len;
+            for (int j = at; segments[j] < end; j++) {
+                slots[j] = height;
+            }
+
+            // Update maxHeight of all range
             if (height > maxHeight) {
                 maxHeight = height;
             }
-
-            result.add(maxHeight);
-
-            for (int i = at; i < slots.length && segments[i] < end; i++) {
-                slots[i] = height;
-            }
+            ans.add(maxHeight);
         }
-        return result;
+
+        return ans;
     }
 }
