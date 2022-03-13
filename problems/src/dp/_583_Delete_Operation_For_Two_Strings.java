@@ -8,12 +8,15 @@ public class _583_Delete_Operation_For_Two_Strings {
         char[] chars2 = word2.toCharArray();
         int n = chars2.length;
 
+        // DP[i][j] the operations needed for word1.substring(0,i) and word2.substring(0,j)
         int[][] dp = new int[m + 1][n + 1];
         for (int i = 0; i <= m; i++) {
+            // word2.substring is always empty
             dp[i][0] = i;
         }
 
         for (int j = 0; j <= n; j++) {
+            // word1.substring is always empty
             dp[0][j] = j;
         }
 
