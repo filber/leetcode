@@ -41,4 +41,14 @@ public class _115_DistinctSubsequencesTest {
         //    ^^^
         assertEquals(5, num);
     }
+
+    @Test
+    public void testNumDistinct3() throws Exception {
+        int num = target.numDistinct("ababf", "ab");
+        //ababf
+        //^^
+        //^  ^
+        //  ^^
+        assertEquals(3, num);
+    }
 }
