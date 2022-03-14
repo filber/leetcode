@@ -6,30 +6,31 @@ import java.util.Stack;
 
 public class _71_SimplifyPath {
 
-    public static String simplifyPath(String path) {
+    public String simplifyPath(String path) {
         String[] segments = path.split("/");
-        Stack<String> stack = new Stack<>();
+        String[] stack = new String[segments.length];
+        int top = -1;
+
         for (String segment : segments) {
-            if (segment.equals(".") || segment.isBlank()) {
+            if (".".equals(segment) || segment.isBlank()) {
                 // ignore
-            } else if (segment.equals("..")) {
-                if (!stack.isEmpty()) {
-                    stack.pop();
+            } else if ("..".equals(segment)) {
+                if (top >= 0) {
+                    top--;
                 }
             } else {
-                stack.push(segment);
+                stack[++top] = segment;
             }
         }
 
-        if (stack.isEmpty()) {
+        if (top == -1) {
             return "/";
-        } else {
-            StringBuilder sb = new StringBuilder();
-            for (String segment : stack) {
-                sb.append('/');
-                sb.append(segment);
-            }
-            return sb.toString();
         }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i <= top; i++) {
+            sb.append('/').append(stack[i]);
+        }
+        return sb.toString();
     }
+
 }
