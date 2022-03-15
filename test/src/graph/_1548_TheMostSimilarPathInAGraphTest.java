@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class _1548_TheMostSimilarPathInAGraphTest {
@@ -26,9 +28,11 @@ public class _1548_TheMostSimilarPathInAGraphTest {
         int[][] roads = new int[][]{{0, 2}, {0, 3}, {1, 2}, {1, 3}, {1, 4}, {2, 4}};
         String[] targetPath = {"ATL", "DXB", "HND", "LAX"};
 
-        int[] path = target.mostSimilar(names, roads, targetPath);
+        List<Integer> list = target.mostSimilar(names, roads, targetPath);
+        Integer[] path = list.toArray(new Integer[0]);
 
-        assertArrayEquals(new int[]{0, 2, 4, 2}, path);
+        // ATL,DXB,ATL,LAX
+        assertArrayEquals(new Integer[]{0, 3, 0, 2}, path);
         assertEquals(1, target.editDistance(targetPath, names, path));
     }
 
@@ -38,9 +42,10 @@ public class _1548_TheMostSimilarPathInAGraphTest {
         int[][] roads = new int[][]{{1, 0}, {2, 0}, {3, 0}, {2, 1}, {3, 1}, {3, 2}};
         String[] targetPath = {"ABC", "DEF", "GHI", "JKL"};
 
-        int[] path = target.mostSimilar(names, roads, targetPath);
+        List<Integer> list = target.mostSimilar(names, roads, targetPath);
+        Integer[] path = list.toArray(new Integer[0]);
 
-        assertArrayEquals(new int[]{0, 1, 0, 1}, path);
+        assertArrayEquals(new Integer[]{1, 0, 1, 0}, path);
         assertEquals(4, target.editDistance(targetPath, names, path));
     }
 
@@ -50,9 +55,10 @@ public class _1548_TheMostSimilarPathInAGraphTest {
         int[][] roads = new int[][]{{0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 5}};
         String[] targetPath = {"ATL", "DXB", "HND", "DXB", "ATL", "LAX", "PEK"};
 
-        int[] path = target.mostSimilar(names, roads, targetPath);
+        List<Integer> list = target.mostSimilar(names, roads, targetPath);
+        Integer[] path = list.toArray(new Integer[0]);
 
-        assertArrayEquals(new int[]{3, 4, 5, 4, 3, 2, 1}, path);
+        assertArrayEquals(new Integer[]{3, 4, 5, 4, 3, 2, 1}, path);
         assertEquals(0, target.editDistance(targetPath, names, path));
     }
 }
