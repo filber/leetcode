@@ -39,41 +39,43 @@ public class _1548_TheMostSimilarPathInAGraph {
 
         // 2. Figure out the best path for each city
         int len = targetPath.length;
-        int[][] dp = new int[len][n]; // store edit distance between Target & Cities
+        // DP[i][j]: minimum edit distance for
+        // targetPath.substring[0,i] if ending with city j
+        int[][] dp = new int[len][n];
         for (int i = 0; i < len; i++) {
             Arrays.fill(dp[i], Integer.MAX_VALUE);
         }
 
-        List<Integer>[] path1 = new List[n]; // best path ending with city i
+        List<Integer>[] path1 = new List[n]; // best path ending with city j
         List<Integer>[] path2 = new List[n]; // status of next path
         for (int j = 0; j < n; j++) {
             if (!names[j].equals(targetPath[0])) {
-                dp[0][j] = 1;
+                dp[0][j] = 1; // not equal, edit distance is 1
             } else {
-                dp[0][j] = 0;
+                dp[0][j] = 0; // equal, edit distance is 0
             }
             path1[j] = new ArrayList<>();
             path1[j].add(j);
         }
 
-
         for (int k = 1; k < len; k++) {
             for (int i = 0; i < n; i++) {
+                // Using dp[k-1][i] to refresh all the linked cities of i, dp[k][j]
                 if (dp[k - 1][i] == Integer.MAX_VALUE) {
                     continue;
                 }
+                int preDistance = dp[k - 1][i];
                 for (int j : graph[i]) {
                     // j: next linked city
                     int editDistance = names[j].equals(targetPath[k]) ? 0 : 1;
-
-                    if (dp[k][j] > dp[k - 1][i] + editDistance) {
-                        dp[k][j] = dp[k - 1][i] + editDistance;
+                    if (dp[k][j] > preDistance + editDistance) {
+                        dp[k][j] = preDistance + editDistance;
                         path2[j] = new ArrayList<>(path1[i]);
                         path2[j].add(j);
                     }
                 }
             }
-            // swap path1 and path2, rolling array, refresh the best path to path1
+            // swap path1 and path2, rolling array, refresh the best path in path1[]
             List<Integer>[] tmp = path2;
             path2 = path1;
             path1 = tmp;
