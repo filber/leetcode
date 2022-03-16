@@ -33,15 +33,17 @@ public class _2007_FindOriginalArrayFromDoubledArray {
         }
 
         for (int i = min; i <= max; i++) {
-            int cnt = count[i - min];
+            int idx = i - min;
+            int cnt = count[idx];
             if (cnt > 0) {
-                if ((2 * i) > max || count[2 * i - min] == 0 || count[2 * i - min] < cnt) {
+                int doubleIdx = 2 * i - min;
+                if ((2 * i) > max || count[doubleIdx] < cnt) {
                     return new int[0];
                 }
                 Arrays.fill(result, index, index + cnt, i);
                 index += cnt;
-                count[2 * i - min] -= cnt;
-                count[i - min] = 0;
+                count[doubleIdx] -= cnt;
+                count[idx] = 0;
             }
         }
         return result;
