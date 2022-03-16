@@ -44,6 +44,12 @@ public class _2007_FindOriginalArrayFromDoubledArrayTest {
     }
 
     @Test
+    public void testFindOriginalArray7() throws Exception {
+        int[] arr = target.findOriginalArray(new int[]{0, 1});
+        assertEquals(0, arr.length);
+    }
+
+    @Test
     public void testFindOriginalArray5() throws Exception {
         int[] arr = target.findOriginalArray(new int[]{0, 0, 2, 4});
         assertArrayEquals(new int[]{0, 2}, arr);
@@ -53,5 +59,17 @@ public class _2007_FindOriginalArrayFromDoubledArrayTest {
     public void testFindOriginalArray6() throws Exception {
         int[] arr = target.findOriginalArray(new int[]{0, 0, 2, 5});
         assertEquals(0, arr.length);
+    }
+
+    @Test
+    public void testFindOriginalArray8() throws Exception {
+        int[] arr = target.findOriginalArray(new int[]{2, 1, 2, 4, 2, 4});
+        assertArrayEquals(new int[]{1, 2, 2}, arr);
+    }
+
+    @Test
+    public void testFindOriginalArray9() throws Exception {
+        int[] arr = target.findOriginalArray(new int[]{0, 0, 0, 0});
+        assertArrayEquals(new int[]{0, 0}, arr);
     }
 }

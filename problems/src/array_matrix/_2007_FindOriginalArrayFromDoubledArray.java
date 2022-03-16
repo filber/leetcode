@@ -7,35 +7,43 @@ import java.util.Arrays;
 public class _2007_FindOriginalArrayFromDoubledArray {
 
     public int[] findOriginalArray(int[] changed) {
-        int n = changed.length;
-        if (n % 2 == 1) {
+        if (changed == null || changed.length % 2 == 1)
             return new int[0];
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for (int i : changed) {
+            max = Math.max(max, i);
+            min = Math.min(min, i);
         }
-        Arrays.sort(changed);
-        int[] map = new int[100001];
-        for (int val : changed) {
-            map[val] += 1;
+        int[] count = new int[max - min + 1];
+        for (int i : changed) {
+            count[i - min]++;
+        }
+        int[] result = new int[changed.length / 2];
+        int index = 0;
+
+        if (min == 0) {
+            if (count[0] % 2 == 1) {
+                return new int[0];
+            } else {
+                Arrays.fill(result, index, index + count[0] / 2, 0);
+                index += count[0] / 2;
+                count[0] = 0;
+            }
         }
 
-        int m = n / 2;
-        int[] ans = new int[m];
-        int len = 0;
-        for (int i = 0; i < n; i++) {
-            int val = changed[i];
-            if (map[val] > 0) {
-                map[val] -= 1;
-                if (map[2 * val] > 0) {
-                    map[2 * val] -= 1;
-                    ans[len++] = val;
-                } else {
+        for (int i = min; i <= max; i++) {
+            int cnt = count[i - min];
+            if (cnt > 0) {
+                if ((2 * i) > max || count[2 * i - min] == 0 || count[2 * i - min] < cnt) {
                     return new int[0];
                 }
-            }
-            if (len == m) {
-                break;
+                Arrays.fill(result, index, index + cnt, i);
+                index += cnt;
+                count[2 * i - min] -= cnt;
+                count[i - min] = 0;
             }
         }
-
-        return ans;
+        return result;
     }
 }
