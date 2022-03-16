@@ -4,35 +4,46 @@ import java.util.*;
 
 public class _90_SubsetsII {
 
-    List<List<Integer>> result = new ArrayList<>();// 存放符合条件结果的集合
-    ArrayList<Integer> path = new ArrayList<>();// 用来存放符合条件结果
+    List<List<Integer>> ans = new ArrayList<>();
+    int[] path;
+    int len = 0;
     boolean[] used;
+    int n;
 
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        if (nums.length == 0) {
-            result.add(path);
-            return result;
-        }
+        this.n = nums.length;
+        path = new int[n];
+        used = new boolean[n];
         Arrays.sort(nums);
-        used = new boolean[nums.length];
+
         backtracking(nums, 0);
-        return result;
+
+        return ans;
     }
 
-    private void backtracking(int[] nums, int startIndex) {
-        result.add(new ArrayList<>(path));
-        if (startIndex >= nums.length) {
+    private void backtracking(int[] nums, int i) {
+        List<Integer> list = new ArrayList<>(len);
+        for (int j = 0; j < len; j++) {
+            list.add(path[j]);
+        }
+
+        ans.add(list);
+
+        if (i == n) {
             return;
         }
-        for (int i = startIndex; i < nums.length; i++) {
-            if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) {
+
+        for (int k = i; k < n; k++) {
+            if (k > 0 && nums[k - 1] == nums[k] && !used[k - 1]) {
                 continue;
             }
-            path.add(nums[i]);
-            used[i] = true;
-            backtracking(nums, i + 1);
-            path.remove(path.size() - 1);
-            used[i] = false;
+            used[k] = true;
+            path[len++] = nums[k];
+
+            backtracking(nums, k + 1);
+
+            len--;
+            used[k] = false;
         }
     }
 }
