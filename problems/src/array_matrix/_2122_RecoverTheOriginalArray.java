@@ -1,71 +1,44 @@
 package array_matrix;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class _2122_RecoverTheOriginalArray {
+
     public int[] recoverArray(int[] nums) {
-        int n = nums.length / 2;
         Arrays.sort(nums);
-        int min = nums[0];
-        int validK = 0;
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int val : nums) {
-            map.put(val, map.getOrDefault(val, 0) + 1);
-        }
-
+        int[] res = new int[nums.length / 2];
+        int prev = 0;
         for (int i = 1; i < nums.length; i++) {
-            int doubleK = nums[i] - min;
-            if (doubleK == 0 || doubleK % 2 == 1) {
-                continue;
-            }
-            int k = doubleK / 2;
-
-            Map<Integer, Integer> cntMap = new HashMap<>(map);
-            boolean valid = true;
-            for (int val : nums) {
-                if (!cntMap.containsKey(val)) {
-                    continue;
-                }
-                int cnt = cntMap.get(val);
-                int pairVal = val + k + k;
-                Integer pairCnt = cntMap.get(pairVal);
-                if (pairCnt == null || pairCnt < cnt) {
-                    valid = false;
-                    break;
-                } else {
-                    cntMap.remove(val);
-                    if (pairCnt == cnt) {
-                        cntMap.remove(pairVal);
-                    } else {
-                        cntMap.put(pairVal, pairCnt - cnt);
-                    }
-                }
-            }
-
-            if (valid) {
-                // using k to recover array
-                validK = k;
+            int diff = nums[i] - nums[0];
+            // diff not tried before
+            // diff is an even number larger than 0
+            // diff/2 is a valid k for array
+            if (diff != prev && diff > 0 && diff % 2 == 0 && check(nums, i, diff / 2, res))
                 break;
-            }
+            prev = diff;
         }
+        return res;
+    }
 
-        int[] ans = new int[n];
-        int len = 0;
-        for (int val : nums) {
-            int cnt = map.getOrDefault(val, 0);
-            if (cnt == 0) {
-                continue;
+    private boolean check(int[] nums, int j, int k, int[] res) {
+        int idx = 0;
+        boolean[] visited = new boolean[nums.length];
+
+        for (int i = 0; i < nums.length; i++) {
+            if (visited[i]) continue;
+            visited[i] = true;
+            int target = nums[i] + 2 * k;
+
+            // try to find target not visited
+            while (j < nums.length && (nums[j] < target || (nums[j] == target && visited[j]))) {
+                j++;
             }
-            ans[len++] = val + validK;
-            if (len == n) {
-                break;
+            if (j == nums.length || nums[j] != target) {
+                return false; // target not found!
             }
-            map.put(val, map.getOrDefault(val, 1) - 1);
-            int nextVal = val + validK + validK;
-            map.put(nextVal, map.getOrDefault(nextVal, 1) - 1);
+            visited[j] = true;
+            res[idx++] = nums[i] + k;
         }
-        return ans;
+        return true;
     }
 }
