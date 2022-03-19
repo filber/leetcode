@@ -6,31 +6,35 @@ public class _895_MaximumFrequencyStack {
 
     public static class FreqStack {
 
-        Map<Integer, Integer> freq;
-        Map<Integer, Stack<Integer>> group;
-        int maxfreq;
+        Map<Integer, Integer> freqMap = new HashMap<>();
+        Map<Integer, Stack<Integer>> stackMap = new HashMap<>();
+
+        int maxFreq = Integer.MIN_VALUE;
 
         public FreqStack() {
-            freq = new HashMap();
-            group = new HashMap();
-            maxfreq = 0;
         }
 
         public void push(int x) {
-            int f = freq.getOrDefault(x, 0) + 1;
-            freq.put(x, f);
-            if (f > maxfreq)
-                maxfreq = f;
+            int count = freqMap.getOrDefault(x, 0) + 1;
+            freqMap.put(x, count);
+            if (count > maxFreq) {
+                maxFreq = count;
+            }
 
-            group.computeIfAbsent(f, z-> new Stack()).push(x);
+            Stack<Integer> stack = stackMap.computeIfAbsent(count, k -> new Stack<>());
+            stack.push(x);
         }
 
         public int pop() {
-            int x = group.get(maxfreq).pop();
-            freq.put(x, freq.get(x) - 1);
-            if (group.get(maxfreq).size() == 0)
-                maxfreq--;
-            return x;
+            int res = stackMap.get(maxFreq).pop();
+
+            if (stackMap.get(maxFreq).isEmpty()) {
+                maxFreq--;
+            }
+
+            int count = freqMap.get(res) - 1;
+            freqMap.put(res, count);
+            return res;
         }
     }
 }
