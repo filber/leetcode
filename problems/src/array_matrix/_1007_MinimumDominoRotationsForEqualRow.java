@@ -8,13 +8,13 @@ public class _1007_MinimumDominoRotationsForEqualRow {
         int[] topCnt = new int[7];
         int[] bottomCnt = new int[7];
         for (int i = 0; i < n; i++) {
-            topCnt[tops[i]]++;
-            bottomCnt[bottoms[i]]++;
-            if (tops[i] == bottoms[i]) {
-                colCnt[tops[i]]++;
-            } else {
-                colCnt[tops[i]]++;
-                colCnt[bottoms[i]]++;
+            int top = tops[i];
+            int bottom = bottoms[i];
+            topCnt[top]++;
+            bottomCnt[bottom]++;
+            colCnt[top]++;
+            if (top != bottom) {
+                colCnt[bottom]++;
             }
         }
 
