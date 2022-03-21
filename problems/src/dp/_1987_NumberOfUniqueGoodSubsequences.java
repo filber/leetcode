@@ -9,17 +9,42 @@ public class _1987_NumberOfUniqueGoodSubsequences {
 
         char[] chars = binary.toCharArray();
         int n = chars.length;
-        int dp0 = 0, dp1 = 0, zero = 0;
-        for (int i = n - 1; i >= 0; i--) {
+
+        int hasZero = 0;
+        int start = 0;
+
+        while (start < n && chars[start] == '0') {
+            start++;
+            hasZero = 1;
+        }
+
+        if (start == n) {
+            return 1; // all zero
+        }
+
+        long[] dp = new long[n];
+        dp[start] = 1;
+        int lastOne = -1, lastZero = -1;
+        for (int i = start + 1; i < n; i++) {
             char ch = chars[i];
             if (ch == '0') {
-                zero = 1;
-                dp0 = (dp0 + dp1 + 1) % modulo; // update dp0
+                if (lastZero == -1) {
+                    dp[i] = (2 * dp[i - 1]) % modulo;
+                } else {
+                    dp[i] = (2 * dp[i - 1] - dp[lastZero - 1] + modulo) % modulo;
+                }
+                lastZero = i;
+                hasZero = 1;
             } else {
-                dp1 = (dp0 + dp1 + 1) % modulo; // update dp1
+                if (lastOne == -1) {
+                    dp[i] = (2 * dp[i - 1]) % modulo;
+                } else {
+                    dp[i] = (2 * dp[i - 1] - dp[lastOne - 1] + modulo) % modulo;
+                }
+                lastOne = i;
             }
         }
 
-        return (dp1 + zero) % modulo;
+        return (int) ((dp[n - 1] + hasZero) % modulo);
     }
 }
