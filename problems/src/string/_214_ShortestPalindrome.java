@@ -9,7 +9,7 @@ public class _214_ShortestPalindrome {
         int[] prefix = new int[cs.length];
         int j = 0;
         for (int i = 1; i < cs.length; i++) {
-            while (j > 0 && cs[i] != cs[j]) {
+            while (j > 0 && cs[j] != cs[i]) {
                 j = prefix[j - 1];
             }
             if (cs[i] == cs[j]) {
@@ -17,7 +17,9 @@ public class _214_ShortestPalindrome {
             }
             prefix[i] = j;
         }
+
         int l = prefix[cs.length - 1];
-        return rev + s.substring(l);
+//        return rev + s.substring(l);
+        return rev.substring(0, rev.length() - l) + s;
     }
 }
