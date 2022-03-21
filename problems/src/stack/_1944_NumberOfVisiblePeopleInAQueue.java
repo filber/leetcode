@@ -12,8 +12,10 @@ public class _1944_NumberOfVisiblePeopleInAQueue {
                 ans[i]++;
                 top--;
             }
+            if (top >= 0) {
+                ans[i]++;
+            }
             stack[++top] = i;
-            if (top > 0) ans[i]++;
         }
         return ans;
     }
