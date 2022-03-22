@@ -7,36 +7,36 @@ import java.util.Arrays;
 public class _1547_MinimumCostToCutAStick {
 
     public int minCost(int n, int[] cuts) {
-        int m = cuts.length + 1;
         Arrays.sort(cuts);
-        int[] units = new int[m];
-        int pre = 0;
-        for (int i = 0; i < cuts.length; i++) {
-            units[i] = cuts[i] - pre;
-            pre = cuts[i];
+        int m = cuts.length + 1;
+        int[] sticks = new int[m];
+        sticks[0] = cuts[0];
+        for (int i = 1; i < m - 1; i++) {
+            sticks[i] = cuts[i] - cuts[i - 1];
         }
-        units[m - 1] = n - pre;
+        sticks[m - 1] = n - cuts[m - 2];
 
-        int[] prefix = new int[m+1];
+        int[] prefixSum = new int[m + 1];
         for (int i = 1; i <= m; i++) {
-            prefix[i] = prefix[i - 1] + units[i - 1];
+            prefixSum[i] = prefixSum[i - 1] + sticks[i - 1];
         }
 
         int[][] dp = new int[m][m];
-
-        for (int i = 0; i + 1 < m; i++) {
-            dp[i][i+1] = units[i] + units[i+1];
+        // init len = 2
+        for (int i = 0; i < m - 1; i++) {
+            dp[i][i + 1] = sticks[i] + sticks[i + 1];
         }
 
         for (int len = 3; len <= m; len++) {
-            for (int i = 0; i + len <= m; i++) {
+            for (int i = 0; i + len - 1 < m; i++) {
                 int j = i + len - 1;
-                int min = Integer.MAX_VALUE;
-                int stickLen = prefix[j + 1] - prefix[i];
+                int totalCost = prefixSum[j + 1] - prefixSum[i];
+                int minCost = Integer.MAX_VALUE;
+                // PAY ATTENTION! i<=k<j, k starts from i
                 for (int k = i; k < j; k++) {
-                    min = Math.min(min, dp[i][k] + dp[k + 1][j]);
+                    minCost = Math.min(minCost, dp[i][k] + dp[k + 1][j]);
                 }
-                dp[i][j] = min + stickLen;
+                dp[i][j] = minCost + totalCost;
             }
         }
 
