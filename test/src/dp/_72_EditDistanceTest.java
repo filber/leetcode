@@ -37,4 +37,10 @@ public class _72_EditDistanceTest {
         int distance = target.minDistance("sea", "eat");
         assertEquals(2, distance);
     }
+
+    @Test
+    public void testMinDistance4() throws Exception {
+        int distance = target.minDistance("sea", "ate");
+        assertEquals(3, distance);
+    }
 }
