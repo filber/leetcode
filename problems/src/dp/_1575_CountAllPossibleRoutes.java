@@ -17,39 +17,32 @@ public class _1575_CountAllPossibleRoutes {
         int m = locations.length;
         int n = fuel + 1;
 
-        int[][] dp = new int[m][n];
-        int[] cost = new int[m];
-        for (int i = 0; i < m; i++) {
-            cost[i] = Math.abs(locations[i] - locations[finish]);
-        }
+        // dp[j][i][0]: STAY at city i with j fuel remain
+        // dp[j][i][1]: moving RIGHT through city i with j fuel remain
+        // dp[j][i][2]: moving LEFT through city i with j fuel remain
+        int[][][] dp = new int[n][m][3];
+        dp[fuel][start][0] = 1;
 
-        Arrays.fill(dp[finish], 1);
-
-        for (int j = 1; j <= fuel; j++) {
+        for (int j = fuel; j >= 0; j--) {
             for (int i = 0; i < m; i++) {
-                int cost1 = cost[i];
-                if (cost1 <= j) {
-                    // Iterate all reachable cities with fuel = j
+                if (i > 0 && locations[i] - locations[i - 1] + j <= fuel) {
+                    int gas = locations[i] - locations[i - 1]; // spent gas from i-1 to i
+                    dp[j][i][0] = (dp[j][i][0] + dp[j + gas][i - 1][0] + dp[j + gas][i - 1][1]) % modulo;
+                    dp[j][i][1] = (dp[j][i][1] + dp[j + gas][i - 1][0] + dp[j + gas][i - 1][1]) % modulo;
+                }
 
-                    // search left
-                    int l = i - 1;
-                    while (l >= 0 && (locations[i] - locations[l]) <= j) {
-                        int cost2 = locations[i] - locations[l];
-                        dp[i][j] = (dp[i][j] + dp[l][j - cost2]) % modulo;
-                        l--;
-                    }
-
-                    // search right
-                    int r = i + 1;
-                    while (r < m && (locations[r] - locations[i]) <= j) {
-                        int cost2 = locations[r] - locations[i];
-                        dp[i][j] = (dp[i][j] + dp[r][j - cost2]) % modulo;
-                        r++;
-                    }
+                if (i < m - 1 && locations[i + 1] - locations[i] + j <= fuel) {
+                    int gas = locations[i + 1] - locations[i]; // spent gas from i+1 to i
+                    dp[j][i][0] = (dp[j][i][0] + dp[j + gas][i + 1][0] + dp[j + gas][i + 1][2]) % modulo;
+                    dp[j][i][2] = (dp[j][i][2] + dp[j + gas][i + 1][0] + dp[j + gas][i + 1][2]) % modulo;
                 }
             }
         }
 
-        return dp[start][fuel];
+        long sum = 0;
+        for (int j = 0; j <= fuel; j++) {
+            sum += dp[j][finish][0];
+        }
+        return (int) (sum % modulo);
     }
 }
