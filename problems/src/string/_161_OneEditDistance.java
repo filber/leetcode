@@ -1,36 +1,37 @@
 package string;
 
+//https://leetcode.com/problems/one-edit-distance/
+
 public class _161_OneEditDistance {
 
     boolean isOneEditDistance(String s, String t) {
-        if (s.length() < t.length()) {
+        int m = s.length();
+        int n = t.length();
+        if (m < n) {
             return isOneEditDistance(t, s);
-        } else if (s.length() - t.length() > 1) {
+        } else if (m - n > 1) {
             return false;
         }
-
         char[] sChars = s.toCharArray();
-        int m = sChars.length;
         char[] tChars = t.toCharArray();
-        int n = tChars.length;
-        boolean chanceUsed = false;
         int l = 0, r = 0;
+        int mc = 0;
         while (l < m && r < n) {
             if (sChars[l] == tChars[r]) {
                 l++;
                 r++;
             } else {
-                if (chanceUsed) {
+                mc++;
+                if (mc == 2) {
                     return false;
-                } else {
-                    if (m == n) {
-                        r++;
-                    }
-                    l++;
-                    chanceUsed = true;
+                }
+                l++; // delete S[l]
+                if (m == n) {
+                    r++; // replace T[r]
                 }
             }
         }
+
         return true;
     }
 }
