@@ -1,6 +1,5 @@
 package array_matrix;
 
-import array_matrix._2147_NumberOfWaysToDivideALongCorridor;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
