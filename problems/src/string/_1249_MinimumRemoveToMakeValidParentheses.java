@@ -6,41 +6,44 @@ public class _1249_MinimumRemoveToMakeValidParentheses {
 
     public String minRemoveToMakeValid(String s) {
         char[] chars = s.toCharArray();
-
-        int fLen = 0;
-        int cnt = 0;
-        // Forward fill
-        for (int i = 0; i < chars.length; i++) {
-            char ch = chars[i];
+        int n = chars.length;
+        int l = 0, r = 0;
+        int stack = 0;
+        // forward
+        while (r < n) {
+            char ch = chars[r++];
+            chars[l++] = ch;
             if (ch == '(') {
-                cnt++;
+                stack++;
             } else if (ch == ')') {
-                cnt--;
+                stack--;
             }
-            chars[fLen++] = ch;
-            if (cnt < 0) {
-                fLen--;
-                cnt = 0;
+            if (stack < 0) {
+                l--;
+                stack++;
             }
         }
 
-        cnt = 0;
-        int bLen = fLen - 1;
-        for (int i = fLen - 1; i >= 0; i--) {
-            char ch = chars[i];
+        stack = 0;
+        int end = l - 1;
+        r = end;
+        l = end;
+        // backward
+        while (l >= 0) {
+            char ch = chars[l--];
+            chars[r--] = ch;
             if (ch == ')') {
-                cnt++;
+                stack++;
             } else if (ch == '(') {
-                cnt--;
+                stack--;
             }
-            chars[bLen--] = ch;
-            if (cnt < 0) {
-                bLen++;
-                cnt = 0;
+            if (stack < 0) {
+                r++;
+                stack++;
             }
         }
 
-        String res = new String(chars, bLen + 1, fLen - bLen - 1);
-        return res;
+        int start = r + 1;
+        return new String(chars, start, end - start + 1);
     }
 }
