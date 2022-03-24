@@ -1,5 +1,6 @@
 package graph;
 
+//https://leetcode.com/problems/the-most-similar-path-in-a-graph/
 //https://blog.csdn.net/qq_21201267/article/details/107983113
 
 import java.util.ArrayList;
@@ -25,54 +26,54 @@ public class _1548_TheMostSimilarPathInAGraph {
     }
 
     public List<Integer> mostSimilar(String[] names, int[][] roads, String[] targetPath) {
-        int n = names.length;
-        int m = targetPath.length;
         // 1. Build Graph
+        int m = targetPath.length;
+        int n = names.length;
         List<Integer>[] graph = new List[n];
         for (int i = 0; i < n; i++) {
             graph[i] = new ArrayList<>();
         }
-        for (int[] r : roads) {
-            graph[r[0]].add(r[1]);
-            graph[r[1]].add(r[0]);
+        for (int[] road : roads) {
+            graph[road[0]].add(road[1]);
+            graph[road[1]].add(road[0]);
         }
 
-        // 2. Figure out the best path for each city
-
-        // DP[i][j]: minimum edit distance for
-        // targetPath.substring[0,i] if ending with city j
+        // 2. Init DP&Paths
         int[][] dp = new int[m][n];
         for (int i = 0; i < m; i++) {
             Arrays.fill(dp[i], Integer.MAX_VALUE);
         }
-        int[][] path1 = new int[n][1]; // best path for city
-        int[][] path2 = new int[n][1]; // best candidate paths
+        int[][] path1 = new int[n][1];
+        int[][] path2 = new int[n][1];
         for (int j = 0; j < n; j++) {
-            int editDistance = targetPath[0].equals(names[j]) ? 0 : 1;
-            dp[0][j] = editDistance;
-            path1[j][0] = j; // path starts with j
+            int distance = targetPath[0].equals(names[j]) ? 0 : 1;
+            dp[0][j] = distance;
+            path1[j][0] = j;
         }
 
-        for (int k = 1; k < m; k++) {
-            for (int i = 0; i < n; i++) {
-                for (int j : graph[i]) {
-                    // Using dp[k-1][i] to refresh all the linked cities of i, dp[k][j]
-                    int editDistance = targetPath[k].equals(names[j]) ? 0 : 1;
-                    if (dp[k][j] > dp[k - 1][i] + editDistance) {
-                        dp[k][j] = dp[k - 1][i] + editDistance;
-                        path2[j] = Arrays.copyOf(path1[i], k + 1);
-                        path2[j][k] = j; // append city j
+        // 3. Fill DP&Paths
+        for (int i = 1; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int preDistance = dp[i - 1][j];
+                for (int k : graph[j]) {
+                    int nextDistance = targetPath[i].equals(names[k]) ? 0 : 1;
+                    if (dp[i][k] > preDistance + nextDistance) {
+                        dp[i][k] = preDistance + nextDistance;
+                        // Rolling Path
+                        path2[k] = Arrays.copyOf(path1[j], i + 1);
+                        path2[k][i] = k;
                     }
                 }
             }
             // swap path1 and path2
-            int[][] tmp = path2;
-            path2 = path1;
-            path1 = tmp;
+            int[][] temp = path1;
+            path1 = path2;
+            path2 = temp;
         }
 
-        // 3. Find the best path with the minimum edit distance
-        int minDistance = Integer.MAX_VALUE, minIdx = 0;
+        // 4. Find minimum edit distance
+        int minDistance = Integer.MAX_VALUE;
+        int minIdx = -1;
         for (int j = 0; j < n; j++) {
             if (dp[m - 1][j] < minDistance) {
                 minDistance = dp[m - 1][j];
@@ -81,8 +82,8 @@ public class _1548_TheMostSimilarPathInAGraph {
         }
 
         List<Integer> ans = new ArrayList<>();
-        for (int city : path1[minIdx]) {
-            ans.add(city);
+        for (int i = 0; i < m; i++) {
+            ans.add(path1[minIdx][i]);
         }
         return ans;
     }
