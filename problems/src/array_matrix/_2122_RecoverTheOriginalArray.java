@@ -1,44 +1,73 @@
 package array_matrix;
 
-import java.util.Arrays;
+//https://leetcode.com/problems/recover-the-original-array/
+
+import java.util.*;
 
 public class _2122_RecoverTheOriginalArray {
 
+    int[] nums;
+    int n;
+    int[] ans;
+    Map<Integer, List<Integer>> map = new HashMap<>();
+
     public int[] recoverArray(int[] nums) {
+        n = nums.length;
+        this.nums = nums;
+        ans = new int[n / 2];
         Arrays.sort(nums);
-        int[] res = new int[nums.length / 2];
-        int prev = 0;
-        for (int i = 1; i < nums.length; i++) {
-            int diff = nums[i] - nums[0];
-            // diff not tried before
-            // diff is an even number larger than 0
-            // diff/2 is a valid k for array
-            if (diff != prev && diff > 0 && diff % 2 == 0 && check(nums, i, diff / 2, res))
-                break;
-            prev = diff;
+
+        for (int i = 0; i < n; i++) {
+            List<Integer> list = map.computeIfAbsent(nums[i], (k) -> new ArrayList<>());
+            list.add(i);
         }
-        return res;
+
+        int first = nums[0];
+        int pre = -1;
+        for (int i = 1; i < n; i++) {
+            int k = nums[i] - first;
+            if (k != pre && k > 0 && k % 2 == 0 && check(k / 2)) {
+                break;
+            }
+            pre = k;
+        }
+
+        return ans;
     }
 
-    private boolean check(int[] nums, int j, int k, int[] res) {
-        int idx = 0;
-        boolean[] visited = new boolean[nums.length];
+    private boolean check(int k) {
+        int len = 0;
+        boolean[] visited = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                int val = nums[i] + k;
+                visited[i] = true;
+                int higher = val + k;
+                // if higher exist, mark it as visited
+                List<Integer> list = map.get(higher);
+                if (list == null) {
+                    return false;
+                }
 
-        for (int i = 0; i < nums.length; i++) {
-            if (visited[i]) continue;
-            visited[i] = true;
-            int target = nums[i] + 2 * k;
+                boolean foundHigher = false;
+                Iterator<Integer> iterator = list.listIterator();
+                while (iterator.hasNext()) {
+                    int j = iterator.next();
+                    if (!visited[j]) {
+                        visited[j] = true;
+                        foundHigher = true;
+                        break;
+                    }
+                }
 
-            // try to find target not visited
-            while (j < nums.length && (nums[j] < target || (nums[j] == target && visited[j]))) {
-                j++;
+                if (!foundHigher) {
+                    return false;
+                } else {
+                    ans[len++] = val;
+                }
             }
-            if (j == nums.length || nums[j] != target) {
-                return false; // target not found!
-            }
-            visited[j] = true;
-            res[idx++] = nums[i] + k;
         }
+
         return true;
     }
 }
