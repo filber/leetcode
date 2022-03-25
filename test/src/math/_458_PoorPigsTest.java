@@ -37,4 +37,10 @@ public class _458_PoorPigsTest {
         int pigs = target.poorPigs(4, 15, 30);
         assertEquals(2, pigs);
     }
+
+    @Test
+    public void testPoorPigs4() throws Exception {
+        int pigs = target.poorPigs(1, 15, 30);
+        assertEquals(0, pigs);
+    }
 }
