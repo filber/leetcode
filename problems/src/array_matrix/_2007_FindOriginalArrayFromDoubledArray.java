@@ -7,45 +7,57 @@ import java.util.Arrays;
 public class _2007_FindOriginalArrayFromDoubledArray {
 
     public int[] findOriginalArray(int[] changed) {
-        if (changed == null || changed.length % 2 == 1)
-            return new int[0];
-        int max = Integer.MIN_VALUE;
-        int min = Integer.MAX_VALUE;
-        for (int i : changed) {
-            max = Math.max(max, i);
-            min = Math.min(min, i);
+        int[] EMPTY = new int[0];
+        // 0. Guard condition
+        if (changed.length % 2 == 1) {
+            return EMPTY;
         }
-        int[] count = new int[max - min + 1];
-        for (int i : changed) {
-            count[i - min]++;
-        }
-        int[] result = new int[changed.length / 2];
-        int index = 0;
-
-        if (min == 0) {
-            if (count[0] % 2 == 1) {
-                return new int[0];
-            } else {
-                Arrays.fill(result, index, index + count[0] / 2, 0);
-                index += count[0] / 2;
-                count[0] = 0;
+        int[] ans = new int[changed.length / 2];
+        int len = 0;
+        // 1. Find min&max
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        for (int c : changed) {
+            if (c < min) {
+                min = c;
             }
+            if (c > max) {
+                max = c;
+            }
+        }
+
+        // 2. Bucket Sort
+        int[] bucket = new int[max - min + 1];
+        for (int c : changed) {
+            bucket[c - min]++;
+        }
+
+        // 3. Handle 0
+        if (min == 0) {
+            if (bucket[0] % 2 == 1) {
+                return EMPTY;
+            }
+            int cnt = bucket[0] / 2;
+            Arrays.fill(ans, len, len + cnt, 0);
+            len += cnt;
+            bucket[0] = 0;
         }
 
         for (int i = min; i <= max; i++) {
             int idx = i - min;
-            int cnt = count[idx];
-            if (cnt > 0) {
-                int doubleIdx = 2 * i - min;
-                if ((2 * i) > max || count[doubleIdx] < cnt) {
-                    return new int[0];
+            int cnt = bucket[idx];
+            if (cnt != 0) {
+                int dIdx = 2 * i - min;
+                if (dIdx >= bucket.length || bucket[dIdx] < cnt) {
+                    return EMPTY;
+                } else {
+                    Arrays.fill(ans, len, len + cnt, i);
+                    len += cnt;
+                    bucket[idx] = 0;
+                    bucket[dIdx] -= cnt;
                 }
-                Arrays.fill(result, index, index + cnt, i);
-                index += cnt;
-                count[doubleIdx] -= cnt;
-                count[idx] = 0;
             }
         }
-        return result;
+
+        return ans;
     }
 }
