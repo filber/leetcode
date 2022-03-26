@@ -1,5 +1,7 @@
 package dfs;
 
+//https://leetcode.com/problems/score-of-parentheses/
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,40 +11,29 @@ public class _856_ScoreOfParentheses {
     Map<String, Integer> mem = new HashMap<>();
 
     public int scoreOfParentheses(String s) {
-        char[] chars = s.toCharArray();
-        int n = chars.length;
-        if (n == 2) {
+        if (s.length() == 2) {
             return 1;
         } else if (mem.containsKey(s)) {
             return mem.get(s);
         }
-
-        int score = 0;
-        int[] idx = new int[n];
+        char[] chars = s.toCharArray();
+        int n = chars.length;
         int[] stack = new int[n];
         int top = -1;
+        int score = 0;
         for (int i = 0; i < n; i++) {
-            idx[i] = i;
             char ch = chars[i];
             if (ch == '(') {
                 stack[++top] = i;
-            } else {
-                idx[i] = stack[top--];
-            }
-        }
-
-
-        int start = 0;
-        for (int i = 0; i < n; i++) {
-            if (chars[i] == ')' && idx[i] == start) {
-                int end = i;
-                if (start + 1 == end) {
+            } else if (top == 0) {
+                int preIdx = stack[top--];
+                if (i - preIdx == 1) {
                     score += 1;
                 } else {
-                    int innerScore = scoreOfParentheses(s.substring(start + 1, end));
-                    score += 2 * innerScore;
+                    score += 2 * scoreOfParentheses(s.substring(preIdx + 1, i));
                 }
-                start = i + 1; // move start
+            } else {
+                top--;
             }
         }
 
