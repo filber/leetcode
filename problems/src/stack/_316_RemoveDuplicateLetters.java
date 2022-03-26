@@ -1,36 +1,41 @@
 package stack;
 
+//https://leetcode.com/problems/remove-duplicate-letters/
+
 public class _316_RemoveDuplicateLetters {
 
     public String removeDuplicateLetters(String s) {
-        int[] charCnt = new int[26];
-        // true: must delete; false: could delete
-        boolean[] deleteFlag = new boolean[26];
-        char[] stack = new char[26];
-        int top = -1;
-
         char[] chars = s.toCharArray();
-        for (char ch : chars) {
-            charCnt[ch - 'a']++;
+        int n = chars.length;
+        int[] stack = new int[n];
+        int top = -1;
+        int[] lastIdx = new int[26];
+        boolean[] used = new boolean[26];
+
+        for (int i = 0; i < n; i++) {
+            char ch = chars[i];
+            lastIdx[ch - 'a'] = i;
         }
 
-        for (char ch : chars) {
-            if (deleteFlag[ch - 'a']) {
-                charCnt[ch - 'a']--;
-                continue; // skip ch
+        for (int i = 0; i < n; i++) {
+            char ch = chars[i];
+            if (used[ch - 'a']) {
+                continue; // already in stack
             }
-
-            while (top >= 0 && charCnt[stack[top] - 'a'] > 0 && ch < stack[top]) {
-                deleteFlag[stack[top] - 'a'] = false;
+            while (top >= 0 &&
+                    ch < chars[stack[top]] &&
+                    i < lastIdx[chars[stack[top]] - 'a']) {
+                used[chars[stack[top]] - 'a'] = false;
                 top--;
             }
-
-            stack[++top] = ch;
-
-            deleteFlag[stack[top] - 'a'] = true;
-            charCnt[stack[top] - 'a']--;
+            stack[++top] = i;
+            used[ch - 'a'] = true;
         }
 
-        return new String(stack, 0, top + 1);
+        char[] ans = new char[top + 1];
+        for (int i = 0; i <= top; i++) {
+            ans[i] = chars[stack[i]];
+        }
+        return new String(ans);
     }
 }
