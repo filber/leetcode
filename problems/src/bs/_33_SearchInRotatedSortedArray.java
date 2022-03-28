@@ -1,23 +1,15 @@
-package array_matrix;
+package bs;
 
-//https://leetcode.com/problems/search-in-rotated-sorted-array-ii/
+//https://leetcode.com/problems/search-in-rotated-sorted-array/
 
-public class _81_SearchInRotatedSortedArrayII {
+public class _33_SearchInRotatedSortedArray {
 
-    public boolean search(int[] nums, int target) {
+    public int search(int[] nums, int target) {
         int l = 0, r = nums.length - 1;
         while (l <= r) {
             int mid = (l + r) / 2;
             // found target!
-            if (nums[mid] == target) return true;
-
-            while (l < mid && nums[l] == nums[mid]) {
-                l++;
-            }
-            if (l == mid) {
-                l = mid + 1;
-                continue;
-            }
+            if (nums[mid] == target) return mid;
 
             // right part in order
             if (nums[mid] <= nums[r]) {
@@ -39,6 +31,6 @@ public class _81_SearchInRotatedSortedArrayII {
             }
         }
 
-        return false;
+        return -1;
     }
 }
