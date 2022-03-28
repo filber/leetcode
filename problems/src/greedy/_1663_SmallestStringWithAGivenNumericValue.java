@@ -1,36 +1,31 @@
 package greedy;
 
+//https://leetcode.com/problems/smallest-string-with-a-given-numeric-value/
+
 import java.util.Arrays;
 
 public class _1663_SmallestStringWithAGivenNumericValue {
 
     public String getSmallestString(int n, int k) {
-        char[] ans = new char[n];
-        Arrays.fill(ans, 0, n, 'a');
-
-        int cur = n - 1;
-        while (n > 0) {
+        char[] chars = new char[n];
+        while (k > 0) {
             if (n == k) {
-                break; // remain leading 'a'
+                Arrays.fill(chars, 0, n, 'a');
+                k = 0;
+            } else if (k + 1 - n >= 26) {
+                int cnt = (k + 1 - n) / 26;
+                Arrays.fill(chars, n - cnt, n, 'z');
+                n -= cnt;
+                k -= 26 * cnt;
             } else {
-                int m = k + 1 - n;
-                if (m > 26) {
-                    int zCnt = m / 26;
-                    // fill trailing 'z'
-                    Arrays.fill(ans, cur + 1 - zCnt, cur + 1, 'z');
-                    n -= zCnt;
-                    k -= zCnt * 26;
-                    cur -= zCnt;
-                } else {
-                    // m<=26
-                    ans[cur] += m - 1;
-                    cur--;
-                    n--;
-                    k -= m;
-                }
+                int val = k + 1 - n;
+                char ch = (char) (val - 1 + 'a');
+                chars[n - 1] = ch;
+                k -= val;
+                n--;
             }
         }
 
-        return new String(ans);
+        return new String(chars);
     }
 }
