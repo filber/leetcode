@@ -1,32 +1,41 @@
 package array_matrix;
 
+//https://leetcode.com/problems/minimum-domino-rotations-for-equal-row/
+
 public class _1007_MinimumDominoRotationsForEqualRow {
 
     public int minDominoRotations(int[] tops, int[] bottoms) {
-        int n = tops.length;
-        int[] colCnt = new int[7];
         int[] topCnt = new int[7];
         int[] bottomCnt = new int[7];
+        int[] colCnt = new int[7];
+        int n = tops.length;
         for (int i = 0; i < n; i++) {
             int top = tops[i];
             int bottom = bottoms[i];
             topCnt[top]++;
             bottomCnt[bottom]++;
-            colCnt[top]++;
-            if (top != bottom) {
+            if (top == bottom) {
+                colCnt[top]++;
+            } else {
+                colCnt[top]++;
                 colCnt[bottom]++;
             }
         }
 
-        int minRotations = Integer.MAX_VALUE;
+        int max = 0;
+        int maxCnt = 0;
         for (int i = 1; i < 7; i++) {
-            if (colCnt[i] >= n) {
-                int topRotations = n - topCnt[i];
-                int bottomRotations = n - bottomCnt[i];
-                minRotations = Math.min(minRotations, Math.min(topRotations, bottomRotations));
+            if (colCnt[i] > maxCnt) {
+                max = i;
+                maxCnt = colCnt[i];
             }
         }
 
-        return minRotations == Integer.MAX_VALUE ? -1 : minRotations;
+        if (maxCnt < n) {
+            return -1;
+        }
+
+        int rotations = n - Math.max(topCnt[max], bottomCnt[max]);
+        return rotations;
     }
 }
