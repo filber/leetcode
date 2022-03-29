@@ -4,9 +4,8 @@ package list;
 
 public class _287_FindTheDuplicateNumber {
 
-    public static int findDuplicate(int[] nums) {
-        int fast = 0;
-        int slow = 0;
+    public int findDuplicate(int[] nums) {
+        int fast = 0, slow = 0;
         do {
             slow = nums[slow];
             fast = nums[nums[fast]];
@@ -18,13 +17,6 @@ public class _287_FindTheDuplicateNumber {
             slow = nums[slow];
         }
 
-        return slow;
-    }
-
-    public static void main(String[] args) {
-
-        int d1 = findDuplicate(new int[]{1, 3, 4, 2, 2});
-        int d2 = findDuplicate(new int[]{2, 5, 9, 6, 9, 3, 8, 9, 7, 1});
-        int d3 = findDuplicate(new int[]{3, 1, 3, 4, 2});
+        return fast;
     }
 }
