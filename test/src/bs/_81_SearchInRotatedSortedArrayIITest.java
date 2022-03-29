@@ -31,4 +31,10 @@ public class _81_SearchInRotatedSortedArrayIITest {
         boolean ans = target.search(new int[]{2, 5, 6, 0, 0, 1, 2}, 3);
         assertFalse(ans);
     }
+
+    @Test
+    public void testSearch3() throws Exception {
+        boolean ans = target.search(new int[]{1, 1, 1, 1, 0, 1, 1}, 0);
+        assertTrue(ans);
+    }
 }
