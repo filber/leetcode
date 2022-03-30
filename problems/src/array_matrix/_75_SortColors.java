@@ -3,7 +3,6 @@ package array_matrix;
 public class _75_SortColors {
 
     public void sortColors(int[] nums) {
-        int n = nums.length - 1;
         int zeroCnt = 0, oneCnt = 0, twoCnt = 0;
         for (int num : nums) {
             if (num == 0) {
