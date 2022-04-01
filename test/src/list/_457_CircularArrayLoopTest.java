@@ -76,6 +76,7 @@ public class _457_CircularArrayLoopTest {
     @Test
     public void testCircularArrayLoop8() throws Exception {
         // 0->1->1->1...
+        // 2->2->2->2
         boolean circular = target.circularArrayLoop(new int[]{-2, -3, -9});
         assertFalse(circular);
     }
