@@ -5,24 +5,22 @@ package string;
 public class _3_LongestSubstringWithoutRepeatingCharacters {
 
     public int lengthOfLongestSubstring(String s) {
-        int[] charCnt = new int[128];
         char[] chars = s.toCharArray();
         int n = chars.length;
-        int l = 0, r = 0;
-        int len = 0;
+        int[] chCnt = new int[128];
+        int l = 0, r = 0, len = 0;
         while (r < n) {
-            char rCh = chars[r];
-            if (charCnt[rCh] == 0) {
+            char ch = chars[r];
+            if (chCnt[ch] == 0) {
+                chCnt[ch] = 1;
                 r++;
-                charCnt[rCh] = 1;
+                len = Math.max(len, r - l);
             } else {
                 char lCh = chars[l];
-                charCnt[lCh] = 0;
+                chCnt[lCh] = 0;
                 l++;
             }
-            len = Math.max(len, r - l);
         }
-
         return len;
     }
 }
