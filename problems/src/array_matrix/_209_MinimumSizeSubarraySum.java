@@ -5,13 +5,10 @@ package array_matrix;
 public class _209_MinimumSizeSubarraySum {
 
     public int minSubArrayLen(int target, int[] nums) {
-        int l = 0, r = 0;
-        int n = nums.length;
-        int sum = nums[0];
+        int n = nums.length, r = 0, l = 0, sum = nums[0];
         if (sum >= target) {
             return 1;
         }
-
         int len = Integer.MAX_VALUE;
         while (r < n) {
             if (sum >= target) {
