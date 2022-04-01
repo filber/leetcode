@@ -4,26 +4,45 @@ package array_matrix;
 
 public class _904_FruitIntoBaskets {
 
-    int first = Integer.MAX_VALUE;
-    int firstCnt = 0;
-    int second = Integer.MAX_VALUE;
-    int secondCnt = 0;
+    int fruit1;
+    int fruit2;
+    int fruit1Cnt;
+    int fruit2Cnt;
 
     public int totalFruit(int[] fruits) {
         int n = fruits.length;
         if (n < 3) {
             return n;
         }
-        int len = 0;
 
-        int l = 0, r = 0;
+        int l = 0, r = 1;
+        while (r < n && fruits[r] == fruits[0]) {
+            r++;
+        }
+        if (r == n) {
+            return n;
+        }
+
+        fruit1 = fruits[l];
+        fruit2 = fruits[r];
+        fruit1Cnt = r - l;
+        fruit2Cnt = 1;
+        int len = r - l + 1;
+        r++;
+
         while (r < n) {
-            if (anyBasketEmpty() || contains(fruits[r])) {
-                addFruit(fruits[r]);
+            int fruit = fruits[r];
+            if (fruit == fruit1 || fruit == fruit2) {
+                addFruit(fruit);
+                len = Math.max(len, r - l + 1);
                 r++;
-                len = Math.max(len, r - l);
             } else {
                 removeFruit(fruits[l]);
+                if (fruit1Cnt == 0) {
+                    fruit1 = fruit;
+                } else if (fruit2Cnt == 0) {
+                    fruit2 = fruit;
+                }
                 l++;
             }
         }
@@ -31,43 +50,19 @@ public class _904_FruitIntoBaskets {
         return len;
     }
 
-    private boolean anyBasketEmpty() {
-        return first == Integer.MAX_VALUE || second == Integer.MAX_VALUE;
-    }
-
-    private boolean contains(int fruit) {
-        return first == fruit || second == fruit;
-    }
-
-    private void addFruit(int fruit) {
-        if (contains(fruit)) {
-            if (first == fruit) {
-                firstCnt++;
-            } else {
-                secondCnt++;
-            }
+    private void removeFruit(int fruit) {
+        if (fruit == fruit1) {
+            fruit1Cnt--;
         } else {
-            if (first == Integer.MAX_VALUE) {
-                first = fruit;
-                firstCnt = 1;
-            } else {
-                second = fruit;
-                secondCnt = 1;
-            }
+            fruit2Cnt--;
         }
     }
 
-    private void removeFruit(int fruit) {
-        if (first == fruit) {
-            firstCnt--;
-            if (firstCnt == 0) {
-                first = Integer.MAX_VALUE;
-            }
+    private void addFruit(int fruit) {
+        if (fruit == fruit1) {
+            fruit1Cnt++;
         } else {
-            secondCnt--;
-            if (secondCnt == 0) {
-                second = Integer.MAX_VALUE;
-            }
+            fruit2Cnt++;
         }
     }
 }
