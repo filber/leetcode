@@ -6,48 +6,44 @@ public class _844_BackspaceStringCompare {
 
     public boolean backspaceCompare(String s, String t) {
         char[] sChars = s.toCharArray();
-        char[] tChars = t.toCharArray();
         int l = sChars.length - 1;
+        char[] tChars = t.toCharArray();
         int r = tChars.length - 1;
 
-        while (l >= 0 && r >= 0) {
-            // move l until found non-skip chars
-            l = move(l, sChars);
-
-            // move r until found non-skip chars
-            r = move(r, tChars);
-
-            if (l >= 0 && r >= 0) {
+        while (l >= 0 || r >= 0) {
+            l = move(sChars, l);
+            r = move(tChars, r);
+            if (l == -1 && r == -1) {
+                return true;
+            } else if (l >= 0 && r >= 0) {
                 if (sChars[l] == tChars[r]) {
                     l--;
                     r--;
                 } else {
                     return false;
                 }
-            } else if (l < 0 && r < 0) {
-                return true;
             } else {
                 return false;
             }
         }
-        l = move(l, sChars);
-        r = move(r, tChars);
-        return l == r;
+
+        return true;
     }
 
-    private int move(int cursor, char[] chars) {
+    private int move(char[] chars, int i) {
         int skip = 0;
-        while (cursor >= 0) {
-            if (chars[cursor] == '#') {
+        while (i >= 0) {
+            if (chars[i] == '#') {
                 skip++;
-                cursor--;
+                i--;
             } else if (skip > 0) {
                 skip--;
-                cursor--;
+                i--;
             } else {
-                break;
+                return i;
             }
         }
-        return cursor;
+
+        return i;
     }
 }
