@@ -8,19 +8,19 @@ public class _713_SubarrayProductLessThanK {
         if (k <= 1) {
             return 0;
         }
-
         int n = nums.length;
-        int prod = 1, ans = 0, l = 0, r = 0;
+        int l = 0, r = 0;
+        int cnt = 0, product = 1;
         while (r < n) {
-            prod *= nums[r];
-            while (prod >= k) {
-                prod /= nums[l];
-                l++;
+            product *= nums[r];
+            while (product >= k) {
+                product /= nums[l++];
             }
+            cnt += r - l + 1;
             r++;
-            ans += r - l;
         }
-        return ans;
+
+        return cnt;
     }
 
 }
