@@ -37,4 +37,22 @@ public class _410_SplitArrayLargestSumTest {
         int max = target.splitArray(new int[]{1, 4, 4}, 3);
         assertEquals(4, max);
     }
+
+    @Test
+    public void testCount1() throws Exception {
+        int max = target.count(new int[]{7, 2, 5, 10, 8}, 18);
+        assertEquals(2, max);
+    }
+
+    @Test
+    public void testCount2() throws Exception {
+        int max = target.count(new int[]{7, 2, 5, 10, 8}, 10);
+        assertEquals(4, max);
+    }
+
+    @Test
+    public void testCount3() throws Exception {
+        int max = target.count(new int[]{7, 2, 5, 10, 8}, 14);
+        assertEquals(3, max);
+    }
 }
