@@ -5,25 +5,22 @@ package array_matrix;
 public class _581_ShortestUnsortedContinuousSubarray {
 
     public int findUnsortedSubarray(int[] arr) {
-        int max = Integer.MIN_VALUE;
-        int min = Integer.MAX_VALUE;
-        int R = 0;
-        int L = 0;
-        for (int i = 0; i < arr.length; i++) {
+        int R = 0, L = 0;
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        int n = arr.length;
+        for (int i = 0; i < n; i++) {
+            max = Math.max(max, arr[i]);
             if (arr[i] < max) {
                 R = i;
-            } else {
-                max = arr[i];
             }
 
-            int j = arr.length - 1 - i;
-            if (min < arr[j]) {
+            int j = n - 1 - i;
+            min = Math.min(min, arr[j]);
+            if (arr[j] > min) {
                 L = j;
-            } else {
-                min = arr[j];
             }
         }
 
-        return R == L ? 0 : R - L + 1;
+        return L == R ? 0 : R - L + 1;
     }
 }
