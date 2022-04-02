@@ -6,21 +6,20 @@ public class _977_SquaresOfASortedArray {
 
     public int[] sortedSquares(int[] nums) {
         int n = nums.length;
-        int[] squares = new int[n];
-        int idx = n - 1;
         int l = 0, r = n - 1;
+        int[] squares = new int[n];
+        int i = n - 1;
         while (l <= r) {
-            int leftAbs = nums[l] >= 0 ? nums[l] : -nums[l];
-            int rightAbs = nums[r] >= 0 ? nums[r] : -nums[r];
-            if (leftAbs >= rightAbs) {
-                squares[idx--] = leftAbs * leftAbs;
+            int lVal = Math.abs(nums[l]);
+            int rVal = Math.abs(nums[r]);
+            if (lVal >= rVal) {
+                squares[i--] = lVal * lVal;
                 l++;
             } else {
-                squares[idx--] = rightAbs * rightAbs;
+                squares[i--] = rVal * rVal;
                 r--;
             }
         }
-
         return squares;
     }
 }
