@@ -2,6 +2,7 @@ package array_matrix;
 
 //https://leetcode.com/problems/3sum-smaller
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class _259_3SumSmaller {
@@ -15,30 +16,32 @@ public class _259_3SumSmaller {
 //            [-2, 0, 1]
 //            [-2, 0, 3]
 
+    int[] nums;
+
     public int threeSumSmaller(int[] nums, int target) {
+        this.nums = nums;
         Arrays.sort(nums);
-        int sum = 0;
         int n = nums.length;
+        int cnt = 0;
         for (int i = 0; i < n - 2; i++) {
-            int[] tmp = Arrays.copyOfRange(nums, i + 1, n);
-            sum += twoSumSmaller(tmp, target - nums[i]);
+            cnt += twoSumSmaller(i + 1, n - 1, target - nums[i]);
         }
-        return sum;
+
+        return cnt;
     }
 
-    private int twoSumSmaller(int[] nums, int target) {
-        int l = 0, r = nums.length - 1;
-        int sum = 0;
+    public int twoSumSmaller(int l, int r, int target) {
+        int cnt = 0;
         while (l < r) {
-            int lVal = nums[l];
-            int rVal = nums[r];
-            if (lVal + rVal >= target) {
+            int sum = nums[l] + nums[r];
+            if (sum >= target) {
                 r--;
             } else {
-                sum += r - l;
+                cnt += r - l;
                 l++;
             }
         }
-        return sum;
+
+        return cnt;
     }
 }
