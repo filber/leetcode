@@ -25,9 +25,14 @@ public class _457_CircularArrayLoop {
 
     private boolean isValid(int i) {
         int fast = i, slow = i;
+        visited[i] = true;
         do {
             slow = next(slow);
-            fast = next(next(fast));
+            visited[slow] = true;
+            fast = next(fast);
+            visited[fast] = true;
+            fast = next(fast);
+            visited[fast] = true;
         } while (fast != slow);
 
         boolean isPos = nums[slow] > 0;
