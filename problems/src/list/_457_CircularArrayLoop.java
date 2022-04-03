@@ -9,10 +9,9 @@ public class _457_CircularArrayLoop {
     int n;
 
     public boolean circularArrayLoop(int[] nums) {
+        this.nums = nums;
         n = nums.length;
         visited = new boolean[n];
-        this.nums = nums;
-
         for (int i = 0; i < n; i++) {
             if (!visited[i]) {
                 if (isValid(i)) {
@@ -25,29 +24,31 @@ public class _457_CircularArrayLoop {
     }
 
     private boolean isValid(int i) {
-        int slow = i;
-        int fast = i;
-        visited[i] = true;
+        int fast = i, slow = i;
         do {
-            slow = (slow + nums[slow] % n + n) % n;
-            visited[slow] = true;
-            fast = (fast + nums[fast] % n + n) % n;
-            visited[fast] = true;
-            fast = (fast + nums[fast] % n + n) % n;
-            visited[fast] = true;
-        } while (slow != fast);
+            slow = next(slow);
+            fast = next(next(fast));
+        } while (fast != slow);
+
+        boolean isPos = nums[slow] > 0;
 
         int len = 0;
-        boolean isPositive = nums[slow] > 0;
-        int start = slow;
+        int base = slow;
         do {
-            slow = (slow + nums[slow] % n + n) % n;
-            len++;
-            if (isPositive && nums[slow] < 0 || !isPositive && nums[slow] > 0) {
+            if (isPos && nums[slow] < 0 ||
+                    !isPos && nums[slow] > 0) {
                 return false;
             }
-        } while (slow != start);
+            slow = next(slow);
+            len++;
+        } while (slow != base);
 
         return len > 1;
     }
+
+    private int next(int pos) {
+        pos = (pos + nums[pos] % n + n) % n;
+        return pos;
+    }
+
 }
