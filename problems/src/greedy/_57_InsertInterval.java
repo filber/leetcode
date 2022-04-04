@@ -2,8 +2,6 @@ package greedy;
 
 //https://leetcode.com/problems/insert-interval/
 
-import list.ListNode;
-
 import java.util.ArrayList;
 import java.util.List;
 
