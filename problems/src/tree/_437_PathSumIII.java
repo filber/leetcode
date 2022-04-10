@@ -2,32 +2,42 @@ package tree;
 
 //https://leetcode.com/problems/path-sum-iii/
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class _437_PathSumIII {
 
-    int paths = 0;
+    int targetSum;
+    Map<Integer, Integer> preSum = new HashMap<>();
 
     public int pathSum(TreeNode root, int targetSum) {
-        if (root == null) {
-            return 0;
-        }
-        dfs(root, targetSum); // Use root
-        pathSum(root.left, targetSum); // skip root
-        pathSum(root.right, targetSum); // skip root
-        return paths;
+        preSum.put(0, 1);
+        this.targetSum = targetSum;
+
+        return dfs(root, 0);
     }
 
-    public void dfs(TreeNode root, int sum) {
-        if (root == null) {
-            return;
+    private int dfs(TreeNode node, int pathSum) {
+        if (node == null) {
+            return 0;
         }
-        // use root
-        sum -= root.val;
-        if (sum == 0) {
-            paths++;
-        }
-        // already use root, must use left
-        dfs(root.left, sum);
-        // already use root, must use right
-        dfs(root.right, sum);
+
+        pathSum += node.val;
+
+        int paths = 0;
+        paths += preSum.getOrDefault(pathSum - targetSum, 0);
+
+        // before entering left&right subtree,
+        // current path will be their prefix sum
+        preSum.put(pathSum, preSum.getOrDefault(pathSum, 0) + 1);
+
+        paths += dfs(node.left, pathSum);
+        paths += dfs(node.right, pathSum);
+
+        // after exiting from left&right subtree,
+        // current path won't be prefix sum of other paths
+        preSum.put(pathSum, preSum.getOrDefault(pathSum, 0) - 1);
+
+        return paths;
     }
 }
