@@ -28,36 +28,38 @@ public class _253_MeetingRoomsII {
             node.left = addRange(node.left, L, R);
         } else if (node.end <= L) {
             node.right = addRange(node.right, L, R);
+        } else if (L <= node.begin && node.end <= R) {
+            node.left = addRange(node.left, L, node.begin);
+            node.right = addRange(node.right, node.end, R);
+            node.k += 1;
         } else if (node.begin < L && R < node.end) {
             SegmentTree leftNode = new SegmentTree(node.begin, L, node.k);
             leftNode.left = node.left;
             node.left = leftNode;
+
             SegmentTree rightNode = new SegmentTree(R, node.end, node.k);
             rightNode.right = node.right;
             node.right = rightNode;
+
             node.begin = L;
             node.end = R;
             node.k += 1;
-        } else if (L <= node.begin && node.end <= R) {
-            node.k += 1;
+        } else if (L <= node.begin) {
+            SegmentTree rightNode = new SegmentTree(R, node.end, node.k);
+            rightNode.right = node.right;
+            node.right = rightNode;
+
             node.left = addRange(node.left, L, node.begin);
-            node.right = addRange(node.right, node.end, R);
-        } else if (node.begin < L && node.end <= R) {
+            node.k += 1;
+            node.end = R;
+        } else {
             SegmentTree leftNode = new SegmentTree(node.begin, L, node.k);
             leftNode.left = node.left;
             node.left = leftNode;
 
+            node.right = addRange(node.right, node.end, R);
             node.k += 1;
             node.begin = L;
-            node.right = addRange(node.right, node.end, R);
-        } else if (L <= node.begin && R < node.end) {
-            SegmentTree rightNode = new SegmentTree(R, node.end, node.k);
-            rightNode.right = node.right;
-            node.right = rightNode;
-
-            node.k += 1;
-            node.end = R;
-            node.left = addRange(node.left, L, node.begin);
         }
 
         rooms = Math.max(rooms, node.k);
