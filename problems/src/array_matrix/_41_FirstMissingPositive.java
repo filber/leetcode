@@ -7,21 +7,22 @@ public class _41_FirstMissingPositive {
 
     public int firstMissingPositive(int[] nums) {
         int n = nums.length;
-        int idx = 0;
-        while (idx < n) {
-            int correctIdx = nums[idx] - 1;
-            if (nums[idx] > 0 && nums[idx] <= n && nums[correctIdx] != nums[idx]) {
-                // swap nums[idx] <-> nums[correctIdx]
-                // After moving nums[idx] to its correct position,
-                // current nums[idx] might be invalid, so we hold idx
-                int tmp = nums[idx];
-                nums[idx] = nums[correctIdx];
-                nums[correctIdx] = tmp;
-            } else {
-                idx++;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] <= 0 || nums[i] > n || nums[i] == i + 1) {
+                continue;
+            }
+
+            int to = nums[i];
+            while (to > 0 && to <= n && to != nums[to - 1]) {
+                int tmp = nums[to - 1];
+                nums[to - 1] = to;
+                to = tmp;
+            }
+
+            if (nums[i] != i + 1) {
+                nums[i] = to;
             }
         }
-
 
         for (int i = 0; i < n; i++) {
             if (nums[i] != i + 1) {
