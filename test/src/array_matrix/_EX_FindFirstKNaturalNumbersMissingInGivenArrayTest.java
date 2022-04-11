@@ -55,4 +55,10 @@ public class _EX_FindFirstKNaturalNumbersMissingInGivenArrayTest {
         int[] missing = target.findKMissing(new int[]{-2, -3, 2, 4, 6}, 4);
         assertArrayEquals(new int[]{1, 3, 5, 7}, missing);
     }
+
+    @Test
+    public void testFindKMissing7() throws Exception {
+        int[] missing = target.findKMissing(new int[]{-2, -3, 2, 4, 7}, 5);
+        assertArrayEquals(new int[]{1, 3, 5, 6, 8}, missing);
+    }
 } 
