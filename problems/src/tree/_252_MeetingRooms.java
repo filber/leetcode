@@ -12,16 +12,13 @@ public class _252_MeetingRooms {
 
 
     public boolean attendAll(int[][] meeting) {
-        Arrays.sort(meeting, (a, b) -> a[0] - b[0]);
+        Arrays.sort(meeting, (a, b) -> Integer.compare(a[0], b[0]));
         int n = meeting.length;
         for (int i = 1; i < n; i++) {
-            int preEnd = meeting[i - 1][1];
-            int curStart = meeting[i][0];
-            if (curStart < preEnd) {
+            if (meeting[i][0] < meeting[i - 1][1]) {
                 return false;
             }
         }
-
         return true;
     }
 
