@@ -21,9 +21,8 @@ public class _384_ShuffleAnArray {
 
     public int[] shuffle() {
         Random random = new Random();
-
         for (int i = 0; i < n; i++) {
-            int j = random.nextInt(origin.length);
+            int j = random.nextInt(n);
             int tmp = shuffled[i];
             shuffled[i] = shuffled[j];
             shuffled[j] = tmp;
