@@ -13,33 +13,27 @@ public class _111_MinimumDepthOfBinaryTree {
         if (root == null) {
             return 0;
         }
-
         Queue<TreeNode> queue = new ArrayDeque<>();
         queue.add(root);
         int level = 1;
-        int curLevelCnt = 1;
-        int nextLevelCnt = 0;
         while (!queue.isEmpty()) {
-            TreeNode node = queue.poll();
-            curLevelCnt--;
-            if (node.left == null && node.right == null) {
-                break;
+            int sz = queue.size();
+            for (int i = 0; i < sz; i++) {
+                TreeNode node = queue.poll();
+                if (node.left == null && node.right == null) {
+                    return level;
+                }
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
             }
-            if (node.left != null) {
-                queue.add(node.left);
-                nextLevelCnt++;
-            }
-            if (node.right != null) {
-                queue.add(node.right);
-                nextLevelCnt++;
-            }
-
-            if (curLevelCnt == 0) {
-                curLevelCnt = nextLevelCnt;
-                nextLevelCnt = 0;
-                level++;
-            }
+            level++;
         }
+
+
         return level;
     }
 
