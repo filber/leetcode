@@ -4,45 +4,42 @@ package list;
 
 public class _92_ReverseLinkedListII {
 
-    public ListNode reverseBetween(ListNode head, int left, int right) {
-        if (left == right) {
+    public ListNode reverseBetween(ListNode head, int L, int R) {
+        if (L == R) {
             return head;
         }
 
-        ListNode start;
-        ListNode leftEnd;
-        if (left == 1) {
-            leftEnd = null;
-            start = head;
+        ListNode leftTail = head;
+        if (L == 1) {
+            leftTail = null;
         } else {
-            leftEnd = head;
-            for (int i = 0; i < left - 2; i++) {
-                leftEnd = leftEnd.next;
+            for (int i = 0; i < L - 2; i++) {
+                leftTail = leftTail.next;
             }
-            start = leftEnd.next;
         }
 
-
-        // reverse
-        ListNode pre = start;
-        ListNode cur = start.next;
+        ListNode pre;
+        if (L == 1) {
+            pre = head;
+        } else {
+            pre = leftTail.next;
+        }
+        ListNode reversedTail = pre;
+        ListNode cur = pre.next;
         pre.next = null;
-        int k = right - left;
-        for (int i = 0; i < k; i++) {
+        int k = R - L + 1;
+        for (int i = 0; i < k - 1; i++) {
             ListNode next = cur.next;
             cur.next = pre;
             pre = cur;
             cur = next;
         }
-
-        start.next = cur;
-        if (leftEnd != null) {
-            leftEnd.next = pre;
+        reversedTail.next = cur;
+        if (leftTail == null) {
+            return pre;
         } else {
-            head = pre;
+            leftTail.next = pre;
+            return head;
         }
-        return head;
     }
-
-
 }
