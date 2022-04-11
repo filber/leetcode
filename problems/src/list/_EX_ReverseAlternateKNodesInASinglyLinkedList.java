@@ -2,15 +2,15 @@ package list;
 
 //https://www.geeksforgeeks.org/reverse-alternate-k-nodes-in-a-singly-linked-list/
 
+
 public class _EX_ReverseAlternateKNodesInASinglyLinkedList {
 
     public ListNode kAltReverse(ListNode head, int k) {
-        if (head == null) {
-            return null;
-        } else if (k <= 1) {
+        if (k <= 1 || head == null || head.next == null) {
             return head;
         }
 
+        // reverse first k nodes
         ListNode pre = head;
         ListNode cur = head.next;
         pre.next = null;
@@ -21,19 +21,20 @@ public class _EX_ReverseAlternateKNodesInASinglyLinkedList {
             cur = next;
         }
 
-        head.next = cur;
-        cur = skip(cur, k - 1);
-        if (cur != null) {
-            cur.next = kAltReverse(cur.next, k);
+        if (cur == null) {
+            return pre;
+        } else {
+            head.next = cur;
         }
 
+        // skip k-1 nodes
+        for (int i = 0; i < k - 1 && cur != null; i++) {
+            cur = cur.next;
+        }
+        if (cur == null) {
+            return pre;
+        }
+        cur.next = kAltReverse(cur.next, k);
         return pre;
-    }
-
-    private ListNode skip(ListNode head, int k) {
-        for (int i = 0; i < k && head != null; i++) {
-            head = head.next;
-        }
-        return head;
     }
 }
