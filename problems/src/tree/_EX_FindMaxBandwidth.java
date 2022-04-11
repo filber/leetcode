@@ -25,15 +25,6 @@ public class _EX_FindMaxBandwidth {
     int maxBandwidth = 0;
 
     public int maxBandwidth(int[][] channels) {
-        Random random = new Random();
-        int n = channels.length;
-        for (int i = 0; i < n; i++) {
-            int j = random.nextInt(n);
-            int[] tmp = channels[i];
-            channels[i] = channels[j];
-            channels[j] = tmp;
-        }
-
         for (int[] channel : channels) {
             root = add(root, channel[0], channel[1], channel[2]);
         }
