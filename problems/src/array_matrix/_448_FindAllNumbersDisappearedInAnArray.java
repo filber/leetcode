@@ -10,26 +10,26 @@ public class _448_FindAllNumbersDisappearedInAnArray {
     public List<Integer> findDisappearedNumbers(int[] nums) {
         int n = nums.length;
         for (int i = 0; i < n; i++) {
-            if (i == nums[i] - 1) {
+            if (nums[i] == i + 1) {
                 continue;
             }
-
-            // cycle sort
             int to = nums[i];
-            while (to != (nums[to - 1])) {
-                // swap to and nums[to]
+            while (to != nums[to - 1]) {
                 int tmp = nums[to - 1];
                 nums[to - 1] = to;
                 to = tmp;
             }
-        }
-
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            if (i + 1 != nums[i]) {
-                list.add(i + 1);
+            if (nums[i] != i + 1) {
+                nums[i] = to;
             }
         }
-        return list;
+
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != i + 1) {
+                ans.add(i + 1);
+            }
+        }
+        return ans;
     }
 }

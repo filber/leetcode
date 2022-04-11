@@ -21,7 +21,6 @@ public class _448_FindAllNumbersDisappearedInAnArrayTest {
     public void after() throws Exception {
     }
 
-
     @Test
     public void testFindDisappearedNumbers1() throws Exception {
         List<Integer> list = target.findDisappearedNumbers(new int[]{4, 3, 2, 7, 8, 2, 3, 1});
