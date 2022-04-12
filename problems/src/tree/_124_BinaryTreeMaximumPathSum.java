@@ -4,35 +4,30 @@ package tree;
 
 public class _124_BinaryTreeMaximumPathSum {
 
-    int max = Integer.MIN_VALUE;
+    int maxSum = Integer.MIN_VALUE;
 
     public int maxPathSum(TreeNode root) {
-        dfs(root);
-        return max;
+        largestPath(root);
+        return maxSum;
     }
 
-    private int dfs(TreeNode root) {
-        int ans;
-        if (root == null) {
-            return 0;
-        } else if (root.left == null && root.right == null) {
-            max = Math.max(root.val, max);
-            return root.val;
-        } else if (root.left == null && root.right != null) {
-            int rightVal = dfs(root.right);
-            ans = Math.max(root.val, root.val + rightVal);
-            max = Math.max(max, ans);
-        } else if (root.left != null && root.right == null) {
-            int leftVal = dfs(root.left);
-            ans = Math.max(root.val, root.val + leftVal);
-            max = Math.max(max, ans);
+    private int largestPath(TreeNode root) {
+        int sum;
+        if (root.left == null && root.right == null) {
+            sum = root.val;
+        } else if (root.left == null) {
+            sum = Math.max(root.val, root.val + largestPath(root.right));
+        } else if (root.right == null) {
+            sum = Math.max(root.val, root.val + largestPath(root.left));
         } else {
-            int leftVal = dfs(root.left) + root.val;
-            int rightVal = dfs(root.right) + root.val;
-            int sum = leftVal + rightVal - root.val;
-            ans = Math.max(root.val, Math.max(leftVal, rightVal));
-            max = Math.max(max, Math.max(sum, ans));
+            int leftSum = largestPath(root.left) + root.val;
+            int rightSum = largestPath(root.right) + root.val;
+            sum = Math.max(root.val, Math.max(leftSum, rightSum));
+            int bothSum = leftSum + rightSum - root.val;
+            maxSum = Math.max(maxSum, bothSum);
         }
-        return ans;
+
+        maxSum = Math.max(maxSum, sum);
+        return sum;
     }
 }
