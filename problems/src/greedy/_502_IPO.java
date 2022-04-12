@@ -8,10 +8,10 @@ public class _502_IPO {
 
     public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
         PriorityQueue<Integer> capitalQueue = new PriorityQueue<>(
-                (a, b) -> capital[a] == capital[b] ? Integer.compare(profits[b], profits[a]) : Integer.compare(capital[a], capital[b])
+                (a, b) -> capital[a] == capital[b] ? profits[b] - profits[a] : capital[a] - capital[b]
         );
         PriorityQueue<Integer> profitQueue = new PriorityQueue<>(
-                (a, b) -> Integer.compare(profits[b], profits[a])
+                (a, b) -> profits[b] - profits[a]
         );
 
         int n = profits.length;
