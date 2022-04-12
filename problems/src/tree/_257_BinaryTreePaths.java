@@ -10,32 +10,26 @@ public class _257_BinaryTreePaths {
     List<String> ans = new ArrayList<>();
 
     public List<String> binaryTreePaths(TreeNode root) {
-        dfs(new ArrayList<>(), root);
+        backtracking(new ArrayList<>(), root);
         return ans;
     }
 
-    private void dfs(List<Integer> list, TreeNode node) {
-        if (node.left == null && node.right == null) {
+    private void backtracking(List<Integer> list, TreeNode root) {
+        if (root == null) {
+            return;
+        } else if (root.left == null && root.right == null) {
             StringBuilder sb = new StringBuilder();
             for (int val : list) {
-                sb.append(val);
-                sb.append("->");
+                sb.append(val).append("->");
             }
-            sb.append(node.val);
+            sb.append(root.val);
             ans.add(sb.toString());
-            return;
-        }
-
-        if (node.left != null) {
-            list.add(node.val);
-            dfs(list, node.left);
-            list.remove(list.size() - 1);
-        }
-
-        if (node.right != null) {
-            list.add(node.val);
-            dfs(list, node.right);
+        } else {
+            list.add(root.val);
+            backtracking(list, root.left);
+            backtracking(list, root.right);
             list.remove(list.size() - 1);
         }
     }
+
 }
