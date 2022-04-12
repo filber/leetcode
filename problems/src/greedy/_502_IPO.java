@@ -7,24 +7,27 @@ import java.util.PriorityQueue;
 public class _502_IPO {
 
     public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
-        // sort capital by ascending order
-        PriorityQueue<Integer> pqCap = new PriorityQueue<>((a, b) -> Integer.compare(capital[a], capital[b]));
-        // sort profit by descending order
-        PriorityQueue<Integer> pqPro = new PriorityQueue<>((a, b) -> Integer.compare(profits[b], profits[a]));
+        PriorityQueue<Integer> capitalQueue = new PriorityQueue<>(
+                (a, b) -> capital[a] == capital[b] ? Integer.compare(profits[b], profits[a]) : Integer.compare(capital[a], capital[b])
+        );
+        PriorityQueue<Integer> profitQueue = new PriorityQueue<>(
+                (a, b) -> Integer.compare(profits[b], profits[a])
+        );
+
         int n = profits.length;
         for (int i = 0; i < n; i++) {
-            pqCap.add(i);
+            capitalQueue.add(i);
         }
 
         for (int i = 0; i < k; i++) {
-            while (!pqCap.isEmpty() && capital[pqCap.peek()] <= w) {
-                pqPro.add(pqCap.poll());
+            while (!capitalQueue.isEmpty() && capital[capitalQueue.peek()] <= w) {
+                profitQueue.add(capitalQueue.poll());
             }
-
-            if (pqPro.isEmpty()) {
+            if (!profitQueue.isEmpty()) {
+                w += profits[profitQueue.poll()];
+            } else {
                 break;
             }
-            w += profits[pqPro.poll()];
         }
         return w;
     }

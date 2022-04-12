@@ -1,6 +1,5 @@
 package greedy;
 
-import greedy._502_IPO;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
