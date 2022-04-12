@@ -12,17 +12,15 @@ public class _129_SumRootToLeafNumbers {
     }
 
     private void dfs(TreeNode root, int sum) {
+        if (root == null) {
+            return;
+        }
+        sum *= 10;
         sum += root.val;
         if (root.left == null && root.right == null) {
             ans += sum;
-            return;
-        }
-
-        sum *= 10;
-        if (root.left != null) {
+        } else {
             dfs(root.left, sum);
-        }
-        if (root.right != null) {
             dfs(root.right, sum);
         }
     }
