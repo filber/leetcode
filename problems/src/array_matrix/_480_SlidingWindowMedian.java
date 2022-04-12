@@ -1,40 +1,61 @@
 package array_matrix;
 
+//https://leetcode.com/problems/sliding-window-median/
+
+
 import java.util.TreeSet;
 
 public class _480_SlidingWindowMedian {
 
     public double[] medianSlidingWindow(int[] nums, int k) {
+        TreeSet<Integer> leftTreeSet = new TreeSet<>(
+                (a, b) -> nums[a] == nums[b] ? b - a : Integer.compare(nums[b], nums[a])
+        );
+        TreeSet<Integer> rightTreeSet = new TreeSet<>(
+                (a, b) -> nums[a] == nums[b] ? b - a : Integer.compare(nums[a], nums[b])
+        );
         int n = nums.length;
-        double[] result = new double[n - k + 1];
-        TreeSet<Integer> minHeap = new TreeSet<>((a, b) -> nums[a] != nums[b] ? Integer.compare(nums[a], nums[b]) : a - b);
-        TreeSet<Integer> maxHeap = new TreeSet<>((a, b) -> nums[a] != nums[b] ? Integer.compare(nums[b], nums[a]) : b - a);
+        double[] median = new double[n - k + 1];
         for (int i = 0; i < k; i++) {
-            maxHeap.add(i);
+            leftTreeSet.add(i);
         }
         for (int i = 0; i < k / 2; i++) {
-            minHeap.add(maxHeap.pollFirst());
+            rightTreeSet.add(leftTreeSet.pollFirst());
         }
-        result[0] = getMedian(nums, maxHeap, minHeap);
-        for (int i = k; i < n; i++) {
-            if (!minHeap.remove(i - k)) {
-                maxHeap.remove(i - k);
-            }
-            minHeap.add(i);
-            maxHeap.add(minHeap.pollFirst());
-            while (maxHeap.size() > minHeap.size() + 1) {
-                minHeap.add(maxHeap.pollFirst());
-            }
-            result[i - k + 1] = getMedian(nums, maxHeap, minHeap);
-        }
-        return result;
-    }
-
-    private double getMedian(int[] nums, TreeSet<Integer> maxHeap, TreeSet<Integer> minHeap) {
-        if (maxHeap.size() > minHeap.size()) {
-            return (double) nums[maxHeap.first()];
+        if (k % 2 == 0) {
+            median[0] = ((double) nums[leftTreeSet.first()] + nums[rightTreeSet.first()]) / 2.0;
         } else {
-            return ((double) nums[maxHeap.first()] + nums[minHeap.first()]) / 2;
+            median[0] = nums[leftTreeSet.first()];
         }
+
+        for (int i = 1; i + k - 1 < n; i++) {
+            if (!leftTreeSet.remove(i - 1)) {
+                rightTreeSet.remove(i - 1);
+            }
+            int val = i + k - 1;
+            if (leftTreeSet.size() == rightTreeSet.size()) {
+                rightTreeSet.add(val);
+                leftTreeSet.add(rightTreeSet.pollFirst());
+            } else if (leftTreeSet.size() > rightTreeSet.size()) {
+                leftTreeSet.add(val);
+                while (leftTreeSet.size() - rightTreeSet.size() > 1) {
+                    rightTreeSet.add(leftTreeSet.pollFirst());
+                }
+            } else {
+                rightTreeSet.add(val);
+                while (leftTreeSet.size() < rightTreeSet.size()) {
+                    leftTreeSet.add(rightTreeSet.pollFirst());
+                }
+            }
+
+
+            if (k % 2 == 0) {
+                median[i] = ((double) nums[leftTreeSet.first()] + nums[rightTreeSet.first()]) / 2.0;
+            } else {
+                median[i] = nums[leftTreeSet.first()];
+            }
+        }
+
+        return median;
     }
 }
