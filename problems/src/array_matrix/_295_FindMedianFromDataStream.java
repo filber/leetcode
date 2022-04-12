@@ -17,31 +17,19 @@ public class _295_FindMedianFromDataStream {
 
         public void addNum(int num) {
             if (leftQueue.size() == rightQueue.size()) {
-                if (leftQueue.isEmpty() || num <= rightQueue.peek()) {
-                    leftQueue.add(num);
-                } else {
-                    int rPeek = rightQueue.poll();
-                    rightQueue.add(num);
-                    leftQueue.add(rPeek);
-                }
+                rightQueue.add(num);
+                leftQueue.add(rightQueue.poll());
             } else {
-                if (num <= leftQueue.peek()) {
-                    int lPeek = leftQueue.poll();
-                    leftQueue.add(num);
-                    rightQueue.add(lPeek);
-                } else {
-                    rightQueue.add(num);
-                }
+                leftQueue.add(num);
+                rightQueue.add(leftQueue.poll());
             }
         }
 
         public double findMedian() {
-            if (!leftQueue.isEmpty() && leftQueue.size() == rightQueue.size()) {
-                int lPeek = leftQueue.peek();
-                int rPeek = rightQueue.peek();
-                return (lPeek + rPeek) / 2.0;
+            if (leftQueue.size() == rightQueue.size()) {
+                return ((double) leftQueue.peek() + rightQueue.peek()) / 2.0;
             } else {
-                return leftQueue.peek();
+                return (double) leftQueue.peek();
             }
         }
     }
