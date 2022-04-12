@@ -10,8 +10,8 @@ public class _112_PathSum {
         } else if (root.left == null && root.right == null) {
             return root.val == targetSum;
         } else {
-            int nextSum = targetSum - root.val;
-            return hasPathSum(root.left, nextSum) || hasPathSum(root.right, nextSum);
+            int sum = targetSum - root.val;
+            return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
         }
     }
 }
