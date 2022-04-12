@@ -10,32 +10,24 @@ public class _113_PathSumII {
     List<List<Integer>> ans = new ArrayList<>();
 
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
-        if (root == null) {
-            return ans;
-        }
-        dfs(new ArrayList<>(), root, targetSum);
+        backtracking(root, targetSum, new ArrayList<>());
         return ans;
     }
 
-    private void dfs(List<Integer> list, TreeNode node, int sum) {
-        if (node.left == null && node.right == null) {
-            if (node.val == sum) {
+    private void backtracking(TreeNode root, int targetSum, List<Integer> list) {
+        if (root == null) {
+            return;
+        } else if (root.left == null && root.right == null) {
+            if (targetSum == root.val) {
                 List<Integer> path = new ArrayList<>(list);
-                path.add(node.val);
+                path.add(root.val);
                 ans.add(path);
             }
-            return;
-        }
-
-        if (node.left != null) {
-            list.add(node.val);
-            dfs(list, node.left, sum - node.val);
-            list.remove(list.size() - 1);
-        }
-
-        if (node.right != null) {
-            list.add(node.val);
-            dfs(list, node.right, sum - node.val);
+        } else {
+            list.add(root.val);
+            int sum = targetSum - root.val;
+            backtracking(root.left, sum, list);
+            backtracking(root.right, sum, list);
             list.remove(list.size() - 1);
         }
     }
