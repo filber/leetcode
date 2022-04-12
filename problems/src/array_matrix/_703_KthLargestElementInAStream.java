@@ -2,7 +2,6 @@ package array_matrix;
 
 //https://leetcode.com/problems/kth-largest-element-in-a-stream/
 
-import java.util.Arrays;
 import java.util.PriorityQueue;
 
 public class _703_KthLargestElementInAStream {
@@ -15,27 +14,24 @@ public class _703_KthLargestElementInAStream {
 
         public KthLargest(int k, int[] nums) {
             this.k = k;
-            Arrays.sort(nums);
-            int n = nums.length;
-            for (int i = 0; i < k && i < n; i++) {
-                queue.add(nums[n - 1 - i]);
+            for (int num : nums) {
+                queue.add(num);
+            }
+            while (queue.size() > k) {
+                queue.poll();
             }
         }
 
         public int add(int val) {
             if (queue.size() < k) {
                 queue.add(val);
-                return queue.peek();
-            }
-
-            int peek = queue.peek();
-            if (val <= peek) {
-                return peek;
+            } else if (val <= queue.peek()) {
+                // ignore val
             } else {
-                queue.poll();
                 queue.add(val);
-                return queue.peek();
+                queue.poll();
             }
+            return queue.peek();
         }
     }
 }
