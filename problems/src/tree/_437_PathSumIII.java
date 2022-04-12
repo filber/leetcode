@@ -11,33 +11,25 @@ public class _437_PathSumIII {
     Map<Integer, Integer> preSum = new HashMap<>();
 
     public int pathSum(TreeNode root, int targetSum) {
-        preSum.put(0, 1);
         this.targetSum = targetSum;
-
-        return dfs(root, 0);
+        preSum.put(0, 1);
+        return backtracking(root, 0);
     }
 
-    private int dfs(TreeNode node, int pathSum) {
-        if (node == null) {
+    private int backtracking(TreeNode root, int sum) {
+        if (root == null) {
             return 0;
         }
+        sum += root.val;
+        int cnt = 0;
+        cnt += preSum.getOrDefault(sum - targetSum, 0);
 
-        pathSum += node.val;
+        preSum.put(sum, preSum.getOrDefault(sum, 0) + 1);
 
-        int paths = 0;
-        paths += preSum.getOrDefault(pathSum - targetSum, 0);
+        cnt += backtracking(root.left, sum);
+        cnt += backtracking(root.right, sum);
 
-        // before entering left&right subtree,
-        // current path will be their prefix sum
-        preSum.put(pathSum, preSum.getOrDefault(pathSum, 0) + 1);
-
-        paths += dfs(node.left, pathSum);
-        paths += dfs(node.right, pathSum);
-
-        // after exiting from left&right subtree,
-        // current path won't be prefix sum of other paths
-        preSum.put(pathSum, preSum.getOrDefault(pathSum, 0) - 1);
-
-        return paths;
+        preSum.put(sum, preSum.get(sum) - 1);
+        return cnt;
     }
 }
