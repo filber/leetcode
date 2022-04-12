@@ -13,13 +13,22 @@ public class _543_DiameterOfBinaryTree {
     }
 
     private int longestPath(TreeNode root) {
+        int len;
         if (root == null || root.left == null && root.right == null) {
-            return 0;
+            len = 0;
+        } else if (root.left == null) {
+            len = longestPath(root.right) + 1;
+            diameter = Math.max(diameter, len);
+        } else if (root.right == null) {
+            len = longestPath(root.left) + 1;
+            diameter = Math.max(diameter, len);
+        } else {
+            int leftPath = longestPath(root.left);
+            int rightPath = longestPath(root.right);
+            len = Math.max(leftPath, rightPath) + 1;
+            diameter = Math.max(diameter, leftPath + rightPath + 2);
         }
 
-        int left = root.left == null ? 0 : (longestPath(root.left) + 1);
-        int right = root.right == null ? 0 : (longestPath(root.right) + 1);
-        diameter = Math.max(diameter, left + right);
-        return Math.max(left, right);
+        return len;
     }
 }
