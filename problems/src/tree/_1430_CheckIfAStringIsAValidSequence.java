@@ -5,21 +5,25 @@ package tree;
 public class _1430_CheckIfAStringIsAValidSequence {
 
     int[] sequence;
+    int n;
 
     public boolean isValidSequence(TreeNode root, int[] sequence) {
         this.sequence = sequence;
+        n = sequence.length;
         return dfs(root, 0);
     }
 
     private boolean dfs(TreeNode root, int i) {
-        if (root == null) {
+        if (root == null && i == n) {
+            return true;
+        } else if (root == null || i == n) {
             return false;
-        } else if (i == sequence.length) {
-            return false;
-        } else if (root.left == null && root.right == null && i == sequence.length - 1) {
-            return root.val == sequence[i];
         } else if (root.val != sequence[i]) {
             return false;
+        } else if (root.left == null) {
+            return dfs(root.right, i + 1);
+        } else if (root.right == null) {
+            return dfs(root.left, i + 1);
         } else {
             return dfs(root.left, i + 1) || dfs(root.right, i + 1);
         }
