@@ -1,23 +1,24 @@
 package dfs;
 
+//https://leetcode.com/problems/subsets-ii/
+
 import java.util.*;
 
 public class _90_SubsetsII {
 
     List<List<Integer>> ans = new ArrayList<>();
     int[] nums;
-    int[] path;
+    int[] candidate;
     int len = 0;
     boolean[] used;
     int n;
 
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        n = nums.length;
-        used = new boolean[n];
-        path = new int[n];
-        this.nums = nums;
         Arrays.sort(nums);
-
+        n = nums.length;
+        this.nums = nums;
+        used = new boolean[n];
+        candidate = new int[n];
         backtracking(0);
         return ans;
     }
@@ -25,26 +26,21 @@ public class _90_SubsetsII {
     private void backtracking(int i) {
         if (i == n) {
             List<Integer> list = new ArrayList<>();
-            for (int k = 0; k < len; k++) {
-                list.add(path[k]);
+            for (int j = 0; j < len; j++) {
+                list.add(candidate[j]);
             }
             ans.add(list);
             return;
         }
 
-        // NOT USE
-        backtracking(i + 1);
-
-        // USE
-        // set constraints for USE
         if (i == 0 || nums[i] != nums[i - 1] || used[i - 1]) {
+            // Use i
             used[i] = true;
-            path[len++] = nums[i];
-
             backtracking(i + 1);
-
             used[i] = false;
-            len--;
         }
+
+        // Not use i
+        backtracking(i + 1);
     }
 }
