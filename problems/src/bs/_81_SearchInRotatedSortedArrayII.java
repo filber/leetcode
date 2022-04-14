@@ -6,18 +6,26 @@ public class _81_SearchInRotatedSortedArrayII {
 
     public boolean search(int[] nums, int target) {
         int l = 0, r = nums.length - 1;
+
         while (l <= r) {
             int mid = (l + r) / 2;
             if (nums[mid] == target) {
                 return true;
             }
-            while (l < mid && nums[l] == nums[mid]) {
+            while (nums[l] != target && l < mid) {
                 l++;
             }
+            while (nums[r] != target && mid < r) {
+                r--;
+            }
             if (l == mid) {
-                l = mid + 1;
+                l++;
+                continue;
+            } else if (r == mid) {
+                r--;
                 continue;
             }
+
             if (nums[l] <= nums[mid]) {
                 if (nums[l] <= target && target < nums[mid]) {
                     r = mid - 1;
@@ -31,7 +39,9 @@ public class _81_SearchInRotatedSortedArrayII {
                     r = mid - 1;
                 }
             }
+
         }
+
         return false;
     }
 }
