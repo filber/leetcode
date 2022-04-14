@@ -9,16 +9,17 @@ public class _260_SingleNumberIII {
         for (int num : nums) {
             xor ^= num;
         }
-        int bit_1 = 1;
+
+        int bit = 1;
+        // find the most right 1 bit (they differ at this bit)
         while ((xor & 1) == 0) {
             xor >>= 1;
-            bit_1 <<= 1;
+            bit <<= 1;
         }
 
         int a = 0, b = 0;
-
         for (int num : nums) {
-            if ((num & bit_1) == 0) {
+            if ((bit & num) == 0) {
                 a ^= num;
             } else {
                 b ^= num;

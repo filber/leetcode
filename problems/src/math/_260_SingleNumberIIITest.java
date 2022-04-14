@@ -4,6 +4,9 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertArrayEquals;
 
@@ -24,7 +27,13 @@ public class _260_SingleNumberIIITest {
     @Test
     public void testSingleNumber1() throws Exception {
         int[] res = target.singleNumber(new int[]{1, 2, 1, 3, 2, 5});
-        assertArrayEquals(new int[]{5, 3}, res);
+        Set<Integer> set = new HashSet<>();
+        for (int num : res) {
+            set.add(num);
+        }
+        assertEquals(2, res.length);
+        assertTrue(set.contains(3));
+        assertTrue(set.contains(5));
     }
 
     @Test
@@ -59,9 +68,25 @@ public class _260_SingleNumberIIITest {
 
     @Test
     public void testSingleNumber7() throws Exception {
-        int[] res = target.singleNumber(new int[]{1,2});
-        assertArrayEquals(new int[]{2,1}, res);
+        int[] res = target.singleNumber(new int[]{1, 2});
+        assertArrayEquals(new int[]{2, 1}, res);
     }
 
+    @Test
+    public void testSingleNumber8() throws Exception {
+        int[] res = target.singleNumber(new int[]{-1, 0});
+        assertArrayEquals(new int[]{-1, 0}, res);
+    }
 
-} 
+    @Test
+    public void testSingleNumber9() throws Exception {
+        int[] res = target.singleNumber(new int[]{1, 3, 1, 3, 2, 5});
+        Set<Integer> set = new HashSet<>();
+        for (int num : res) {
+            set.add(num);
+        }
+        assertEquals(2, res.length);
+        assertTrue(set.contains(2));
+        assertTrue(set.contains(5));
+    }
+}
