@@ -40,4 +40,11 @@ public class _33_SearchInRotatedSortedArrayTest {
         int idx = target.search(nums, 0);
         assertEquals(-1, idx);
     }
+
+    @Test
+    public void testSearch4() throws Exception {
+        int[] nums = {3, 1};
+        int idx = target.search(nums, 1);
+        assertEquals(1, idx);
+    }
 }
