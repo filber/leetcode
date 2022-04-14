@@ -31,4 +31,10 @@ public class _137_SingleNumberIITest {
         int num = target.singleNumber(new int[]{2, 1, 2, 1, 2, 1, 99});
         assertEquals(99, num);
     }
+
+    @Test
+    public void testSingleNumber3() throws Exception {
+        int num = target.singleNumber(new int[]{0, 1, 0, 1, 0, 1, 99});
+        assertEquals(99, num);
+    }
 }

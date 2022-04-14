@@ -4,18 +4,31 @@ package math;
 
 public class _137_SingleNumberII {
 
-    // Constraints:
-    //    2 <= nums.length <= 3 * 10^4
-    //    -2^31 <= nums[i] <= 2^31 - 1
-
-    // trinary
-    // 00->01->10->00
     public int singleNumber(int[] nums) {
-        int a = 0, b = 0;
-        for (int x : nums) {
-            b = (b ^ x) & ~a;
-            a = (a ^ x) & ~b;
+        int one = 0, two = 0, three;
+        for (int num : nums) {
+            two |= one & num;
+            one ^= num;
+            three = one & two;
+            one &= ~three;
+            two &= ~three;
         }
-        return b;
+        return one;
+    }
+
+    public int singleNumberBits(int[] nums) {
+        int[] bits = new int[32];
+        for (int num : nums) {
+            for (int i = 0; i < 32 && num != 0; i++) {
+                bits[i] += num & 1;
+                num >>>= 1;
+            }
+        }
+
+        int res = 0;
+        for (int i = 0; i < 32; i++) {
+            res = res | ((bits[i] % 3) << i);
+        }
+        return res;
     }
 }
