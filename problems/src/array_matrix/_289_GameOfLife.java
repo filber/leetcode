@@ -4,35 +4,38 @@ package array_matrix;
 
 public class _289_GameOfLife {
 
-    public void gameOfLife(int[][] board) {
-        int[][] direction = {
-                {-1, -1}, {-1, 0}, {-1, 1},
-                {0, -1}, {0, 1},
-                {1, -1}, {1, 0}, {1, 1}
-        };
+    static final int[][] direction = {
+            {-1, -1}, {-1, 0}, {-1, 1},
+            {0, -1}, {0, 1},
+            {1, -1}, {1, 0}, {1, 1}
+    };
 
+    public void gameOfLife(int[][] board) {
         int m = board.length;
         int n = board[0].length;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                int liveCnt = 0;
-                for (int k = 0; k < direction.length; k++) {
-                    int x = i + direction[k][0];
-                    int y = j + direction[k][1];
-                    if (x >= 0 && x < m && y >= 0 && y < n) {
-                        liveCnt += board[x][y] & 1;
+                int neighborLiveCnt = 0;
+                for (int k = 0; k < 8; k++) {
+                    int neighborI = direction[k][0] + i;
+                    int neighborJ = direction[k][1] + j;
+                    if (0 <= neighborI && neighborI < m && 0 <= neighborJ && neighborJ < n) {
+                        neighborLiveCnt += board[neighborI][neighborJ] & 1;
                     }
                 }
-
                 if ((board[i][j] & 1) == 1) {
-                    if (liveCnt == 2 || liveCnt == 3) {
-                        // lives for next generation
-                        board[i][j] = board[i][j] | 2;
+                    if (neighborLiveCnt < 2) {
+                        // next state die
+                    } else if (neighborLiveCnt == 2 || neighborLiveCnt == 3) {
+                        // next state live
+                        board[i][j] |= 2;
+                    } else if (neighborLiveCnt > 3) {
+                        // next state die
                     }
                 } else {
-                    if (liveCnt == 3) {
-                        // lives for next generation
-                        board[i][j] = board[i][j] | 2;
+                    if (neighborLiveCnt == 3) {
+                        // next state live
+                        board[i][j] |= 2;
                     }
                 }
             }
