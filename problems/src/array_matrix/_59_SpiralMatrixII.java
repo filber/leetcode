@@ -4,33 +4,34 @@ package array_matrix;
 
 public class _59_SpiralMatrixII {
 
+    int[][] m;
+
     public int[][] generateMatrix(int n) {
-        int[][] m = new int[n][n];
-        fill(m, 1, 0, 0, n);
+        m = new int[n][n];
+        fill(1, 0, 0, n);
         return m;
     }
 
-    private void fill(int[][] m, int start, int x, int y, int n) {
+    private void fill(int i, int x, int y, int n) {
         if (n == 0) {
             return;
-        } else if (n == 1) {
-            m[x][y] = start;
+        }
+        if (n == 1) {
+            m[x][y] = i;
             return;
         }
-
-        for (int i = 0; i < n; i++) {
-            m[x][y + i] = start++;
+        for (int j = 0; j < n; j++) {
+            m[x][y + j] = i++;
         }
-        for (int i = 1; i < n; i++) {
-            m[x + i][y + n - 1] = start++;
+        for (int j = 0; j < n - 1; j++) {
+            m[x + 1 + j][y + n - 1] = i++;
         }
-        for (int i = 1; i < n; i++) {
-            m[x + n - 1][y + n - 1 - i] = start++;
+        for (int j = 0; j < n - 1; j++) {
+            m[x + n - 1][y + n - 2 - j] = i++;
         }
-        for (int i = 1; i < n - 1; i++) {
-            m[x + n - 1 - i][y] = start++;
+        for (int j = 0; j < n - 2; j++) {
+            m[x + n - 2 - j][y] = i++;
         }
-
-        fill(m, start, x + 1, y + 1, n - 2);
+        fill(i, x + 1, y + 1, n - 2);
     }
 }
