@@ -1,4 +1,4 @@
-package array_matrix;
+package greedy;
 
 //https://www.geeksforgeeks.org/find-m-th-smallest-value-in-k-sorted-arrays/
 

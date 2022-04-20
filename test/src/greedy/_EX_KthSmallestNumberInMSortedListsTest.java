@@ -1,4 +1,4 @@
-package array_matrix;
+package greedy;
 
 import org.junit.Test;
 import org.junit.Before;

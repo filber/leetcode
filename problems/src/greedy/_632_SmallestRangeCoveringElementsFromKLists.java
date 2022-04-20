@@ -1,4 +1,4 @@
-package array_matrix;
+package greedy;
 
 import java.util.List;
 import java.util.PriorityQueue;
