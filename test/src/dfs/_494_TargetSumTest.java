@@ -23,8 +23,14 @@ public class _494_TargetSumTest {
     @Test
     public void testFindTargetSumWays1() throws Exception {
         int[] nums = {1, 1, 1, 1, 1};
-        int t = 3;
-        int ways = target.findTargetSumWays(nums, t);
-        assertEquals(5, ways);
+        assertEquals(5, target.findTargetSumWays(nums, 3));
+        assertEquals(10, target.findTargetSumWays(nums, 1));
+        assertEquals(0, target.findTargetSumWays(nums, 0));
+    }
+
+    @Test
+    public void testFindTargetSumWays2() throws Exception {
+        int[] nums = {100};
+        assertEquals(0, target.findTargetSumWays(nums, -200));
     }
 }
