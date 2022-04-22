@@ -37,14 +37,14 @@ public class _310_MinimumHeightTrees {
             }
         }
 
-        int[] order = new int[n];
-        int idx = n - 1;
+        int[] order = new int[2];
         int sz = n - 1;
         while (!queue.isEmpty()) {
             sz = queue.size();
+            order[0] = queue.peek();
             for (int j = 0; j < sz; j++) {
                 int from = queue.poll();
-                order[idx--] = from;
+                order[1] = from;
 
                 for (int to : graph[from]) {
                     degree[to]--;
@@ -56,10 +56,13 @@ public class _310_MinimumHeightTrees {
             }
         }
 
+        // at most two central nodes
         List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < sz; i++) {
-            list.add(order[i]);
+        list.add(order[0]);
+        if (sz == 2) {
+            list.add(order[1]);
         }
+
         return list;
     }
 }
