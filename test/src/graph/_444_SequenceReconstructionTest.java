@@ -63,4 +63,27 @@ public class _444_SequenceReconstructionTest {
         boolean valid = target.sequenceReconstruction(org, seqs);
         assertTrue(valid);
     }
+
+    @Test
+    public void testSequenceReconstruction5() throws Exception {
+        int[] org = {1, 2, 3, 4};
+        int[][] seqs = {
+                {1, 2, 3, 4},
+                {4, 2}
+        };
+        boolean valid = target.sequenceReconstruction(org, seqs);
+        assertFalse(valid);
+    }
+
+    @Test
+    public void testSequenceReconstruction6() throws Exception {
+        int[] org = {1, 2, 3, 4};
+        int[][] seqs = {
+                {1, 2},
+                {2, 3},
+                {3, 4},
+        };
+        boolean valid = target.sequenceReconstruction(org, seqs);
+        assertTrue(valid);
+    }
 }
