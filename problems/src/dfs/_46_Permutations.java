@@ -6,38 +6,31 @@ import java.util.*;
 
 public class _46_Permutations {
 
-    int[] nums;
-    boolean[] used;
-    int[] permutation;
-    int n;
-    List<List<Integer>> ans = new ArrayList<>();
-
     public List<List<Integer>> permute(int[] nums) {
-        this.nums = nums;
-        n = nums.length;
-        permutation = new int[n];
-        used = new boolean[n];
-        backtracking(0);
+        List<List<Integer>> ans = new ArrayList<>();
+        int[] seq = new int[nums.length];
+        boolean[] used = new boolean[nums.length];
+        backtracking(ans, nums, used, seq, 0);
         return ans;
     }
 
-    private void backtracking(int i) {
-        if (i == n) {
-            List<Integer> list = new ArrayList<>();
-            for (int val : permutation) {
-                list.add(val);
+    private void backtracking(List<List<Integer>> ans, int[] nums, boolean[] used, int[] seq, int i) {
+        if (i == nums.length) {
+            List<Integer> list = new ArrayList<>(seq.length);
+            for (int elem : seq) {
+                list.add(elem);
             }
             ans.add(list);
             return;
         }
+        for (int j = 0; j < nums.length; j++) {
+            if (used[j]) continue;
 
-        for (int j = 0; j < n; j++) {
-            if (!used[j]) {
-                permutation[i] = nums[j];
-                used[j] = true;
-                backtracking(i + 1);
-                used[j] = false;
-            }
+            used[j] = true;
+            seq[i] = nums[j];
+            backtracking(ans, nums, used, seq, i + 1);
+            used[j] = false;
         }
     }
+
 }
