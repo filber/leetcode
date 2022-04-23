@@ -1,17 +1,19 @@
 package hmap;
 
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class _535_EncodeAndDecodeTinyURL {
 
-    public class Codec {
+    public static class Codec {
 
+        public static final String PREFIX = "http://tinyurl.com/";
         Random random = new Random();
 
-        private char[] alphanum = new char[72];
+        private char[] alphanum = new char[62];
 
         Map<String, String> encodeMap = new HashMap<>();
         Map<String, String> decodeMap = new HashMap<>();
@@ -33,7 +35,8 @@ public class _535_EncodeAndDecodeTinyURL {
             char[] chars = new char[6];
             while (str == null || decodeMap.containsKey(str)) {
                 for (int i = 0; i < chars.length; i++) {
-                    chars[i] = alphanum[random.nextInt(alphanum.length)];
+                    int idx = random.nextInt(alphanum.length);
+                    chars[i] = alphanum[idx];
                 }
                 str = new String(chars);
             }
@@ -43,18 +46,24 @@ public class _535_EncodeAndDecodeTinyURL {
 
         // Encodes a URL to a shortened URL.
         public String encode(String longUrl) {
-            String shortUrl = encodeMap.get(longUrl);
-            if (shortUrl == null) {
-                shortUrl = randomStr();
-                encodeMap.put(longUrl, shortUrl);
-                decodeMap.put(shortUrl, longUrl);
+            String str = encodeMap.get(longUrl);
+            if (str == null) {
+                str = randomStr();
+                encodeMap.put(longUrl, str);
+                decodeMap.put(str, longUrl);
             }
-            return "http://tinyurl.com/" + shortUrl;
+            return PREFIX + str;
         }
+
+        Pattern pattern = Pattern.compile(PREFIX + "([a-zA-Z0-9]{6})");
 
         // Decodes a shortened URL to its original URL.
         public String decode(String shortUrl) {
-            String str = shortUrl.substring(shortUrl.length() - 6);
+            Matcher matcher = pattern.matcher(shortUrl);
+            if (!matcher.matches()) {
+                return null;
+            }
+            String str = matcher.group(1);
             String longUrl = decodeMap.get(str);
             return longUrl;
         }
