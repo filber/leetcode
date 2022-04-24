@@ -20,7 +20,6 @@ public class _320_GeneralizedAbbreviation {
         chars = word.toCharArray();
         n = chars.length;
         abbrev = new char[n];
-
         backtracking(0);
         return ans;
     }
@@ -30,25 +29,17 @@ public class _320_GeneralizedAbbreviation {
             ans.add(new String(abbrev, 0, len));
             return;
         }
-
-        // abbreviate
-        if (len == 0 || !Character.isDigit(abbrev[len - 1])) {
-            // no need to merge
-            abbrev[len] = '1';
-            len++;
-            backtracking(i + 1);
-            len--; // revert
-        } else {
-            // need to merge
-            abbrev[len - 1] = (char) (abbrev[len - 1] + 1);
-            backtracking(i + 1);
-            abbrev[len - 1] = (char) (abbrev[len - 1] - 1); // revert
-        }
-
-        // not abbreviate
-        abbrev[len] = chars[i];
-        len++;
+        abbrev[len++] = chars[i];
         backtracking(i + 1);
-        len--; // revert
+        len--;
+
+        if (len > 0 && Character.isDigit(abbrev[len - 1])) {
+            abbrev[len - 1] += 1;
+            backtracking(i + 1);
+        } else {
+            abbrev[len++] = '1';
+            backtracking(i + 1);
+            len--;
+        }
     }
 }
