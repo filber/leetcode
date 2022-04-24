@@ -23,21 +23,20 @@ public class _784_LetterCasePermutation {
             ans.add(new String(chars));
             return;
         }
+        backtracking(i + 1);
         char ch = chars[i];
-        if ('0' <= ch && ch <= '9') {
-            // no need to change digits
-            backtracking(i + 1);
-        } else {
-            // not change
-            backtracking(i + 1);
-
-            // change
+        if (Character.isAlphabetic(ch)) {
             if (Character.isUpperCase(ch)) {
                 chars[i] = Character.toLowerCase(ch);
             } else {
                 chars[i] = Character.toUpperCase(ch);
             }
             backtracking(i + 1);
+            if (Character.isUpperCase(ch)) {
+                chars[i] = Character.toLowerCase(ch);
+            } else {
+                chars[i] = Character.toUpperCase(ch);
+            }
         }
     }
 }
