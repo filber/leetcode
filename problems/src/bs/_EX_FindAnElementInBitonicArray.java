@@ -4,86 +4,64 @@ package bs;
 
 public class _EX_FindAnElementInBitonicArray {
 
-    int[] arr;
-    int val;
-
     public int findInArray(int arr[], int val) {
-        int n = arr.length;
-        this.arr = arr;
-        this.val = val;
-        if (n == 1) {
-            if (arr[0] == val) {
-                return 0;
+        int l = 0, r = arr.length - 1;
+        int peakIdx = -1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            int mVal = arr[mid];
+            boolean gtLeft = mid == 0 || arr[mid - 1] < mVal;
+            boolean gtRight = mid == arr.length - 1 || mVal > arr[mid + 1];
+            if (gtLeft && gtRight) {
+                peakIdx = mid;
+                break;
+            } else if (gtLeft) {
+                l = mid + 1;
             } else {
-                return -1;
+                r = mid - 1;
             }
         }
-
-        int peakIdx = findPeak(0, n - 1);
+        if (peakIdx == -1) {
+            peakIdx = l;
+        }
         if (arr[peakIdx] < val) {
             return -1;
-        } else if (arr[peakIdx] == val) {
-            return peakIdx;
-        } else {
-            int incIdx = searchVal(0, peakIdx - 1, true);
-            if (incIdx == -1) {
-                int decIdx = searchVal(peakIdx + 1, n - 1, false);
-                return decIdx;
-            } else {
-                return incIdx;
-            }
-        }
-    }
-
-    private int searchVal(int l, int r, boolean increasing) {
-        if (l > r) {
+        } else if (val < arr[0] && val < arr[arr.length - 1]) {
             return -1;
-        } else if (l == r) {
-            if (arr[l] == val) {
-                return l;
-            } else {
-                return -1;
-            }
-        } else {
-            int mid = (l + r) / 2;
-            if (arr[mid] == val) {
-                return mid;
-            } else if (increasing) {
-                if (arr[mid] < val) {
-                    return searchVal(mid + 1, r, true);
-                } else {
-                    return searchVal(l, mid - 1, true);
-                }
-            } else {
-                if (arr[mid] < val) {
-                    return searchVal(l, mid - 1, false);
-                } else {
-                    return searchVal(mid + 1, r, false);
-                }
-            }
+        } else if (val < arr[arr.length - 1]) {
+            return bs(arr, 0, peakIdx, val, true);
+        } else if (val < arr[0]) {
+            return bs(arr, peakIdx, arr.length - 1, val, false);
         }
+
+        int idx = bs(arr, 0, peakIdx, val, true);
+        if (idx != -1) {
+            return idx;
+        }
+        idx = bs(arr, peakIdx, arr.length - 1, val, false);
+        return idx;
     }
 
-    private int findPeak(int l, int r) {
-        int mid = (l + r) / 2;
-        if (mid == 0) {
-            if (arr[mid] > arr[mid + 1]) {
+    int bs(int[] arr, int l, int r, int val, boolean asc) {
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            int mVal = arr[mid];
+            if (mVal == val) {
                 return mid;
+            } else if (mVal < val) {
+                if (asc) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
             } else {
-                return findPeak(mid + 1, r);
+                if (asc) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
             }
-        } else if (mid == arr.length - 1) {
-            if (arr[mid - 1] < arr[mid]) {
-                return mid;
-            } else {
-                return findPeak(l, mid - 1);
-            }
-        } else if (arr[mid - 1] < arr[mid] && arr[mid] > arr[mid + 1]) {
-            return mid;
-        } else if (arr[mid - 1] < arr[mid] && arr[mid] < arr[mid + 1]) {
-            return findPeak(mid + 1, r);
-        } else {
-            return findPeak(l, mid - 1);
         }
+        return -1;
     }
 }
