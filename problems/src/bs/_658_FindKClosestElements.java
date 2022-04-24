@@ -47,7 +47,6 @@ public class _658_FindKClosestElements {
             k--;
         }
 
-        k++;
         for (int i = l + 1; i < r; i++) {
             ans.add(arr[i]);
         }
