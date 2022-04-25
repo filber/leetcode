@@ -6,44 +6,29 @@ import java.util.*;
 public class _757_SetIntersectionSizeAtLeastTwo {
 
     public int intersectionSizeTwo(int[][] intervals) {
-        // Sort by endings, if ending equals, handle short interval first.
-        // If short interval can be covered, the long interval must be covered.
         Arrays.sort(intervals, (a, b) -> a[1] == b[1] ? b[0] - a[0] : a[1] - b[1]);
-
-//        List<Integer> list = new ArrayList<>();
-        int right = intervals[0][1];
-        int left = right - 1;
-
-        int count = 2;
-        int n = intervals.length;
-        for (int i = 1; i < n; i++) {
-            int start = intervals[i][0];
-            int end = intervals[i][1];
-            if (start <= left) {
-                // cover this interval, do nothing
+        int[] firstInter = intervals[0];
+        int b = firstInter[firstInter.length - 1];
+        int a = b - 1;
+        int cnt = 2;
+        for (int i = 1; i < intervals.length; i++) {
+            int[] inter = intervals[i];
+            int start = inter[0];
+            if (b < start) {
+                // no intersections
+                cnt += 2;
+                b = inter[inter.length - 1];
+                a = b - 1;
+            } else if (a < start && start <= b) {
+                cnt += 1;
+                a = b;
+                b = inter[inter.length - 1];
             }
-            // one point intersects
-            else if (start <= right) {
-//                list.add(left);
-                count++;
-                left = right;
-                right = end;
-            }
-            // no intersection
-            else {
-                //right < start
-//                list.add(left);
-//                list.add(right);
-                count += 2;
-                right = end;
-                left = right - 1;
-            }
-
+//            else {
+//                >= 2 intersections
+//                start<=a
+//            }
         }
-
-//        list.add(left);
-//        list.add(right);
-
-        return count;
+        return cnt;
     }
 }
