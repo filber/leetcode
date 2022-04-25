@@ -4,29 +4,21 @@ package tree;
 
 public class _538_ConvertBSTToGreaterTree {
 
+    int val = 0;
+
     public TreeNode convertBST(TreeNode root) {
-        dfs(root, 0);
+        dfs(root);
         return root;
     }
 
-    public TreeNode dfs(TreeNode root, int sum) {
+    private void dfs(TreeNode root) {
         if (root == null) {
-            return null;
-        } else if (root.left == null && root.right == null) {
-            root.val += sum;
-            return root;
-        } else if (root.left == null) {
-            TreeNode maxRight = dfs(root.right, sum);
-            root.val += maxRight.val;
-            return root;
-        } else if (root.right == null) {
-            root.val += sum;
-            return dfs(root.left, root.val);
-        } else {
-            TreeNode maxRight = dfs(root.right, sum);
-            root.val += maxRight.val;
-            TreeNode maxLeft = dfs(root.left, root.val);
-            return maxLeft;
+            return;
         }
+        dfs(root.right);
+        root.val += val;
+        val = root.val;
+        dfs(root.left);
     }
+
 }

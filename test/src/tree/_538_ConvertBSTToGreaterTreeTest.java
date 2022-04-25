@@ -1,6 +1,5 @@
 package tree;
 
-import com.sun.source.tree.Tree;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
