@@ -2,36 +2,32 @@ package tree;
 
 //https://leetcode.com/problems/increasing-order-search-tree/
 
+import java.util.Objects;
+
 public class _897_IncreasingOrderSearchTree {
 
     public TreeNode increasingBST(TreeNode root) {
-        if (root == null) {
-            return null;
-        } else if (root.left == null && root.right == null) {
-            return root;
-        } else if (root.left == null) {
-            root.right = increasingBST(root.right);
-            return root;
-        } else if (root.right == null) {
-            TreeNode left = increasingBST(root.left);
-            TreeNode mostRight = getMostRight(left);
-            mostRight.right = root;
-            root.left = null;
-            return left;
-        } else {
-            TreeNode left = increasingBST(root.left);
-            TreeNode mostRight = getMostRight(left);
-            mostRight.right = root;
-            root.left = null;
-            root.right = increasingBST(root.right);
-            return left;
-        }
+        TreeNode[] pair = dfs(root);
+        return pair[0];
     }
 
-    private TreeNode getMostRight(TreeNode root) {
-        while (root.right != null) {
-            root = root.right;
+    private TreeNode[] dfs(TreeNode root) {
+        if (root == null) {
+            return new TreeNode[]{null, null};
         }
-        return root;
+        TreeNode[] rightPair = dfs(root.right);
+        root.right = rightPair[0];
+
+        TreeNode[] leftPair = dfs(root.left);
+
+        if (root.left != null) {
+            leftPair[1].right = root;
+            root.left = null;
+        }
+
+        TreeNode lNode = Objects.requireNonNullElse(leftPair[0], root);
+        TreeNode rNode = Objects.requireNonNullElse(rightPair[1], root);
+        return new TreeNode[]{lNode, rNode};
     }
+
 }
