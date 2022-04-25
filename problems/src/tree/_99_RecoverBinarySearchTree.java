@@ -20,6 +20,7 @@ public class _99_RecoverBinarySearchTree {
             return;
         }
         dfs(root.left);
+
         if (pre != null) {
             if (pre.val > root.val) {
                 if (first == null) {
@@ -29,6 +30,8 @@ public class _99_RecoverBinarySearchTree {
             }
         }
         pre = root;
+
         dfs(root.right);
     }
+
 }
