@@ -7,22 +7,20 @@ import java.util.Arrays;
 public class _451_SortCharactersByFrequency {
 
     public String frequencySort(String s) {
-        int[][] frequency = new int[128][2];
         char[] chars = s.toCharArray();
-        int n = chars.length;
+        int[][] cnt = new int[128][2];
         for (char ch : chars) {
-            frequency[ch][0] = ch;
-            frequency[ch][1]++;
+            cnt[ch][0] = ch;
+            cnt[ch][1]++;
         }
 
-        Arrays.sort(frequency, (a, b) -> b[1] - a[1]);
+        Arrays.sort(cnt, (a, b) -> b[1] - a[1]);
 
         int idx = 0;
-        for (int i = 0; frequency[i][1] != 0; i++) {
-            Arrays.fill(chars, idx, idx + frequency[i][1], (char) frequency[i][0]);
-            idx += frequency[i][1];
+        for (int i = 0; cnt[i][1] != 0; i++) {
+            Arrays.fill(chars, idx, idx + cnt[i][1], (char) cnt[i][0]);
+            idx += cnt[i][1];
         }
-
         return new String(chars);
     }
 }
