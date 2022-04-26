@@ -3,11 +3,54 @@ package tree;
 //https://leetcode.com/problems/min-cost-to-connect-all-points/
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class _1584_MinCostToConnectAllPoints {
 
-    // Kruskal
+
+    // Prime
     public int minCostConnectPoints(int[][] points) {
+        if (points.length < 2) {
+            return 0;
+        }
+
+        int n = points.length;
+        boolean[] inMST = new boolean[n];
+        int[] curMinDistToEachNode = new int[n];
+        int cost = 0;
+        int edges = 0;
+        int cur = 0;
+
+        while (edges < n - 1) {
+            int minIndex = 0;
+            int minCost = Integer.MAX_VALUE;
+            inMST[cur] = true;
+
+            for (int i = 0; i < n; ++i) {
+                if (!inMST[i]) {
+                    int dist = Math.abs(points[cur][0] - points[i][0]) + Math.abs(points[cur][1] - points[i][1]);
+                    if (cur == 0 || curMinDistToEachNode[i] > dist) {
+                        curMinDistToEachNode[i] = dist;
+                    }
+
+                    if (curMinDistToEachNode[i] < minCost) {
+                        minCost = curMinDistToEachNode[i];
+                        minIndex = i;
+                    }
+                }
+            }
+
+            cost += minCost;
+            cur = minIndex;
+            edges++;
+        }
+
+
+        return cost;
+    }
+
+    // Kruskal
+    public int minCostConnectPointsKruskal(int[][] points) {
         int n = points.length;
         int[][] edges = new int[n * (n - 1) / 2][];
 
