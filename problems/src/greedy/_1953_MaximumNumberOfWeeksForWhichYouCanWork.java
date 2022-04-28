@@ -2,8 +2,6 @@ package greedy;
 
 //https://leetcode.com/problems/maximum-number-of-weeks-for-which-you-can-work/
 
-import java.util.Arrays;
-
 public class _1953_MaximumNumberOfWeeksForWhichYouCanWork {
 
     public long numberOfWeeks(int[] milestones) {
