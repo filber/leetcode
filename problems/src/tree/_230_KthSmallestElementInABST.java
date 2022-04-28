@@ -5,7 +5,7 @@ package tree;
 public class _230_KthSmallestElementInABST {
 
     int ans = 0;
-    int idx;
+    int idx = 0;
     int k;
 
     public int kthSmallest(TreeNode root, int k) {
@@ -19,7 +19,6 @@ public class _230_KthSmallestElementInABST {
         if (root == null) {
             return;
         }
-
         traverse(root.left);
         idx++;
         if (idx == k) {
