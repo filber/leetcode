@@ -13,7 +13,7 @@ public class _1953_MaximumNumberOfWeeksForWhichYouCanWork {
                 max = m;
             }
         }
-        if (max * 2 <= total) {
+        if (max * 2 <= total + 1) {
             return total;
         } else {
             long remain = total - max;
