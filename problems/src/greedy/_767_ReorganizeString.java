@@ -8,40 +8,40 @@ public class _767_ReorganizeString {
 
     public String reorganizeString(String s) {
         char[] chars = s.toCharArray();
-        int[] cnt = new int[26];
+        int[][] freq = new int[26][2];
         for (char ch : chars) {
-            cnt[ch - 'a']++;
+            freq[ch - 'a'][0]++;
+            freq[ch - 'a'][1] = ch;
         }
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[1] - a[1]);
-        for (int i = 0; i < 26; i++) {
-            if (cnt[i] != 0) {
-                pq.add(new int[]{i, cnt[i]});
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[0] - a[0]);
+        for (int[] f : freq) {
+            if (f[0] > 0) {
+                pq.add(f);
             }
         }
-
-        if (2 * pq.peek()[1] > (chars.length + 1)) {
+        if (2 * pq.peek()[0] > chars.length + 1) {
             return "";
         }
 
         int idx = 0;
-        while (pq.size() > 1) {
+        while (pq.size() >= 2) {
             int[] first = pq.poll();
-            chars[idx++] = (char) (first[0] + 'a');
             int[] second = pq.poll();
-            chars[idx++] = (char) (second[0] + 'a');
-            first[1]--;
-            if (first[1] > 0) {
+            chars[idx++] = (char) first[1];
+            chars[idx++] = (char) second[1];
+            first[0]--;
+            if (first[0] > 0) {
                 pq.add(first);
             }
-            second[1]--;
-            if (second[1] > 0) {
+            second[0]--;
+            if (second[0] > 0) {
                 pq.add(second);
             }
         }
 
         if (!pq.isEmpty()) {
-            chars[idx] = (char) (pq.poll()[0] + 'a');
+            chars[idx] = (char) pq.peek()[1];
         }
 
         return new String(chars);
