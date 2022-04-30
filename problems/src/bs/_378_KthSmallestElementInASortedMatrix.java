@@ -9,38 +9,26 @@ public class _378_KthSmallestElementInASortedMatrix {
         long l = matrix[0][0], r = matrix[n - 1][n - 1];
         while (l < r) {
             long mid = l + (r - l) / 2;
-            int cnt = count(matrix, mid);
-            if (cnt < k) {
-                // mid UP
-                l = mid + 1;
-            } else {
-                // mid DOWN
+            int count = count(matrix, mid);
+            if (count >= k) {
                 r = mid;
+            } else {
+                l = mid + 1;
             }
         }
         return (int) l;
     }
 
-    // count of numbers in matrix that LE target
     public int count(int[][] matrix, long target) {
-        int n = matrix.length;
-        //  O(n+n), starting from bottom-left corner
-        int x1 = 0, y1 = 0, x2 = n - 1, y2 = n - 1;
         int count = 0;
-        while (x2 >= 0 && y1 < n) {
-            if (target < matrix[x1][y1]) {
-                break;
-            } else if (target >= matrix[x2][y2]) {
-                count += (x2 - x1 + 1) * (y2 - y1 + 1);
-                break;
+        int n = matrix.length;
+        int i = n - 1, j = 0;
+        while (i >= 0 && j < n) {
+            if (matrix[i][j] <= target) {
+                count += i + 1;
+                j++;
             } else {
-                int val = matrix[x2][y1];
-                if (val <= target) {
-                    count += (x2 - x1 + 1);
-                    y1++;
-                } else {
-                    x2--;
-                }
+                i--;
             }
         }
         return count;
