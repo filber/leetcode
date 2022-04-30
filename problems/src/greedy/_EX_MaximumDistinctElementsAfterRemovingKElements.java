@@ -31,10 +31,10 @@ public class _EX_MaximumDistinctElementsAfterRemovingKElements {
 
         while (!priorityQueue.isEmpty() && k > 0) {
             int peek = priorityQueue.poll();
-            if (k < peek) {
-                if (peek == k + 1) {
-                    distinctCnt++;
-                }
+            if (peek == k + 1) {
+                k = 0;
+                distinctCnt++;
+            } else if (k < peek) {
                 k = 0;
             } else {
                 k -= (peek - 1);
