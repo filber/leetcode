@@ -6,50 +6,37 @@ import java.util.PriorityQueue;
 public class _632_SmallestRangeCoveringElementsFromKLists {
 
     public int[] smallestRange(List<List<Integer>> nums) {
-        int k = nums.size();
-        if (k == 1) {
+        if (nums.size() == 1) {
             int val = nums.get(0).get(0);
             return new int[]{val, val};
         }
-
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) ->
-                a[2] - b[2]);
-
-        int r = 0;
-        for (int i = 0; i < k; i++) {
-            int val = nums.get(i).get(0);
-            pq.add(new int[]{i, 0, val});
-            if (val > r) {
-                r = val;
-            }
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        int R = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.size(); i++) {
+            int[] elem = new int[]{nums.get(i).get(0), i, 0};
+            pq.add(elem);
+            R = Math.max(R, elem[0]);
         }
-
         int minLen = Integer.MAX_VALUE;
-        int left = 0, right = r;
+        int start = 0, end = 0;
         while (!pq.isEmpty()) {
-            int[] triple = pq.poll();
-            int l = nums.get(triple[0]).get(triple[1]);
-            if (r - l == 0) {
-                return new int[]{l, r};
-            } else if (r - l < minLen) {
-                left = l;
-                right = r;
-                minLen = r - l;
+            int[] peek = pq.poll();
+            int L = peek[0];
+            if (R - L < minLen) {
+                minLen = R - L;
+                start = L;
+                end = R;
             }
-
-            triple[1]++;
-            if (triple[1] == nums.get(triple[0]).size()) {
+            peek[2]++;
+            if (peek[2] == nums.get(peek[1]).size()) {
                 break;
+            } else {
+                peek[0] = nums.get(peek[1]).get(peek[2]);
             }
-
-            int val = nums.get(triple[0]).get(triple[1]);
-            triple[2] = val;
-            pq.add(triple);
-            if (val > r) {
-                r = val;
-            }
+            pq.add(peek);
+            R = Math.max(R, peek[0]);
         }
 
-        return new int[]{left, right};
+        return new int[]{start, end};
     }
 }
