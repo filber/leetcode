@@ -53,6 +53,12 @@ public class _719_FindKThSmallestPairDistanceTest {
     }
 
     @Test
+    public void testSmallestDistancePair9() throws Exception {
+        int[] nums = {38, 33, 57, 65, 13, 2, 86, 75, 4, 56};
+        assertEquals(36, target.smallestDistancePair(nums, 26));
+    }
+
+    @Test
     public void testSmallestDistancePair10() throws Exception {
         int[] nums = {62, 100, 4};
         // [62,100]

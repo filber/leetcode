@@ -6,27 +6,23 @@ import java.util.Arrays;
 
 public class _719_FindKThSmallestPairDistance {
 
-
     public int smallestDistancePair(int[] nums, int k) {
         Arrays.sort(nums);
-
-        int l = 0, r = nums[nums.length - 1] - nums[0];
+        int n = nums.length;
+        int l = 0;
+        int r = nums[n - 1] - nums[0];
         while (l < r) {
             int mid = l + (r - l) / 2;
-            int cnt = count(nums, mid);
-            if (cnt < k) {
-                // mid UP
-                l = mid + 1;
-            } else {
-                // mid DOWN
+            int count = count(nums, mid);
+            if (count >= k) {
                 r = mid;
+            } else {
+                l = mid + 1;
             }
         }
-
         return l;
     }
 
-    // count of pairs LE distance
     private int count(int[] nums, int distance) {
         int count = 0;
         int l = 0;
@@ -38,4 +34,5 @@ public class _719_FindKThSmallestPairDistance {
         }
         return count;
     }
+
 }
