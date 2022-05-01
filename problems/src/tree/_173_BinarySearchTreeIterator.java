@@ -25,7 +25,6 @@ public class _173_BinarySearchTreeIterator {
                 stack.push(node);
                 node = node.left;
             }
-
             return val;
         }
 
