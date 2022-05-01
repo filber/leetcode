@@ -13,20 +13,17 @@ public class _373_FindKPairsWithSmallestSums {
     public List<List<Integer>> kSmallestPairs(int[] A, int[] B, int k) {
         this.A = A;
         this.B = B;
-        int[] first = new int[]{0, 0, A[0] + B[0]};
-        pq.add(first);
-
+        pq.add(new int[]{0, 0, A[0] + B[0]});
         List<List<Integer>> ans = new ArrayList<>();
-        for (int i = 0; i < k && !pq.isEmpty(); i++) {
-            int[] triple = pq.poll();
-            int l = triple[0];
-            int r = triple[1];
-            ans.add(Arrays.asList(A[l], B[r]));
 
+        for (int i = 0; i < k && !pq.isEmpty(); i++) {
+            int[] peek = pq.poll();
+            int l = peek[0], r = peek[1];
+            ans.add(Arrays.asList(A[l], B[r]));
             if (l == r) {
                 add(l + 1, r + 1);
-                add(l + 1, r);
                 add(l, r + 1);
+                add(l + 1, r);
             } else if (l < r) {
                 add(l, r + 1);
             } else {
