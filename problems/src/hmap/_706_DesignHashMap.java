@@ -29,28 +29,29 @@ public class _706_DesignHashMap {
         }
 
         public void put(int key, int value) {
-            Node node = search(key);
-            if (node == null) {
-                node = new Node(key, value);
-                // add to head
-                node.next = nodes[key % SIZE].next;
-                nodes[key % SIZE].next = node;
+            Node pre = searchPre(key);
+            if (pre.next != null) {
+                pre.next.val = value;
             } else {
-                node.val = value;
+                pre.next = new Node(key, value);
             }
         }
 
         public int get(int key) {
-            Node node = search(key);
-            return node == null ? -1 : node.val;
+            Node pre = searchPre(key);
+            if (pre.next == null) {
+                return -1;
+            } else {
+                return pre.next.val;
+            }
         }
 
         public void remove(int key) {
             Node pre = searchPre(key);
             if (pre.next != null) {
-                Node cur = pre.next;
-                pre.next = pre.next.next;
-                cur.next = null;
+                Node node = pre.next;
+                pre.next = node.next;
+                node.next = null;
             }
         }
 
@@ -60,14 +61,6 @@ public class _706_DesignHashMap {
                 pre = pre.next;
             }
             return pre;
-        }
-
-        private Node search(int key) {
-            Node cur = nodes[key % SIZE].next;
-            while (cur != null && cur.key != key) {
-                cur = cur.next;
-            }
-            return cur;
         }
     }
 }
