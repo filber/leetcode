@@ -22,6 +22,7 @@ public class _581_ShortestUnsortedContinuousSubarrayTest {
     @Test
     public void testFindUnsortedSubarray1() throws Exception {
         int len = target.findUnsortedSubarray(new int[]{2, 6, 4, 8, 10, 9, 15});
+        // [6, 4, 8, 10, 9]
         assertEquals(5, len);
     }
 
@@ -40,24 +41,28 @@ public class _581_ShortestUnsortedContinuousSubarrayTest {
     @Test
     public void testFindUnsortedSubarray4() throws Exception {
         int len = target.findUnsortedSubarray(new int[]{1, 3, 2, 2, 2});
+        //[3, 2, 2, 2]
         assertEquals(4, len);
     }
 
     @Test
     public void testFindUnsortedSubarray5() throws Exception {
         int len = target.findUnsortedSubarray(new int[]{1, 3, 2, 2, 4, 5, 6});
+        //[3, 2, 2]
         assertEquals(3, len);
     }
 
     @Test
     public void testFindUnsortedSubarray6() throws Exception {
         int len = target.findUnsortedSubarray(new int[]{1, 3, 2, 2, 4, 4, 4});
+        //[3, 2, 2]
         assertEquals(3, len);
     }
 
     @Test
     public void testFindUnsortedSubarray7() throws Exception {
         int len = target.findUnsortedSubarray(new int[]{2, 2, 2, 1, 1});
+        //[2, 2, 2, 1, 1]
         assertEquals(5, len);
     }
 
