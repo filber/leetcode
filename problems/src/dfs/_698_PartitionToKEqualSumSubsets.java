@@ -16,52 +16,41 @@ public class _698_PartitionToKEqualSumSubsets {
         if (k == 1) {
             return true;
         }
-        this.k = k;
-        n = nums.length;
-        used = new boolean[n];
-
-        int sum = Arrays.stream(nums).sum();
-        if (sum % k != 0) {
+        int total = Arrays.stream(nums).sum();
+        if (total % k != 0) {
             return false;
         }
-        target = sum / k;
-        // sort in decreasing order
-        // so the sum quickly exceeds target
-        this.nums = Arrays.
-                stream(nums).
-                boxed().
-                sorted(Collections.reverseOrder()).
-                mapToInt(v -> v).
-                toArray();
-        return backtracking(0, 0, 0);
+        target = total / k;
+        n = nums.length;
+        Arrays.sort(nums);
+        this.nums = nums;
+        used = new boolean[n];
+        this.k = k;
+
+        return dfs(0, n - 1, 0);
     }
 
-    private boolean backtracking(int group, int i, int sum) {
+    private boolean dfs(int group, int i, int sum) {
         if (group == k) {
-            // finished all groups
             return true;
-        } else if (sum > target) {
-            // sum exceeds target
-            return false;
         } else if (sum == target) {
-            return backtracking(group + 1, 0, 0);
+            return dfs(group + 1, n - 1, 0);
+        } else if (sum > target) {
+            return false;
         }
-
-        int last = -1; // store the last number used
-        for (int j = i; j < n; j++) {
-            if (used[j]) continue;
-            // skip same numbers
-            if (nums[j] == last)
+        int last = -1;
+        for (int j = i; j >= 0; j--) {
+            if (used[j] || nums[j] == last) {
                 continue;
-
-            last = nums[j];
-            used[j] = true;
-            if (backtracking(group, j + 1, sum + nums[j])) {
-                return true;
             }
-            used[j] = false;
+            used[j] = true;
+            last = nums[j];
+            if (dfs(group, j - 1, nums[j] + sum)) {
+                return true;
+            } else {
+                used[j] = false;
+            }
         }
-
         return false;
     }
 }
