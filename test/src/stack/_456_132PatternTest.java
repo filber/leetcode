@@ -57,7 +57,7 @@ public class _456_132PatternTest {
 
     @Test
     public void testFind132pattern8() throws Exception {
-        boolean rst = target.find132pattern(new int[]{1, 2, 3, 4, -4, -3, -5, -1});
+        boolean rst = target.find132pattern(new int[]{3, 4, -4, -3, -5, -1});
         assertFalse(rst);
     }
 }
