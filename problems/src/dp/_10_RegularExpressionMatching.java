@@ -26,16 +26,12 @@ public class _10_RegularExpressionMatching {
                 if (pCh == '.' || Character.isLowerCase(pCh)) {
                     dp[i][j] = dp[i - 1][j - 1] && (pCh == '.' || sChars[i - 1] == pCh);
                 } else {
-                    if (dp[i][j - 1]) {
-                        dp[i][j] = true;
-                    } else {
-                        int k = i;
-                        pCh = pCh == '#' ? pCh : Character.toLowerCase(pCh);
-                        while (k > 0 && (pCh == '#' || sChars[k - 1] == pCh) && !dp[k][j - 1]) {
-                            k--;
-                        }
-                        dp[i][j] = dp[k][j - 1];
+                    int k = i;
+                    pCh = pCh == '#' ? pCh : Character.toLowerCase(pCh);
+                    while (k > 0 && (pCh == '#' || sChars[k - 1] == pCh) && !dp[k][j - 1]) {
+                        k--;
                     }
+                    dp[i][j] = dp[k][j - 1];
                 }
             }
         }
