@@ -13,37 +13,39 @@ public class _216_CombinationSumIII {
 
     private List<List<Integer>> ans = new ArrayList<>();
     private int n;
+    private boolean[] used = new boolean[10];
 
     public List<List<Integer>> combinationSum3(int k, int n) {
-        List<Integer> list = new ArrayList<>();
         this.n = n;
+        int[] sequence = new int[k];
+        backtracking(sequence, 0, 0, 1);
 
-        dfs(list, k, 0, 1);
         return ans;
     }
 
-    public void dfs(List<Integer> list, int k, int sum, int i) {
-        if (sum == n && k == 0) {
-            ans.add(new ArrayList<>(list));
+    private void backtracking(int[] sequence, int sum, int i, int start) {
+        if (i == sequence.length) {
+            if (sum == n) {
+                List<Integer> list = new ArrayList<>(sequence.length);
+                for (int val : sequence) {
+                    list.add(val);
+                }
+                ans.add(list);
+            }
             return;
-        }
-        if (i == 10) {
-            return;
-        }
-        if (k == 0) {
-            return;
-        }
-        if (sum + i > n) {
-            // no need to choose i and subsequent numbers
+        } else if (sum >= n) {
             return;
         }
 
-        // Use i
-        list.add(i);
-        dfs(list, k - 1, sum + i, i + 1);
-        list.remove(list.size() - 1);
-
-        // Not use i
-        dfs(list, k, sum, i + 1);
+        for (int j = start; j <= 9; j++) {
+            if (used[j]) {
+                continue;
+            }
+            sequence[i] = j;
+            used[j] = true;
+            backtracking(sequence, sum + j, i + 1, j + 1);
+            used[j] = false;
+        }
     }
+
 }
