@@ -1,4 +1,4 @@
-package array_matrix;
+package hmap;
 
 //https://leetcode.com/problems/max-number-of-k-sum-pairs/
 
