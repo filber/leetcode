@@ -9,53 +9,39 @@ import java.util.List;
 public class _40_CombinationSumII {
 
     List<List<Integer>> ans = new ArrayList<>();
-    int[] candidates;
-    int target;
-    int[] cnt = new int[101];
-    int n = 0;
+    int n;
+    int[] c;
+    boolean[] used;
 
     public List<List<Integer>> combinationSum2(int[] c, int t) {
         Arrays.sort(c);
+        this.n = c.length;
+        this.c = c;
+        used = new boolean[n];
 
-        candidates = new int[c.length];
-        for (int i = 0; i < c.length; i++) {
-            int num = c[i];
-            cnt[num]++;
-            // remove duplicates
-            if (n == 0 || (n > 0 && num != candidates[n - 1])) {
-                candidates[n++] = num;
-            }
-        }
+        backtracking(new ArrayList<>(), n - 1, t);
 
-        target = t;
-        List<Integer> list = new ArrayList<>();
-        dfs(list, 0, 0);
         return ans;
     }
 
-    private void dfs(List<Integer> list, int i, int sum) {
-        if (sum == target) {
+    private void backtracking(List<Integer> list, int i, int sum) {
+        if (sum == 0) {
             ans.add(new ArrayList<>(list));
             return;
-        }
-        if (i == n) {
+        } else if (sum < 0) {
             return;
-        }
-        if (sum + candidates[i] > target) {
-            // no need to choose i and subsequent numbers
+        } else if (i == -1) {
             return;
         }
 
-        if (cnt[candidates[i]] != 0) {
-            // use i
-            list.add(candidates[i]);
-            cnt[candidates[i]]--;
-            dfs(list, i, sum + candidates[i]);
-            cnt[candidates[i]]++;
-            list.remove(list.size() - 1);
+        for (int j = i; j >=0; j--) {
+            if (j == n-1 || c[j] != c[j + 1] || used[j + 1]) {
+                list.add(c[j]);
+                used[j] = true;
+                backtracking(list, j - 1, sum - c[j]);
+                list.remove(list.size() - 1);
+                used[j] = false;
+            }
         }
-
-        // not use i
-        dfs(list, i + 1, sum);
     }
 }
