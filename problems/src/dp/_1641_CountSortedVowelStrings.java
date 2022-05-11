@@ -2,27 +2,23 @@ package dp;
 
 // https://leetcode.com/problems/count-sorted-vowel-strings/
 
+import java.util.Arrays;
+
 public class _1641_CountSortedVowelStrings {
 
-    public static int countVowelStrings(int n) {
-        int a = 1, e = 1, i = 1, o = 1, u = 1;
-        int sum = 0;
-
-        for (int j = 0; j < n; j++) {
-            sum = a + e + i + o + u;
-            a = sum;
-            e = e + i + o + u;
-            i = i + o + u;
-            o = o + u;
-//            u = u;
+    public int countVowelStrings(int n) {
+        int[][] dp = new int[n][6];
+        Arrays.fill(dp[0], 1);
+        dp[0][5] = 5;
+        for (int i = 1; i < n; i++) {
+            dp[i][0] = dp[i - 1][5];
+            dp[i][5] += dp[i][0];
+            for (int j = 1; j <= 4; j++) {
+                dp[i][j] = dp[i][j - 1] - dp[i - 1][j - 1];
+                dp[i][5] += dp[i][j];
+            }
         }
 
-        return sum;
-    }
-
-    public static void main(String[] args) {
-        int c1 = countVowelStrings(1); // 5
-        int c2 = countVowelStrings(2); // 15
-        int c3 = countVowelStrings(33); // 66045
+        return dp[n - 1][5];
     }
 }
