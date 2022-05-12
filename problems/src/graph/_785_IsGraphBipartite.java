@@ -2,54 +2,36 @@ package graph;
 
 //https://leetcode.com/problems/is-graph-bipartite/
 
-import java.util.ArrayDeque;
-import java.util.Queue;
-
 public class _785_IsGraphBipartite {
-    int n;
-    int[] groups;
-    int[][] graph;
-    boolean[] visited;
 
     public boolean isBipartite(int[][] graph) {
-        n = graph.length;
-        groups = new int[n];
-        this.graph = graph;
-        visited = new boolean[n];
+        int n = graph.length;
+        boolean[] visited = new boolean[n];
+        int[] groups = new int[n];
+        groups[0] = 1;
 
         for (int i = 0; i < n; i++) {
-            if (visited[i]){
+            if (visited[i]) {
                 continue;
             }
-
-            groups[i] = 1;
-            if (!dfs(i)) {
+            if (!dfs(graph, visited, groups, 0, i)) {
                 return false;
             }
         }
-
         return true;
     }
 
-    private boolean dfs(int i) {
+    private boolean dfs(int[][] graph, boolean[] visited, int[] groups, int pGroup, int i) {
         if (visited[i]) {
-            return true;
+            return groups[i] != pGroup;
         }
         visited[i] = true;
-
-        int[] neighbors = graph[i];
-        int g = groups[i];
-        for (int nei : neighbors) {
-            if (groups[nei] != 0 && groups[nei] == g) {
+        groups[i] = 1 - pGroup;
+        for (int adj : graph[i]) {
+            if (!dfs(graph, visited, groups, groups[i], adj)) {
                 return false;
-            } else {
-                groups[nei] = 3 - g;
-                if (!dfs(nei)) {
-                    return false;
-                }
             }
         }
-
         return true;
     }
 }
