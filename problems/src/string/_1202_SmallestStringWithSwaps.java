@@ -5,40 +5,49 @@ import java.util.*;
 //https://leetcode.com/problems/smallest-string-with-swaps/
 public class _1202_SmallestStringWithSwaps {
 
-    int[] id;
-    int[] sz;
-
     public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
-
         char[] chars = s.toCharArray();
         int n = chars.length;
-        id = new int[n];
-        sz = new int[n];
+        int[] id = new int[n];
+        int[] sz = new int[n];
         for (int i = 0; i < n; i++) {
             id[i] = i;
             sz[i] = 1;
         }
-
-        for (List<Integer> pair : pairs) {
-            union(pair.get(0), pair.get(1));
+        for (List<Integer> edge : pairs) {
+            int from = edge.get(0);
+            int to = edge.get(1);
+            union(id, sz, from, to);
         }
 
-        Map<Integer, PriorityQueue<Character>> map = new HashMap<>();
+        Map<Integer, int[]> map = new HashMap<>();
+        int[] gIDs = new int[n];
+        for (int i = 0; i < n; i++) {
+            char ch = chars[i];
+            int gid = root(id, i);
+            gIDs[i] = gid;
+            int[] cnt = map.computeIfAbsent(gid, k -> new int[27]);
+            cnt[ch - 'a']++;
+        }
 
         for (int i = 0; i < n; i++) {
-            int g = root(i);
-            PriorityQueue<Character> pq = map.computeIfAbsent(g, k -> new PriorityQueue<>());
-            pq.add(chars[i]);
+            int gid = gIDs[i];
+            int[] cnt = map.get(gid);
+            int cur = cnt[26];
+            for (int k = cur; k < 26; k++) {
+                if (cnt[k] > 0) {
+                    cnt[26] = k;
+                    chars[i] = (char) (k + 'a');
+                    cnt[k]--;
+                    break;
+                }
+            }
         }
 
-        char[] ans = new char[n];
-        for (int i = 0; i < n; i++) {
-            ans[i] = map.get(root(i)).poll();
-        }
-        return new String(ans);
+        return new String(chars);
     }
 
-    int root(int i) {
+    int root(int[] id, int i) {
         while (i != id[i]) {
             id[i] = id[id[i]];
             i = id[i];
@@ -46,9 +55,9 @@ public class _1202_SmallestStringWithSwaps {
         return i;
     }
 
-    private void union(int p, int q) {
-        int pId = root(p);
-        int qId = root(q);
+    private void union(int[] id, int[] sz, int p, int q) {
+        int pId = root(id, p);
+        int qId = root(id, q);
         if (pId == qId) {
             return;
         }
