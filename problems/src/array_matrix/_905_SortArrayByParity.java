@@ -7,22 +7,25 @@ public class _905_SortArrayByParity {
     public int[] sortArrayByParity(int[] nums) {
         int l = 0, r = nums.length - 1;
         while (l < r) {
-            if (nums[l] % 2 == 0 && nums[r] % 2 != 0) {
-                l++;
-                r--;
-            } else if (nums[l] % 2 != 0 && nums[r] % 2 == 0) {
+            boolean leftEven = nums[l] % 2 == 0;
+            boolean leftOdd = !leftEven;
+            boolean rightEven = nums[r] % 2 == 0;
+            boolean rightOdd = !rightEven;
+            if (leftOdd && rightEven) {
                 int tmp = nums[l];
                 nums[l] = nums[r];
                 nums[r] = tmp;
                 l++;
                 r--;
-            } else if (nums[l] % 2 == 0) {
-                l++;
-            } else if (nums[r] % 2 != 0) {
+            } else if (leftOdd && rightOdd) {
                 r--;
+            } else if (leftEven && rightOdd) {
+                l++;
+                r--;
+            } else if (leftEven && rightEven) {
+                l++;
             }
         }
-
         return nums;
     }
 }
