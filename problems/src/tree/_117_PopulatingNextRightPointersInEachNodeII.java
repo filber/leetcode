@@ -27,13 +27,11 @@ public class _117_PopulatingNextRightPointersInEachNodeII {
     }
 
     public Node connect(Node root) {
-        if (root == null || (root.left == null && root.right == null)) {
-            return root;
+        if (root == null) {
+            return null;
         }
-
         Queue<Node> queue = new ArrayDeque<>();
         queue.add(root);
-
         while (!queue.isEmpty()) {
             int sz = queue.size();
             Node pre = null;
@@ -42,16 +40,15 @@ public class _117_PopulatingNextRightPointersInEachNodeII {
                 if (pre != null) {
                     pre.next = node;
                 }
-                pre = node;
                 if (node.left != null) {
-                    queue.add(node.left);
+                    queue.offer(node.left);
                 }
                 if (node.right != null) {
-                    queue.add(node.right);
+                    queue.offer(node.right);
                 }
+                pre = node;
             }
         }
-
 
         return root;
     }
