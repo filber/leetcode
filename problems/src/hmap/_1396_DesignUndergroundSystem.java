@@ -9,33 +9,48 @@ public class _1396_DesignUndergroundSystem {
 
     public class UndergroundSystem {
 
-        Map<Integer, Object[]> passengerMap = new HashMap<>();
-        Map<String, double[]> stationMap = new HashMap<>();
+        class CheckIn {
+            String startStation;
+            int startTime;
 
-        public UndergroundSystem() {
-
+            public CheckIn(String station, int time) {
+                startStation = station;
+                startTime = time;
+            }
         }
 
-        public void checkIn(int id, String stationName, int t) {
-            passengerMap.put(id, new Object[]{stationName, t});
+        class Trace {
+            int cnt;
+            double avg;
+
+            public Trace(int c, double a) {
+                cnt = c;
+                avg = a;
+            }
+        }
+
+        Map<Integer, CheckIn> pMap = new HashMap<>();
+        Map<String, Trace> sMap = new HashMap<>();
+
+        public UndergroundSystem() {
+        }
+
+        public void checkIn(int id, String startStation, int startTime) {
+            pMap.put(id, new CheckIn(startStation, startTime));
         }
 
         public void checkOut(int id, String arriveStation, int arriveTime) {
-            Object[] pInfo = passengerMap.get(id);
-            String fromStation = (String) pInfo[0];
-            Integer fromTime = (Integer) pInfo[1];
-            int costTime = arriveTime - fromTime;
-
-            double[] sInfo = stationMap.computeIfAbsent(fromStation + "#" + arriveStation, k -> new double[]{0, 0});
-            double cnt = sInfo[0];
-            double average = sInfo[1];
-            average = (cnt * average + costTime) / (cnt + 1);
-            sInfo[0] = cnt + 1;
-            sInfo[1] = average;
+            CheckIn checkIn = pMap.remove(id);
+            int time = arriveTime - checkIn.startTime;
+            Trace trace = sMap.computeIfAbsent(checkIn.startStation + "#" + arriveStation, k -> new Trace(0, 0));
+            trace.avg = (trace.avg * trace.cnt + time) / (trace.cnt + 1);
+            trace.cnt++;
         }
 
         public double getAverageTime(String startStation, String endStation) {
-            return stationMap.get(startStation + "#" + endStation)[1];
+            String key = startStation + "#" + endStation;
+            Trace trace = sMap.get(key);
+            return trace.avg;
         }
     }
 }
