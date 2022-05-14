@@ -57,4 +57,26 @@ public class _310_MinimumHeightTreesTest {
         Set<Integer> set = new HashSet<>(roots);
         assertTrue(set.contains(0));
     }
+
+    @Test
+    public void testFindMinHeightTrees4() throws Exception {
+        int[][] edges = {{0, 1}};
+        int n = 2;
+        List<Integer> roots = target.findMinHeightTrees(n, edges);
+        assertEquals(2, roots.size());
+        Set<Integer> set = new HashSet<>(roots);
+        assertTrue(set.contains(0));
+        assertTrue(set.contains(1));
+    }
+
+    @Test
+    public void testFindMinHeightTrees5() throws Exception {
+        int[][] edges = {{0, 1}, {0, 2}, {0, 3}, {3, 4}, {3, 5}, {1, 6}, {4, 7}, {2, 8}, {0, 9}, {0, 10}, {2, 11}};
+        int n = 12;
+        List<Integer> roots = target.findMinHeightTrees(n, edges);
+        assertEquals(2, roots.size());
+        Set<Integer> set = new HashSet<>(roots);
+        assertTrue(set.contains(0));
+        assertTrue(set.contains(3));
+    }
 }

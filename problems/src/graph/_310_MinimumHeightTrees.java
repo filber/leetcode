@@ -7,62 +7,51 @@ import java.util.*;
 public class _310_MinimumHeightTrees {
 
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
-        if (n == 1) {
-            return Arrays.asList(0);
-        }
-        int[] degree = new int[n];
         List<Integer>[] graph = new List[n];
-
+        int[] degree = new int[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
         for (int[] edge : edges) {
-            int from = edge[0];
-            int to = edge[1];
-            degree[from]++;
-            degree[to]++;
-            if (graph[from] == null) {
-                graph[from] = new ArrayList<>();
-            }
-            graph[from].add(to);
-            if (graph[to] == null) {
-                graph[to] = new ArrayList<>();
-            }
-            graph[to].add(from);
+            int a = edge[0];
+            int b = edge[1];
+            degree[a]++;
+            degree[b]++;
+            graph[a].add(b);
+            graph[b].add(a);
         }
 
-        Queue<Integer> queue = new ArrayDeque<>();
         boolean[] visited = new boolean[n];
+        Queue<Integer> queue = new ArrayDeque<>();
         for (int i = 0; i < n; i++) {
-            if (degree[i] == 1) {
+            if (degree[i] <= 1) {
                 queue.add(i);
                 visited[i] = true;
             }
         }
 
-        int[] order = new int[2];
-        int sz = n - 1;
+        int sz = queue.size();
+        int[] ans = new int[2];
         while (!queue.isEmpty()) {
             sz = queue.size();
-            order[0] = queue.peek();
-            for (int j = 0; j < sz; j++) {
-                int from = queue.poll();
-                order[1] = from;
-
-                for (int to : graph[from]) {
-                    degree[to]--;
-                    if (!visited[to] && degree[to] == 1) {
-                        queue.add(to);
-                        visited[to] = true;
+            ans[0] = queue.peek();
+            for (int i = 0; i < sz; i++) {
+                int node = queue.poll();
+                ans[1] = node;
+                for (int adj : graph[node]) {
+                    degree[adj]--;
+                    if (!visited[adj] && degree[adj] == 1) {
+                        visited[adj] = true;
+                        queue.add(adj);
                     }
                 }
             }
         }
 
-        // at most two central nodes
-        List<Integer> list = new ArrayList<>();
-        list.add(order[0]);
-        if (sz == 2) {
-            list.add(order[1]);
+        if (sz == 1) {
+            return List.of(ans[0]);
+        } else {
+            return List.of(ans[0], ans[1]);
         }
-
-        return list;
     }
 }
