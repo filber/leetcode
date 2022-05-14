@@ -7,54 +7,46 @@ import java.util.Map;
 
 public class _EX_CountOfSubsetsWithSumEqualToX {
 
-    int[] nums;
-    int n;
-    int X;
-    Map<Integer, Integer>[] memo;
-
-    public int findCntDFS(int[] nums, int X) {
-        this.nums = nums;
-        n = nums.length;
-        this.X = X;
-        memo = new Map[n];
-        return dfs(0, X);
+    public int findCnt(int[] nums, int X) {
+        int[][] memo = new int[nums.length][X + 1];
+        for (int i = 0; i < nums.length; i++) {
+            memo[i][0] = 1;
+        }
+        return dfs(nums, memo, X, 0);
     }
 
-    private int dfs(int i, int sum) {
+    private int dfs(int[] nums, int[][] memo, int sum, int i) {
         if (sum == 0) {
             return 1;
+        } else if (i == nums.length) {
+            return 0;
         } else if (sum < 0) {
             return 0;
-        } else if (i == n) {
-            return 0;
-        } else if (memo[i] != null && memo[i].containsKey(sum)) {
-            return memo[i].get(sum);
+        } else if (memo[i][sum] != 0) {
+            return memo[i][sum];
         }
+
         int count = 0;
-        count += dfs(i + 1, sum - nums[i]);
-        count += dfs(i + 1, sum);
-        if (memo[i] == null) {
-            memo[i] = new HashMap<>();
-        }
-        memo[i].put(sum, count);
+        count += dfs(nums, memo, sum - nums[i], i + 1);
+        count += dfs(nums, memo, sum, i + 1);
+        memo[i][sum] = count;
         return count;
     }
 
-
-    // Knapsack
-    public int findCnt(int[] nums, int X) {
-        int n = nums.length;
+    // 0/1 Knapsack
+    public int findCntKnapsack(int[] nums, int X) {
+        int m = nums.length;
         int[] dp = new int[X + 1];
         dp[0] = 1;
-        for (int i = 0; i < n; i++) {
-            int w = nums[i];
+
+        for (int i = 1; i <= m; i++) {
             for (int j = X; j > 0; j--) {
+                int w = nums[i - 1];
                 if (j >= w) {
                     dp[j] += dp[j - w];
                 }
             }
         }
-
         return dp[X];
     }
 }
