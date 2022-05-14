@@ -22,68 +22,56 @@ public class _269_AlienDictionary {
         if (words == null || words.length < 2) {
             return "";
         }
-
-
-        List<char[]> edges = new ArrayList<>();
-        for (int i = 0; i < words.length - 1; i++) {
-            String p = words[i];
-            String q = words[i + 1];
-            for (int j = 0; j < Math.min(p.length(), q.length()); j++) {
-                char pCh = p.charAt(j);
-                char qCh = q.charAt(j);
-                if (pCh != qCh) {
-                    // add edge : pCh -> qCh
-                    edges.add(new char[]{pCh, qCh});
-                    break;
-                }
-            }
-        }
-
         Map<Character, Set<Character>> graph = new HashMap<>();
-        int[] inDegree = new int[26];
-        for (char[] edge : edges) {
-            char from = edge[0], to = edge[1];
-            if (!graph.containsKey(from)) {
-                graph.put(from, new HashSet<>());
+        Map<Character, Integer> outDegree = new HashMap<>();
+        for (int i = 0; i < words.length - 1; i++) {
+            char[] lChars = words[i].toCharArray();
+            char[] rChars = words[i + 1].toCharArray();
+            for (int j = 0; j < Math.min(lChars.length, rChars.length); j++) {
+                if (lChars[j] == rChars[j]) {
+                    continue;
+                }
+                char lCh = lChars[j];
+                char rCh = rChars[j];
+                Set<Character> set = graph.computeIfAbsent(rCh, k -> new HashSet<>());
+                if (!set.contains(lCh)) {
+                    outDegree.put(lCh, outDegree.getOrDefault(lCh, 0) + 1);
+                    set.add(lCh);
+                }
+                graph.computeIfAbsent(lCh, k -> new HashSet<>());
+                break;
             }
-            if (!graph.containsKey(to)) {
-                graph.put(to, new HashSet<>());
-            }
-
-            graph.get(from).add(to);
-            inDegree[to - 'a']++;
         }
 
         Queue<Character> queue = new ArrayDeque<>();
-        for (int i = 0; i < 26; i++) {
-            char key = (char) ('a' + i);
-            if (inDegree[i] == 0 && graph.containsKey(key)) {
-                queue.add(key);
+        for (Character node : graph.keySet()) {
+            if (!outDegree.containsKey(node)) {
+                queue.add(node);
             }
         }
-
-        // cycle found
         if (queue.isEmpty()) {
             return "";
         }
-
-        Set<Character> visited = new HashSet<>();
-        // need one more capacity to store 0-outDegree node
-        char[] order = new char[graph.keySet().size()];
-        int idx = 0;
+        
+        char[] seq = new char[graph.size()];
+        boolean[] used = new boolean[26];
+        int idx = seq.length - 1;
         while (!queue.isEmpty()) {
             char ch = queue.poll();
-            order[idx++] = ch;
-            visited.add(ch);
-            Set<Character> toSet = graph.getOrDefault(ch, new HashSet<>());
-            for (char to : toSet) {
-                if (visited.contains(to)) {
-                    return ""; // found cycle
+            seq[idx--] = ch;
+            used[ch - 'a'] = true;
+            for (char adj : graph.get(ch)) {
+                if (used[adj - 'a']) {
+                    return ""; // cycle detected
                 }
-                queue.add(to);
+                int out = outDegree.get(adj);
+                outDegree.put(adj, out - 1);
+                if (out == 1) {
+                    queue.add(adj);
+                }
             }
         }
 
-        return new String(order);
+        return new String(seq);
     }
 }
