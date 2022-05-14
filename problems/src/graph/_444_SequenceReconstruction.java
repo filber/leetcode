@@ -11,70 +11,58 @@ public class _444_SequenceReconstruction {
 //    (i.e., a shortest sequence so that all sequences in seqs are subsequences of it).
 //    Determine whether there is only one sequence that can be reconstructed from seqs and it is the org sequence.
 
-    boolean sequenceReconstruction(int[] org, int[][] seqs) {
-        List<int[]> edges = new ArrayList<>();
-        for (int i = 0; i < seqs.length; i++) {
-            int[] seq = seqs[i];
-            for (int j = 0; j < seq.length - 1; j++) {
-                int from = seq[j];
-                int to = seq[j + 1];
-                edges.add(new int[]{from, to});
-            }
-        }
-
-        Map<Integer, Integer> inDegree = new HashMap<>();
+    boolean sequenceReconstruction(int[] pSeq, int[][] seqs) {
+        // 1. Construct Graph using edges from seqs
+        // target -> {sources}
         Map<Integer, Set<Integer>> graph = new HashMap<>();
-        for (int[] edge : edges) {
-            int from = edge[0];
-            int to = edge[1];
-            Set<Integer> set = graph.computeIfAbsent(from, k -> new HashSet<>());
-            set.add(to);
-            graph.computeIfAbsent(to, k -> new HashSet<>());
-        }
-
-
-        for (Map.Entry<Integer, Set<Integer>> entry : graph.entrySet()) {
-            int from = entry.getKey();
-            inDegree.computeIfAbsent(from, k -> 0);
-            for (int to : entry.getValue()) {
-                inDegree.put(to, inDegree.getOrDefault(to, 0) + 1);
+        Map<Integer, Integer> outDegree = new HashMap<>();
+        for (int[] seq : seqs) {
+            for (int i = 0; i < seq.length - 1; i++) {
+                int source = seq[i];
+                int target = seq[i + 1];
+                Set<Integer> targetSet = graph.computeIfAbsent(target, k -> new HashSet<>());
+                if (!targetSet.contains(source)) {
+                    targetSet.add(source);
+                    outDegree.put(source, outDegree.getOrDefault(source, 0) + 1);
+                }
+                graph.computeIfAbsent(source, k -> new HashSet<>());
             }
         }
 
         Queue<Integer> queue = new ArrayDeque<>();
-        Set<Integer> visited = new HashSet<>();
-        for (Map.Entry<Integer, Integer> entry : inDegree.entrySet()) {
-            int from = entry.getKey();
-            int in = entry.getValue();
-            if (in == 0) {
-                queue.add(from);
-                visited.add(from);
+        for (int node : graph.keySet()) {
+            if (!outDegree.containsKey(node)) {
+                queue.add(node);
             }
         }
 
-        int[] sequence = new int[inDegree.size()];
-        if (org.length != sequence.length) {
+        // 2. Check Exceptions
+        if (graph.keySet().size() != pSeq.length) {
+            return false;
+        } else if (queue.size() != 1) {
             return false;
         }
 
-        int idx = 0;
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            if (size > 1) {
-                return false;
-            }
 
-            int from = queue.poll();
-            sequence[idx++] = from;
-            for (int to : graph.get(from)) {
-                inDegree.put(to, inDegree.get(to) - 1);
-                if (!visited.contains(to) && inDegree.get(to).equals(0)) {
-                    visited.add(to);
-                    queue.add(to);
+        // 3. Continuously traverse from node with OutDegree = 0
+        int[] traverseSeq = new int[pSeq.length];
+        int idx = traverseSeq.length - 1;
+        while (!queue.isEmpty()) {
+            if (queue.size() > 1) {
+                return false; // multiple choices
+            }
+            int node = queue.poll();
+            traverseSeq[idx--] = node;
+            for (int adj : graph.get(node)) {
+                int out = outDegree.get(adj);
+                outDegree.put(adj, out - 1);
+                if (out == 1) {
+                    queue.add(adj);
                 }
             }
         }
 
-        return Arrays.compare(org, sequence) == 0;
+        // 4. Compare traverseOrder with pSeq
+        return Arrays.compare(traverseSeq, pSeq) == 0;
     }
 }
