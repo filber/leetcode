@@ -6,6 +6,7 @@ import java.util.*;
 
 public class _743_NetworkDelayTime {
 
+    // Prime
     public int networkDelayTime(int[][] times, int n, int k) {
         // 1. Construct Graph
         List<int[]>[] graph = new List[n + 1];
