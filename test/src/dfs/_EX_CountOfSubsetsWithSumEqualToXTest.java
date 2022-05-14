@@ -19,7 +19,6 @@ public class _EX_CountOfSubsetsWithSumEqualToXTest {
     public void after() throws Exception {
     }
 
-
     @Test
     public void testFindCnt1() throws Exception {
         int[] nums = {1, 2, 3, 3};
