@@ -18,27 +18,24 @@ public class _17_LetterCombinationsOfAPhoneNumber {
     };
 
     public List<String> letterCombinations(String digits) {
-        if (digits.isEmpty()) {
+        char[] chars = digits.toCharArray();
+        char[] seq = new char[chars.length];
+        if (chars.length == 0) {
             return List.of();
         }
-        char[] chars = digits.toCharArray();
-        int n = chars.length;
-        char[] str = new char[n];
-        dfs(chars, str, 0);
-
+        dfs(chars, seq, 0);
         return ans;
     }
 
-    private void dfs(char[] chars, char[] str, int i) {
-        if (i == chars.length) {
-            ans.add(new String(str));
+    private void dfs(char[] chars, char[] seq, int i) {
+        if (i == seq.length) {
+            ans.add(new String(seq));
             return;
         }
-        char digit = chars[i];
-        char[] letters = LETTERS[digit - '2'];
-        for (char letter : letters) {
-            str[i] = letter;
-            dfs(chars, str, i + 1);
+        char ch = chars[i];
+        for (char letter : LETTERS[ch - '2']) {
+            seq[i] = letter;
+            dfs(chars, seq, i + 1);
         }
     }
 }
