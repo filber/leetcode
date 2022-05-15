@@ -5,6 +5,7 @@ package string;
 public class _345_ReverseVowelsOfAString {
 
     private static final boolean[] isVowel = new boolean[128];
+
     static {
         isVowel['a'] = true;
         isVowel['A'] = true;
@@ -22,17 +23,14 @@ public class _345_ReverseVowelsOfAString {
         char[] chars = s.toCharArray();
         int l = 0, r = chars.length - 1;
         while (l < r) {
-            char lCh = chars[l];
-            char rCh = chars[r];
+            char lCh = chars[l], rCh = chars[r];
             if (isVowel[lCh] && isVowel[rCh]) {
-                chars[l] = rCh;
-                chars[r] = lCh;
-                l++;
+                chars[l++] = rCh;
+                chars[r--] = lCh;
+            } else if (isVowel[lCh]) {
                 r--;
-            } else if (!isVowel[lCh]) {
+            } else if (isVowel[rCh]) {
                 l++;
-            } else if (!isVowel[rCh]) {
-                r--;
             } else {
                 l++;
                 r--;
