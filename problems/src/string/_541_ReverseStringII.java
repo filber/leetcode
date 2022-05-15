@@ -4,25 +4,19 @@ package string;
 
 public class _541_ReverseStringII {
 
-    char[] chars;
-    int n;
-
     public String reverseStr(String s, int k) {
         if (k == 1) {
             return s;
         }
-
-        chars = s.toCharArray();
-        n = chars.length;
-
-        for (int i = 0; i < n; i += 2 * k) {
-            swapRange(i, Math.min(i + k - 1, n - 1));
+        char[] chars = s.toCharArray();
+        int step = 2 * k;
+        for (int i = 0; i < chars.length; i += step) {
+            reverse(chars, i, Math.min(i + k - 1, chars.length - 1));
         }
-
         return new String(chars);
     }
 
-    private void swapRange(int i, int j) {
+    private void reverse(char[] chars, int i, int j) {
         while (i < j) {
             char tmp = chars[i];
             chars[i] = chars[j];
