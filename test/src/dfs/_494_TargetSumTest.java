@@ -33,4 +33,28 @@ public class _494_TargetSumTest {
         int[] nums = {100};
         assertEquals(0, target.findTargetSumWays(nums, -200));
     }
+
+    @Test
+    public void testFindTargetSumWays3() throws Exception {
+        int[] nums = {1};
+        assertEquals(1, target.findTargetSumWays(nums, 1));
+    }
+
+    @Test
+    public void testFindTargetSumWays4() throws Exception {
+        int[] nums = {0, 0, 0, 0, 0, 0, 0, 0, 1};
+        assertEquals(256, target.findTargetSumWays(nums, 1));
+    }
+
+    @Test
+    public void testFindTargetSumWays5() throws Exception {
+        int[] nums = {0, 0, 0, 0, 0, 0, 0, 0, 1};
+        assertEquals(0, target.findTargetSumWays(nums, 0));
+    }
+
+    @Test
+    public void testFindTargetSumWays6() throws Exception {
+        int[] nums = {1, 0};
+        assertEquals(2, target.findTargetSumWays(nums, 1));
+    }
 }

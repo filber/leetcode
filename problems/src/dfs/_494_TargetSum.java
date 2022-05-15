@@ -2,52 +2,51 @@ package dfs;
 
 //https://leetcode.com/problems/target-sum/
 
-import java.util.Arrays;
 
 public class _494_TargetSum {
 
     int ways = 0;
-    int n;
-    int[] nums;
     int target;
 
-    public int findTargetSumWaysBacktracking(int[] nums, int target) {
-        this.nums = nums;
-        n = nums.length;
+    public int findTargetSumWays(int[] nums, int target) {
         this.target = target;
-        backtracking(0, 0, 0);
+        dfs(nums, 0, 0, 0);
         return ways;
     }
 
-    private void backtracking(int i, int left, int right) {
-        if (i == n) {
+    private void dfs(int[] nums, int left, int right, int i) {
+        if (i == nums.length) {
             ways += left - right == target ? 1 : 0;
             return;
         }
-        int w = nums[i];
-        backtracking(i + 1, left + w, right);
-        backtracking(i + 1, left, right + w);
+        dfs(nums, left + nums[i], right, i + 1);
+        dfs(nums, left, right + nums[i], i + 1);
     }
 
-    public int findTargetSumWays(int[] nums, int target) {
-        int sum = Arrays.stream(nums).sum();
-        int doubleA = target + sum;
-        if (doubleA % 2 != 0 || target > sum || target < -sum) {
+    // 0/1 Knapsack
+    public int findTargetSumWaysKnapsack(int[] nums, int target) {
+        int sum = 0;
+        for (int val : nums) {
+            sum += val;
+        }
+        if ((sum + target) % 2 != 0) {
             return 0;
         }
-        int A = Math.abs(doubleA / 2);
-
-        // how many subsets have the sum equals to target
-        int[] dp = new int[A + 1];
-        dp[0] = 1;// empty subset
-        for (int i = 0; i < nums.length; i++) {
-            int w = nums[i];
-            for (int j = A; j >= 0; j--) {
-                if (j >= w) {
-                    dp[j] += dp[j - w];
+        int x = (sum + target) / 2;
+        if (x < 0) {
+            return 0;
+        }
+        int m = nums.length;
+        int[] dp = new int[x + 1];
+        dp[0] = 1;
+        for (int i = 1; i <= m; i++) {
+            // must update dp[0]
+            for (int j = x; j >= 0; j--) {
+                if (j >= nums[i - 1]) {
+                    dp[j] += dp[j - nums[i - 1]];
                 }
             }
         }
-        return dp[A];
+        return dp[x];
     }
 }
