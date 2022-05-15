@@ -17,7 +17,13 @@ public class _14_LongestCommonPrefix {
         }
         int mid = (i + j) / 2;
         char[] leftChars = longestCommonPrefix(strs, i, mid);
+        if (leftChars.length == 0) {
+            return leftChars;
+        }
         char[] rightChars = longestCommonPrefix(strs, mid + 1, j);
+        if (rightChars.length == 0) {
+            return rightChars;
+        }
         char[] ans = new char[Math.min(leftChars.length, rightChars.length)];
         int idx = 0;
         while (idx < ans.length && leftChars[idx] == rightChars[idx]) {
