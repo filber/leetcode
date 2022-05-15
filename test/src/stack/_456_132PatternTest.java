@@ -56,8 +56,32 @@ public class _456_132PatternTest {
     }
 
     @Test
+    public void testFind132pattern7() throws Exception {
+        boolean rst = target.find132pattern(new int[]{-2, 1});
+        assertFalse(rst);
+    }
+
+    @Test
     public void testFind132pattern8() throws Exception {
+        boolean rst = target.find132pattern(new int[]{2, 1});
+        assertFalse(rst);
+    }
+
+    @Test
+    public void testFind132pattern9() throws Exception {
+        boolean rst = target.find132pattern(new int[]{1});
+        assertFalse(rst);
+    }
+
+    @Test
+    public void testFind132pattern10() throws Exception {
         boolean rst = target.find132pattern(new int[]{3, 4, -4, -3, -5, -1});
+        assertFalse(rst);
+    }
+
+    @Test
+    public void testFind132pattern11() throws Exception {
+        boolean rst = target.find132pattern(new int[]{-2, 1, 1});
         assertFalse(rst);
     }
 }
