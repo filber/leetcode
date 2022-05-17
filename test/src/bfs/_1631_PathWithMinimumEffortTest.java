@@ -1,4 +1,4 @@
-package bs;
+package bfs;
 
 import org.junit.Test;
 import org.junit.Before;
