@@ -12,10 +12,10 @@ public class _81_SearchInRotatedSortedArrayII {
             if (nums[mid] == target) {
                 return true;
             }
-            while (nums[l] != target && l < mid) {
+            while (nums[l] == nums[mid] && l < mid) {
                 l++;
             }
-            while (nums[r] != target && mid < r) {
+            while (nums[r]  == nums[mid] && mid < r) {
                 r--;
             }
             if (l == mid) {
