@@ -1,4 +1,4 @@
-package math;
+package dp;
 
 //https://leetcode.com/problems/integer-break/
 
