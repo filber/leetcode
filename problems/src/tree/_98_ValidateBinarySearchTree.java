@@ -4,25 +4,20 @@ package tree;
 
 public class _98_ValidateBinarySearchTree {
 
-    Integer pre = null;
-    public boolean isValidBST(TreeNode root) {
-        return traverse(root);
-    }
+    TreeNode pre = null;
 
-    private boolean traverse(TreeNode root) {
+    public boolean isValidBST(TreeNode root) {
         if (root == null) {
             return true;
         }
-        if (!traverse(root.left)) {
+        if (!isValidBST(root.left)) {
             return false;
         }
-        if (pre != null && pre >= root.val) {
+        if (pre != null && pre.val >= root.val) {
             return false;
         }
-        pre = root.val;
-        if (!traverse(root.right)) {
-            return false;
-        }
-        return true;
+        pre = root;
+        return isValidBST(root.right);
     }
+
 }
