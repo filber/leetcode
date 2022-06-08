@@ -10,11 +10,10 @@ public class _110_BalancedBinaryTree {
         } else {
             int leftDepth = depth(root.left);
             int rightDepth = depth(root.right);
-            if (Math.abs(leftDepth - rightDepth) <= 1 && isBalanced(root.left) && isBalanced(root.right)) {
-                return true;
-            } else {
+            if (Math.abs(leftDepth - rightDepth) > 1) {
                 return false;
             }
+            return isBalanced(root.left) && isBalanced(root.right);
         }
     }
 
