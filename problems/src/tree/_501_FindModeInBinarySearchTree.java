@@ -7,16 +7,14 @@ import java.util.ArrayList;
 public class _501_FindModeInBinarySearchTree {
 
     ArrayList<Integer> list = new ArrayList<>();
-    int cursor = 0;
 
     int maxCount = 1;
     int curCount = 0;
-    int pre = Integer.MIN_VALUE;
+    TreeNode pre = null;
 
     public int[] findMode(TreeNode root) {
         traverse(root);
-
-        int[] ans = new int[cursor];
+        int[] ans = new int[list.size()];
         for (int i = 0; i < ans.length; i++) {
             ans[i] = list.get(i);
         }
@@ -27,25 +25,25 @@ public class _501_FindModeInBinarySearchTree {
         if (root == null) {
             return;
         }
-
         traverse(root.left);
-
-        if (root.val == pre) {
-            curCount++;
+        if (pre != null) {
+            if (pre.val == root.val) {
+                curCount++;
+                if (curCount == maxCount) {
+                    list.add(root.val);
+                } else if (curCount > maxCount) {
+                    maxCount = curCount;
+                    list.clear();
+                    list.add(root.val);
+                }
+            } else {
+                curCount = 1;
+            }
         } else {
             curCount = 1;
-            pre = root.val;
+            list.add(root.val);
         }
-
-        if (curCount > maxCount) {
-            maxCount = curCount;
-            cursor = 0;
-            list.add(cursor++, root.val);
-        } else if (curCount == maxCount) {
-            list.add(cursor++, root.val);
-        }
-
+        pre = root;
         traverse(root.right);
     }
-
 }
