@@ -15,20 +15,20 @@ public class _1302_DeepestLeavesSum {
         return sum;
     }
 
-    private void dfs(TreeNode node, int level) {
-        if (node == null) {
+    private void dfs(TreeNode root, int level) {
+        if (root == null) {
             return;
-        } else if (node.left == null && node.right == null) {
-            if (level == maxLevel) {
-                sum += node.val;
-            } else if (level > maxLevel) {
-                sum = node.val;
-                maxLevel = level;
-            }
         }
-        dfs(node.left, level + 1);
-        dfs(node.right, level + 1);
+        if (level == maxLevel) {
+            sum += root.val;
+        } else if (level > maxLevel) {
+            sum = root.val;
+            maxLevel = level;
+        }
+        dfs(root.left, level + 1);
+        dfs(root.right, level + 1);
     }
+
 
     public int deepestLeavesSumBFS(TreeNode root) {
         Queue<TreeNode> queue = new ArrayDeque<>();
