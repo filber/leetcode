@@ -3,34 +3,35 @@ package stack;
 public class _150_EvaluateReversePolishNotation {
 
     public int evalRPN(String[] tokens) {
-        int n = tokens.length;
-        int[] stack = new int[n];
+        int[] stack = new int[tokens.length];
         int top = -1;
         for (String token : tokens) {
-            if (token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/")) {
-                int operand2 = stack[top--];
-                int operand1 = stack[top--];
-                int val = 0;
-                switch (token) {
-                    case "+":
-                        val = operand1 + operand2;
-                        break;
-                    case "-":
-                        val = operand1 - operand2;
-                        break;
-                    case "*":
-                        val = operand1 * operand2;
-                        break;
-                    case "/":
-                        val = operand1 / operand2;
-                        break;
-                }
-                stack[++top] = val;
-            } else {
-                int val = Integer.parseInt(token);
-                stack[++top] = val;
+            switch (token) {
+                case "+":
+                    int sum = stack[top] + stack[top - 1];
+                    top--;
+                    stack[top] = sum;
+                    break;
+                case "-":
+                    int subtraction = stack[top-1] - stack[top];
+                    top--;
+                    stack[top] = subtraction;
+                    break;
+                case "*":
+                    int multiplication = stack[top-1] * stack[top];
+                    top--;
+                    stack[top] = multiplication;
+                    break;
+                case "/":
+                    int division = stack[top-1] / stack[top];
+                    top--;
+                    stack[top] = division;
+                    break;
+                default:
+                    stack[++top] = Integer.parseInt(token);
             }
         }
-        return stack[top];
+
+        return stack[0];
     }
 }
