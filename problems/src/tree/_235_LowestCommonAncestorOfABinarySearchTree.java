@@ -7,16 +7,15 @@ public class _235_LowestCommonAncestorOfABinarySearchTree {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if (p.val > q.val) {
             return lowestCommonAncestor(root, q, p);
-        }
-
-        if (root.val == p.val || root.val == q.val) {
+        } else if (p.val == root.val || q.val == root.val) {
             return root;
         } else if (p.val < root.val && root.val < q.val) {
             return root;
-        } else if (root.val < p.val) {
-            return lowestCommonAncestor(root.right, p, q);
-        } else {
+        } else if (p.val < root.val && q.val < root.val) {
             return lowestCommonAncestor(root.left, p, q);
+        } else {
+            //root.val < p.val && root.val < q.val
+            return lowestCommonAncestor(root.right, p, q);
         }
     }
 }
