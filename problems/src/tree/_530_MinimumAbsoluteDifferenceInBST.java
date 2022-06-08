@@ -5,22 +5,24 @@ package tree;
 public class _530_MinimumAbsoluteDifferenceInBST {
 
     int minDiff = Integer.MAX_VALUE;
-    Integer pre = null;
+    TreeNode pre = null;
 
     public int getMinimumDifference(TreeNode root) {
-        traverse(root);
+        midOrderTraverse(root);
         return minDiff;
     }
 
-    private void traverse(TreeNode root) {
+    private void midOrderTraverse(TreeNode root) {
         if (root == null) {
             return;
         }
-        traverse(root.left);
+        midOrderTraverse(root.left);
         if (pre != null) {
-            minDiff = Math.min(minDiff, root.val - pre);
+            minDiff = Math.min(minDiff, root.val - pre.val);
         }
-        pre = root.val;
-        traverse(root.right);
+        pre = root;
+
+        midOrderTraverse(root.right);
     }
+
 }
