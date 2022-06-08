@@ -14,37 +14,37 @@ public class _1091_ShortestPathInBinaryMatrix {
     };
 
     public int shortestPathBinaryMatrix(int[][] grid) {
-        int m = grid.length, n = grid[0].length;
-        if (grid[0][0] == 1 || grid[m - 1][n - 1] == 1) {
+        int n = grid.length;
+        if (grid[0][0] == 1 || grid[n - 1][n - 1] == 1) {
             return -1;
-        }
-        int[][] dp = new int[m][n];
-        for (int i = 0; i < m; i++) {
-            Arrays.fill(dp[i], Integer.MAX_VALUE);
         }
 
         Queue<int[]> queue = new ArrayDeque<>();
-        queue.add(new int[]{0, 0, 1});
+        queue.add(new int[]{0, 0});
+        grid[0][0] = 1;
+
+        int distance = 1;
         while (!queue.isEmpty()) {
-            int[] node = queue.poll();
-            int i = node[0];
-            int j = node[1];
-            int path = node[2];
-            if (path >= dp[i][j]) {
-                continue;
-            }
-            dp[i][j] = path;
-            int nextPath = path + 1;
-            for (int[] d : DIR) {
-                int nextI = i + d[0];
-                int nextJ = j + d[1];
-                if (nextI < 0 || nextI == m || nextJ < 0 || nextJ == n || grid[nextI][nextJ] == 1 || nextPath >= dp[nextI][nextJ]) {
-                    continue;
+            int sz = queue.size();
+            for (int i = 0; i < sz; i++) {
+                int[] pos = queue.poll();
+                int x = pos[0];
+                int y = pos[1];
+                if (x == n - 1 && y == n - 1) {
+                    return distance;
                 }
-                queue.add(new int[]{nextI, nextJ, nextPath});
+                for (int[] dir : DIR) {
+                    int nextX = dir[0] + x;
+                    int nextY = dir[1] + y;
+                    if (nextX >= 0 && nextX < n && nextY >= 0 && nextY < n && grid[nextX][nextY] == 0) {
+                        grid[nextX][nextY] = 1;
+                        queue.add(new int[]{nextX, nextY});
+                    }
+                }
             }
+            distance++;
         }
 
-        return dp[m - 1][n - 1] == Integer.MAX_VALUE ? -1 : dp[m - 1][n - 1];
+        return -1;
     }
 }
