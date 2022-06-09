@@ -1,4 +1,4 @@
-package bfs;
+package dfs;
 
 //https://leetcode.com/problems/longest-increasing-path-in-a-matrix/
 
@@ -17,40 +17,34 @@ public class _329_LongestIncreasingPathInAMatrix {
     public int longestIncreasingPath(int[][] matrix) {
         m = matrix.length;
         n = matrix[0].length;
-
-        this.matrix = matrix;
         dp = new int[m][n];
-
+        this.matrix = matrix;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (dp[i][j] == 0) {
-                    dfs(Integer.MIN_VALUE, i, j);
+                    dfs(-1, i, j);
                 }
             }
         }
-
         return maxLen;
     }
 
-    private int dfs(int preVal, int i, int j) {
+    private int dfs(int prev, int i, int j) {
         if (i < 0 || i == m || j < 0 || j == n) {
             return 0;
-        } else if (preVal >= matrix[i][j]) {
+        } else if (prev >= matrix[i][j]) {
             return 0;
         } else if (dp[i][j] != 0) {
             return dp[i][j];
         }
-        int curLen = 0;
-        int v = matrix[i][j];
-        for (int[] dir : DIR) {
-            int nextI = i + dir[0];
-            int nextJ = j + dir[1];
-            int nextLen = dfs(v, nextI, nextJ);
-            curLen = Math.max(curLen, nextLen);
-        }
 
-        dp[i][j] = curLen + 1;
+        for (int[] dir : DIR) {
+            int nextI = dir[0] + i;
+            int nextJ = dir[1] + j;
+            dp[i][j] = Math.max(dp[i][j], dfs(matrix[i][j], nextI, nextJ) + 1);
+        }
         maxLen = Math.max(maxLen, dp[i][j]);
         return dp[i][j];
     }
+
 }
