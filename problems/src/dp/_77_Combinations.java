@@ -19,18 +19,14 @@ public class _77_Combinations {
     }
 
     private void backtracking(int[] seq, int i, int start) {
-        if (i == k) {
-            List<Integer> list = new ArrayList<>(k);
+        if (i == seq.length) {
+            List<Integer> list = new ArrayList<>();
             for (int val : seq) {
                 list.add(val);
             }
             ans.add(list);
             return;
         }
-        if (start > n) {
-            return;
-        }
-
         for (int j = start; j <= n; j++) {
             seq[i] = j;
             backtracking(seq, i + 1, j + 1);
