@@ -64,6 +64,7 @@ public class _450_DeleteNodeInABSTTest {
     public void testDeleteNode7() throws Exception {
         TreeNode root = TreeNode.createTreeNode(new Integer[]{33, 25, 40, 11, 31, 34, 45, 10, 18, 29, 32, null, 36});
         TreeNode tree = target.deleteNode(root, 33);
-        assertArrayEquals(new Integer[]{5, 3, 6, 2, 7}, tree.toArray());
+        assertArrayEquals(new Integer[]{32, 25, 40, 11, 31, 34, 45, 10, 18, 29, 36}, tree.toArray());
+
     }
 }

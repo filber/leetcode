@@ -12,38 +12,50 @@ public class _450_DeleteNodeInABST {
     public TreeNode delete(TreeNode root, int key) {
         if (root == null) {
             return null;
-        }
-        if (root.val == key) {
-            if (root.left == null && root.right == null) {
-                // leaf node
+        } else if (root.left == null && root.right == null) {
+            // leaf node
+            if (root.val == key) {
                 return null;
-            } else if (root.left == null) {
-                return root.right;
-            } else if (root.right == null) {
-                return root.left;
-            } else if (root.left.right == null) {
-                TreeNode L = root.left;
-                L.right = root.right;
-                root.left = null;
-                root.right = null;
-                return L;
-            } else {
-                TreeNode pre = root.left;
-                TreeNode L = root.left.right;
-                while (L.right != null) {
-                    pre = L;
-                    L = L.right;
-                }
-                pre.right = L.left;
-                L.left = root.left;
-                L.right = root.right;
-                return L;
             }
-        } else if (root.val < key) {
-            root.right = delete(root.right, key);
-        } else {
-            root.left = delete(root.left, key);
+            return root;
+        } else if (root.left == null) {
+            if (root.val == key) {
+                return root.right;
+            } else if (root.val < key) {
+                root.right = deleteNode(root.right, key);
+            }
+            return root;
+        } else if (root.right == null) {
+            if (root.val == key) {
+                return root.left;
+            } else if (root.val > key) {
+                root.left = deleteNode(root.left, key);
+            }
+            return root;
         }
+
+        if (root.val == key) {
+            TreeNode left = root.left;
+            TreeNode pre = null;
+            while (left.right != null) {
+                pre = left;
+                left = left.right;
+            }
+            if (pre != null) {
+                pre.right = null;
+                left.left = root.left;
+            }
+            left.right = root.right;
+
+            root.left = null;
+            root.right = null;
+            return left;
+        } else if (key < root.val) {
+            root.left = deleteNode(root.left, key);
+        } else if (root.val < key) {
+            root.right = deleteNode(root.right, key);
+        }
+
         return root;
     }
 }
