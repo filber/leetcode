@@ -11,22 +11,21 @@ public class _491_IncreasingSubsequences {
     int[] nums;
     int n;
     int[] seq;
-    int idx = 0;
+    int idx = -1;
 
     public List<List<Integer>> findSubsequences(int[] nums) {
-        this.n = nums.length;
         this.nums = nums;
+        n = nums.length;
         seq = new int[n];
-
         backtracking(0);
         return ans;
     }
 
     private void backtracking(int i) {
-        if (idx > 1) {
-            List<Integer> list = new ArrayList<>(idx);
-            for (int j = 0; j < idx; j++) {
-                list.add(seq[j]);
+        if (idx > 0) {
+            List<Integer> list = new ArrayList<>();
+            for (int k = 0; k <= idx; k++) {
+                list.add(seq[k]);
             }
             ans.add(list);
         }
@@ -34,13 +33,13 @@ public class _491_IncreasingSubsequences {
             return;
         }
 
-        Set<Integer> used = new HashSet<>();
-
+        Set<Integer> set = new HashSet<>();
         for (int j = i; j < n; j++) {
-            if (idx > 0 && seq[idx - 1] > nums[j]) continue;
-            if (used.contains(nums[j])) continue;
-            used.add(nums[j]);
-            seq[idx++] = nums[j];
+            int val = nums[j];
+            if (idx != -1 && seq[idx] > val) continue;
+            if (set.contains(val)) continue;
+            set.add(val);
+            seq[++idx] = val;
             backtracking(j + 1);
             idx--;
         }
