@@ -10,10 +10,11 @@ public class _354_RussianDollEnvelopes {
         Arrays.sort(envelopes, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
         int n = envelopes.length;
         int[] dp = new int[n];
-        int len = 0;
-        for (int[] env : envelopes) {
-            int l = 0, r = len;
+        int maxLen = 0;
+        for (int i = 0; i < n; i++) {
+            int[] env = envelopes[i];
             int h = env[1];
+            int l = 0, r = maxLen;
             while (l < r) {
                 int mid = l + (r - l) / 2;
                 if (dp[mid] >= h) {
@@ -23,10 +24,10 @@ public class _354_RussianDollEnvelopes {
                 }
             }
             dp[l] = h;
-            if (l == len) {
-                len++;
+            if (l == maxLen) {
+                maxLen++;
             }
         }
-        return len;
+        return maxLen;
     }
 }
