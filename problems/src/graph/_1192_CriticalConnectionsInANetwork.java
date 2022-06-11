@@ -22,8 +22,6 @@ public class _1192_CriticalConnectionsInANetwork {
         for (int i = 0; i < n; i++) {
             graph[i] = new ArrayList<>();
         }
-
-        // 1. Build the graph
         for (List<Integer> connection : connections) {
             int a = connection.get(0);
             int b = connection.get(1);
@@ -31,9 +29,7 @@ public class _1192_CriticalConnectionsInANetwork {
             graph[b].add(a);
         }
 
-        // 2. DFS Traverse
         dfs(-1, 0);
-
         return ans;
     }
 
@@ -41,18 +37,17 @@ public class _1192_CriticalConnectionsInANetwork {
         if (visited[i]) {
             return;
         }
-        visited[i] = true;
+        dfn[i] = seq;
         low[i] = seq++;
-        dfn[i] = low[i];
-        for (int adj : graph[i]) {
-            // do not walk back!
-            if (adj == parent) continue;
-            dfs(i, adj);
-            // update low idx
-            low[i] = Math.min(low[i], low[adj]);
-            // compare current idx with the low idx of adj
-            if (dfn[i] < low[adj]) {
-                ans.add(List.of(i, adj));
+        visited[i] = true;
+        for (int j : graph[i]) {
+            if (j == parent) {
+                continue;
+            }
+            dfs(i, j);
+            low[i] = Math.min(low[i], low[j]);
+            if (dfn[i] < low[j]) {
+                ans.add(List.of(i, j));
             }
         }
     }
