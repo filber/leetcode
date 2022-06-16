@@ -5,23 +5,23 @@ package string;
 public class _5_LongestPalindromicSubstring {
 
 
-    int n = 0;
+    int n;
     char[] chars;
 
     public String longestPalindrome(String s) {
         chars = s.toCharArray();
         n = chars.length;
-
-        int startIdx = 0, maxLen = 1;
+        int maxLen = 0;
+        int beginIdx = 0;
         for (int i = 0; i < n; i++) {
-            int biggerLen = Math.max(detect(i, i), detect(i, i + 1));
-            if (biggerLen > maxLen) {
-                maxLen = biggerLen;
-                startIdx = i - (maxLen - 1) / 2;
+            int len = Math.max(detect(i, i), detect(i, i + 1));
+            if (len > maxLen) {
+                maxLen = len;
+                beginIdx = i - (len - 1) / 2;
             }
         }
 
-        return s.substring(startIdx, startIdx + maxLen);
+        return s.substring(beginIdx, beginIdx + maxLen);
     }
 
     private int detect(int i, int j) {
@@ -31,4 +31,5 @@ public class _5_LongestPalindromicSubstring {
         }
         return j - i - 1;
     }
+
 }
