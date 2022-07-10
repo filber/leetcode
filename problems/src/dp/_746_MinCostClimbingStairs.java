@@ -4,24 +4,16 @@ package dp;
 
 public class _746_MinCostClimbingStairs {
 
-  public static int minCostClimbingStairs(int[] cost) {
-    int pre2 = 0;
-    int pre1 = cost[0];
-    for (int i = 1; i < cost.length; i++) {
-      int temp = pre1;
-      pre1 = Math.min(pre1, pre2) + cost[i];
-      pre2 = temp;
+    public int minCostClimbingStairs(int[] cost) {
+        int n = cost.length;
+        int prev = cost[0];
+        int cur = cost[1];
+        for (int i = 2; i < n; i++) {
+            int min = Math.min(prev, cur) + cost[i];
+            prev = cur;
+            cur = min;
+        }
+
+        return Math.min(prev, cur);
     }
-    return Math.min(pre1, pre2);
-  }
-
-  public static void main(String[] args) {
-//    Input: cost = [10, 15, 20]
-//    Output: 15
-      int m1 = minCostClimbingStairs(new int[] {10, 15, 20});
-
-//    Input: cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1]
-//    Output: 6
-      int m2 = minCostClimbingStairs(new int[] {1, 100, 1, 1, 1, 100, 1, 1, 100, 1});
-  }
 }
