@@ -10,18 +10,20 @@ import java.util.Queue;
 public class _102_BinaryTreeLevelOrderTraversal {
 
     public List<List<Integer>> levelOrder(TreeNode root) {
-        List<List<Integer>> list = new ArrayList<>();
         if (root == null) {
-            return list;
+            return List.of();
         }
+
         Queue<TreeNode> queue = new ArrayDeque<>();
         queue.add(root);
+
+        List<List<Integer>> rst = new ArrayList<>();
         while (!queue.isEmpty()) {
-            List<Integer> levelNodes = new ArrayList<>();
             int sz = queue.size();
+            List<Integer> layer = new ArrayList<>();
             for (int i = 0; i < sz; i++) {
                 TreeNode node = queue.poll();
-                levelNodes.add(node.val);
+                layer.add(node.val);
                 if (node.left != null) {
                     queue.add(node.left);
                 }
@@ -29,9 +31,8 @@ public class _102_BinaryTreeLevelOrderTraversal {
                     queue.add(node.right);
                 }
             }
-            list.add(levelNodes);
+            rst.add(layer);
         }
-
-        return list;
+        return rst;
     }
 }
