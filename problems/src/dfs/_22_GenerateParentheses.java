@@ -12,29 +12,30 @@ public class _22_GenerateParentheses {
     List<String> ans = new ArrayList<>();
 
     public List<String> generateParenthesis(int n) {
-        this.n = 2 * n;
-        chars = new char[this.n];
-        backtracking(0, 0);
+        this.n = n;
+        chars = new char[this.n * 2];
+        backtracking(0, 0, 0);
         return ans;
     }
 
-    private void backtracking(int i, int stack) {
-        if (i == n) {
+    private void backtracking(int i, int leftCnt, int rightCnt) {
+        if (i == 2 * n) {
             ans.add(new String(chars));
             return;
         }
-        if (stack == 0) {
+        if (leftCnt == rightCnt) {
             chars[i] = '(';
-            backtracking(i + 1, stack + 1);
-        } else if (n - i == stack) {
+            leftCnt++;
+            backtracking(i + 1, leftCnt, rightCnt);
+        } else if (leftCnt == n) {
             chars[i] = ')';
-            backtracking(i + 1, stack - 1);
+            rightCnt++;
+            backtracking(i + 1, leftCnt, rightCnt);
         } else {
             chars[i] = '(';
-            backtracking(i + 1, stack + 1);
-
+            backtracking(i + 1, leftCnt + 1, rightCnt);
             chars[i] = ')';
-            backtracking(i + 1, stack - 1);
+            backtracking(i + 1, leftCnt, rightCnt + 1);
         }
     }
 }
