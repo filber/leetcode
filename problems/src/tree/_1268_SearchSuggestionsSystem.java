@@ -8,26 +8,24 @@ public class _1268_SearchSuggestionsSystem {
 
     class Trie {
         Trie[] children = new Trie[26];
-        boolean end = false;
+        List<Integer> indices = new ArrayList<>();
     }
 
-    private void add(String word) {
+    private void add(String word,int i) {
         Trie cur = root;
         for (char ch : word.toCharArray()) {
             if (cur.children[ch - 'a'] == null) {
                 cur.children[ch - 'a'] = new Trie();
             }
             cur = cur.children[ch - 'a'];
+            cur.indices.add(i);
         }
-        cur.end = true;
     }
 
     private List<String> search(String word) {
         Trie cur = root;
-        StringBuilder sb = new StringBuilder();
         for (char ch : word.toCharArray()) {
             cur = cur.children[ch - 'a'];
-            sb.append(ch);
             if (cur == null) {
                 break;
             }
@@ -36,36 +34,21 @@ public class _1268_SearchSuggestionsSystem {
             return List.of();
         }
         List<String> list = new ArrayList<>();
-        dfs(list, sb, cur);
+        for (int i = 0; i < 3 && i < cur.indices.size(); i++) {
+            list.add(products[cur.indices.get(i)]);
+        }
         return list;
     }
 
-    private void dfs(List<String> list, StringBuilder sb, Trie node) {
-        if (list.size() == 3) {
-            return;
-        } else if (node == null) {
-            return;
-        }
-
-        if (node.end) {
-            list.add(sb.toString());
-        }
-
-        for (int i = 0; i < node.children.length && list.size() < 3; i++) {
-            if (node.children[i] != null) {
-                sb.append((char) ('a' + i));
-                dfs(list, sb, node.children[i]);
-                sb.deleteCharAt(sb.length() - 1);
-            }
-        }
-    }
-
     Trie root = new Trie();
-
+    String[] products;
     public List<List<String>> suggestedProducts(String[] products, String searchWord) {
-        for (String product : products) {
-            add(product);
+        this.products = products;
+        Arrays.sort(products);
+        for (int i = 0; i < products.length; i++) {
+            add(products[i], i);
         }
+
         List<List<String>> ans = new ArrayList<>();
         int len = searchWord.length();
         for (int i = 1; i <= len; i++) {
