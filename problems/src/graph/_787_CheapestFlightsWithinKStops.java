@@ -2,13 +2,55 @@ package graph;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 public class _787_CheapestFlightsWithinKStops {
 
     Map<Integer, Map<Integer, Integer>> map = new HashMap<>();
-    Map<Integer, Integer>[][] dp;
 
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+        pq.add(new int[]{src, 0, 0});
+
+        for (int[] flight : flights) {
+            int from = flight[0];
+            int to = flight[1];
+            int price = flight[2];
+            Map<Integer, Integer> pMap = map.computeIfAbsent(from, key -> new HashMap<>());
+            pMap.put(to, price);
+        }
+
+        Map<Integer, Integer> stopMap = new HashMap<>();
+        while (!pq.isEmpty()) {
+            int[] node = pq.poll();
+            int city = node[0];
+            int stops = node[1];
+            int price = node[2];
+            if (city == dst) {
+                return price;
+            }
+            if (stops > k) {
+                continue;
+            }
+            if (!map.containsKey(city)) {
+                continue;
+            }
+            if (stopMap.containsKey(city) && stops >= stopMap.get(city)) {
+                continue;
+            }
+            stopMap.put(city, stops);
+            for (Map.Entry<Integer, Integer> entry : map.get(city).entrySet()) {
+                pq.add(new int[]{entry.getKey(), stops + 1, price + entry.getValue()});
+            }
+        }
+
+        return -1;
+    }
+
+
+    Map<Integer, Integer>[][] dp;
+
+    public int findCheapestPriceDFS(int n, int[][] flights, int src, int dst, int k) {
         dp = new Map[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
