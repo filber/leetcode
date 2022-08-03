@@ -54,38 +54,29 @@ public class _729_MyCalendarI {
                 this.start = start;
                 this.end = end;
             }
-
-            public boolean add(int L, int R) {
-                if (R <= start) {
-                    if (left == null) {
-                        left = new SegmentTree(L, R);
-                        return true;
-                    } else {
-                        return left.add(L, R);
-                    }
-                } else if (end <= L) {
-                    if (right == null) {
-                        right = new SegmentTree(L, R);
-                        return true;
-                    } else {
-                        return right.add(L, R);
-                    }
-                } else {
-                    // L < root.end && R > root.start
-                    return false;
-                }
-            }
         }
 
         SegmentTree root = null;
+        boolean conflict;
+
+        public SegmentTree add(SegmentTree node, int L, int R) {
+            if (node == null) {
+                return new SegmentTree(L, R);
+            } else if (R <= node.start) {
+                node.left = add(node.left, L, R);
+            } else if (node.end <= L) {
+                node.right = add(node.right, L, R);
+            } else {
+                conflict = true;
+            }
+
+            return node;
+        }
 
         public boolean book(int start, int end) {
-            if (root == null) {
-                root = new SegmentTree(start, end);
-                return true;
-            } else {
-                return root.add(start, end);
-            }
+            conflict = false;
+            root = add(root, start, end);
+            return !conflict;
         }
     }
 }

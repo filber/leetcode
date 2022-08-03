@@ -13,7 +13,7 @@ public class _729_MyCalendarITest {
 
     @Before
     public void before() throws Exception {
-        target = new TMCalendar();
+        target = new SMCalendar();
     }
 
     @After
