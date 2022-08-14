@@ -5,14 +5,15 @@ package tree;
 public class _307_RangeSumQueryMutable {
 
     static class NumArray {
-        int[] tree;
+
         int[] nums;
         int n;
+        int[] tree;
 
         public NumArray(int[] nums) {
             n = nums.length;
-            this.nums = nums;
             tree = new int[n + 1];
+            this.nums = nums;
             buildTree();
         }
 
@@ -22,8 +23,8 @@ public class _307_RangeSumQueryMutable {
             }
         }
 
-        private void addVal(int idx,int val) {
-            while (idx<=n) {
+        private void addVal(int idx, int val) {
+            while (idx <= n) {
                 tree[idx] += val;
                 idx = idx + (idx & (-idx));
             }
