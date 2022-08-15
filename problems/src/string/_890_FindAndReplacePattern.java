@@ -6,9 +6,11 @@ import java.util.List;
 public class _890_FindAndReplacePattern {
 
     char[] pChars;
+    int n;
 
     public List<String> findAndReplacePattern(String[] words, String pattern) {
         pChars = pattern.toCharArray();
+        n = pChars.length;
 
         List<String> list = new ArrayList<>();
         for (String word : words) {
@@ -20,23 +22,21 @@ public class _890_FindAndReplacePattern {
     }
 
     private boolean isMatch(String word) {
-        char[] wpMap = new char[26];
-        char[] pwMap = new char[26];
+        char[] wToP = new char[26];
+        char[] pToW = new char[26];
         char[] wChars = word.toCharArray();
-        for (int i = 0; i < pChars.length; i++) {
-            char ch = wChars[i];
-            int wIdx = ch - 'a';
+        for (int i = 0; i < n; i++) {
             char pCh = pChars[i];
-            int pIdx = pCh - 'a';
-            if (wpMap[wIdx] == 0) {
-                wpMap[wIdx] = pCh;
-            } else if (wpMap[wIdx] != pCh) {
+            char wCh = wChars[i];
+            if (pToW[pCh - 'a'] == 0) {
+                pToW[pCh - 'a'] = wCh;
+            } else if (pToW[pCh - 'a'] != wCh) {
                 return false;
             }
 
-            if (pwMap[pIdx] == 0) {
-                pwMap[pIdx] = ch;
-            } else if (pwMap[pIdx] != ch) {
+            if (wToP[wCh - 'a'] == 0) {
+                wToP[wCh - 'a'] = pCh;
+            } else if (wToP[wCh - 'a'] != pCh) {
                 return false;
             }
         }
