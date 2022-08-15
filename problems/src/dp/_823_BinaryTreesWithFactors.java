@@ -18,16 +18,15 @@ public class _823_BinaryTreesWithFactors {
         }
         int n = arr.length;
         for (int i = 0; i < n; i++) {
-            for (int j = i; j < n; j++) {
-                int product = arr[i] * arr[j];
-                Integer val = map.get(product);
-                if (val != null) {
-                    int increment = (map.get(arr[i]) * map.get(arr[j])) % modulo;
-                    if (i == j) {
-                        map.put(product, (val + increment) % modulo);
-                    } else {
-                        map.put(product, (val + 2 * increment) % modulo);
-                    }
+            int iVal = arr[i];
+            for (int j = 0; j < i; j++) {
+                int jVal = arr[j];
+                if (iVal % jVal == 0 && map.containsKey(iVal / jVal)) {
+                    long leftCnt = map.get(iVal / jVal);
+                    long rightCnt = map.get(jVal);
+                    int delta = (int) ((leftCnt * rightCnt) % modulo);
+                    int cnt = map.get(iVal);
+                    map.put(iVal, (cnt + delta) % modulo);
                 }
             }
         }

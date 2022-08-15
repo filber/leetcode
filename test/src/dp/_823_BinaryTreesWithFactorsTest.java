@@ -34,6 +34,12 @@ public class _823_BinaryTreesWithFactorsTest {
 
     @Test
     public void testNumFactoredBinaryTrees3() throws Exception {
+        int cnt = target.numFactoredBinaryTrees(new int[]{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18});
+        assertEquals(65, cnt);
+    }
+
+    @Test
+    public void testNumFactoredBinaryTrees5() throws Exception {
         int cnt = target.numFactoredBinaryTrees(new int[]{45, 42, 2, 18, 23, 1170, 12, 41, 40, 9, 47, 24, 33, 28, 10, 32, 29, 17, 46, 11, 759, 37, 6, 26, 21, 49, 31, 14, 19, 8, 13, 7, 27, 22, 3, 36, 34, 38, 39, 30, 43, 15, 4, 16, 35, 25, 20, 44, 5, 48});
         assertEquals(777, cnt);
     }
