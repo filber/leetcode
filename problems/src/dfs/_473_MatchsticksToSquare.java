@@ -8,18 +8,17 @@ public class _473_MatchsticksToSquare {
 
     private static final int MAX_GROUP = 4;
 
-    int[] matchsticks;
-    int len;
+    int[] M;
+    int EDGE;
     boolean[] used;
     int n;
 
     public boolean makesquare(int[] matchsticks) {
-        this.matchsticks = matchsticks;
         n = matchsticks.length;
         if (n < MAX_GROUP) {
             return false;
         }
-
+        used = new boolean[n];
         int sum = 0;
         for (int m : matchsticks) {
             sum += m;
@@ -28,32 +27,30 @@ public class _473_MatchsticksToSquare {
             return false;
         }
 
-        len = sum / MAX_GROUP;
-        used = new boolean[n];
-        Arrays.sort(this.matchsticks);
-        boolean rst = backtracking(0, 0, n - 1);
-        return rst;
+        EDGE = sum / MAX_GROUP;
+        Arrays.sort(matchsticks);
+        this.M = matchsticks;
+        return backtracking(0, 0, n - 1);
     }
 
-    private boolean backtracking(int group, int sum, int i) {
+    private boolean backtracking(int group, int curEdge, int i) {
         if (group == MAX_GROUP) {
             return true;
-        } else if (sum == len) {
+        } else if (curEdge == EDGE) {
             return backtracking(group + 1, 0, n - 1);
-        } else if (sum > len) {
+        } else if (curEdge > EDGE) {
             return false;
         }
-
         int last = -1;
         for (int j = i; j >= 0; j--) {
-            if (used[j] || matchsticks[j] == last) continue;
-            // use j
+            if (used[j] || last == M[j]) {
+                continue;
+            }
             used[j] = true;
-            last = matchsticks[j];
-            if (backtracking(group, matchsticks[j] + sum, j - 1)) {
+            last = M[j];
+            if (backtracking(group, curEdge + M[j], j - 1)) {
                 return true;
             }
-            // skip j
             used[j] = false;
         }
         return false;
