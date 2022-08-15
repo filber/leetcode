@@ -1,4 +1,4 @@
-package array_matrix;
+package ps;
 
 //https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/
 
