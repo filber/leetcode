@@ -8,19 +8,20 @@ public class _424_LongestRepeatingCharacterReplacement {
         char[] chars = s.toCharArray();
         int[] count = new int[26];
         int n = chars.length;
-        int l = 0, r = 0, majorityCnt = 0;
-        while (r < n) {
-            char rCh = chars[r++];
-            int rCnt = ++count[rCh - 'A'];
-            if (rCnt > majorityCnt) {
-                majorityCnt = rCnt;
+        int l = 0, mCnt = 0;
+        for (int r = 0; r < n; r++) {
+            char rCh = chars[r];
+            count[rCh - 'A']++;
+            if (count[rCh - 'A'] > mCnt) {
+                mCnt = count[rCh - 'A'];
             }
-            if (r - l > majorityCnt + k) {
-                char lCh = chars[l++];
+
+            if (mCnt + k < r - l + 1) {
+                char lCh = chars[l];
                 count[lCh - 'A']--;
+                l++;
             }
         }
-
-        return Math.min(n, majorityCnt + k);
+        return Math.min(n, mCnt + k);
     }
 }
