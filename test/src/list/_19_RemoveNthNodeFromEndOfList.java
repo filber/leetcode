@@ -5,22 +5,23 @@ package list;
 public class _19_RemoveNthNodeFromEndOfList {
 
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode fastPtr = head;
+        ListNode slow = head;
+        ListNode fast = head;
         for (int i = 0; i < n; i++) {
-            fastPtr = fastPtr.next;
+            fast = fast.next;
         }
-        ListNode cur = head;
         ListNode pre = null;
-        while (fastPtr != null) {
-            pre = cur;
-            cur = cur.next;
-            fastPtr = fastPtr.next;
+        while (fast != null) {
+            pre = slow;
+            slow = slow.next;
+            fast = fast.next;
         }
 
         if (pre == null) {
-            return head.next;
+            return slow.next;
+        } else {
+            pre.next = slow.next;
+            return head;
         }
-        pre.next = cur.next;
-        return head;
     }
 }
