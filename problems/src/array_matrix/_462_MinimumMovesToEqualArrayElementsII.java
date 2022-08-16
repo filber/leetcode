@@ -9,11 +9,11 @@ public class _462_MinimumMovesToEqualArrayElementsII {
     public int minMoves2(int[] nums) {
         Arrays.sort(nums);
         int n = nums.length;
-        int target = nums[n / 2];
-        int sum = 0;
-        for (int val : nums) {
-            sum += Math.abs(val - target);
+        int median = nums[n / 2];
+        int moves = 0;
+        for (int num : nums) {
+            moves += Math.abs(num - median);
         }
-        return sum;
+        return moves;
     }
 }
