@@ -6,25 +6,21 @@ import java.util.Arrays;
 
 public class _1465_MaximumAreaOfAPieceOfCakeAfterHorizontalAndVerticalCuts {
 
-    public int maxArea(int h, int w, int[] horizontalCuts, int[] verticalCuts) {
-        Arrays.sort(horizontalCuts);
-        Arrays.sort(verticalCuts);
-        int m = horizontalCuts.length;
-        long maxH = horizontalCuts[0];
-        for (int i = 0; i < m - 1; i++) {
-            maxH = Math.max(maxH, horizontalCuts[i + 1] - horizontalCuts[i]);
-        }
-        maxH = Math.max(maxH, h - horizontalCuts[m - 1]);
-
-        int n = verticalCuts.length;
-        long maxW = verticalCuts[0];
-        for (int i = 0; i < n - 1; i++) {
-            maxW = Math.max(maxW, verticalCuts[i + 1] - verticalCuts[i]);
-        }
-        maxW = Math.max(maxW, w - verticalCuts[n - 1]);
-
+    public int maxArea(int h, int w, int[] hCuts, int[] vCuts) {
         int modulo = (int) 1e9 + 7;
-        long area = maxH * maxW;
-        return (int) (area % modulo);
+        Arrays.sort(hCuts);
+        Arrays.sort(vCuts);
+        int hGap = hCuts[0];
+        for (int i = 1; i < hCuts.length; i++) {
+            hGap = Math.max(hGap, hCuts[i] - hCuts[i - 1]);
+        }
+        hGap = Math.max(hGap, h - hCuts[hCuts.length - 1]);
+
+        int vGap = vCuts[0];
+        for (int i = 1; i < vCuts.length; i++) {
+            vGap = Math.max(vGap, vCuts[i] - vCuts[i - 1]);
+        }
+        vGap = Math.max(vGap, w - vCuts[vCuts.length - 1]);
+        return (int) (((long) hGap * vGap) % modulo);
     }
 }

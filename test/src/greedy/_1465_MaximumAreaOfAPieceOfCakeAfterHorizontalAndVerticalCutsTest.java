@@ -49,4 +49,14 @@ public class _1465_MaximumAreaOfAPieceOfCakeAfterHorizontalAndVerticalCutsTest {
         int maxArea = target.maxArea(h, w, horizontalCuts, verticalCuts);
         assertEquals(9, maxArea);
     }
+
+    @Test
+    public void testMaxArea4() throws Exception {
+        int h = 1000000000;
+        int w = 1000000000;
+        int[] horizontalCuts = {2};
+        int[] verticalCuts = {2};
+        int maxArea = target.maxArea(h, w, horizontalCuts, verticalCuts);
+        assertEquals(81, maxArea);
+    }
 }
