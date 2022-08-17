@@ -7,31 +7,23 @@ import java.util.Arrays;
 public class _1647_MinimumDeletionsToMakeCharacterFrequenciesUnique {
 
     public int minDeletions(String s) {
-        int[] count = new int[26];
         char[] chars = s.toCharArray();
+        int[] cnt = new int[26];
         for (char ch : chars) {
-            count[ch - 'a']++;
+            cnt[ch - 'a']++;
         }
-        Arrays.sort(count);
-        int deletions = 0;
-        for (int i = 25; i > 0; i--) {
-            if (count[i] == 0) {
-                while (i > 0 && count[i - 1] != 0) {
-                    deletions += count[i - 1];
-                    count[i - 1] = 0;
-                    i--;
-                }
-                break;
-            } else {
-                if (count[i - 1] == count[i]) {
-                    count[i - 1]--;
-                    deletions++;
-                } else if (count[i - 1] > count[i]) {
-                    deletions += count[i - 1] - count[i] + 1;
-                    count[i - 1] = count[i] - 1;
-                }
+        Arrays.sort(cnt);
+
+        int result = 0;
+        for (int i = 24; i >= 0 && cnt[i] > 0; i--) {
+            if (cnt[i + 1] == 0) {
+                result += cnt[i];
+                cnt[i] = 0;
+            } else if (cnt[i] >= cnt[i + 1]) {
+                result += (cnt[i] - cnt[i + 1] + 1);
+                cnt[i] = cnt[i + 1] - 1;
             }
         }
-        return deletions;
+        return result;
     }
 }
