@@ -5,50 +5,46 @@ package tree;
 import java.util.Arrays;
 
 public class _820_ShortEncodingOfWords {
+
     class Trie {
-
-        private Trie[] children;
-
-        public Trie() {
-            children = new Trie[26];
-        }
+        Trie[] children = new Trie[26];
 
         public void insert(String word) {
-            Trie trie = this;
+            Trie cur = this;
             char[] chars = word.toCharArray();
             for (int i = chars.length - 1; i >= 0; i--) {
                 char ch = chars[i];
-                if (trie.children[ch - 'a'] == null) {
-                    trie.children[ch - 'a'] = new Trie();
+                if (cur.children[ch - 'a'] == null) {
+                    cur.children[ch - 'a'] = new Trie();
                 }
-                trie = trie.children[ch - 'a'];
+                cur = cur.children[ch - 'a'];
             }
         }
 
         public boolean search(String word) {
-            Trie trie = this;
+            Trie cur = this;
             char[] chars = word.toCharArray();
             for (int i = chars.length - 1; i >= 0; i--) {
                 char ch = chars[i];
-                if (trie.children[ch - 'a'] == null) {
+                if (cur.children[ch - 'a'] == null) {
                     return false;
                 }
-                trie = trie.children[ch - 'a'];
+                cur = cur.children[ch - 'a'];
             }
             return true;
         }
     }
 
     public int minimumLengthEncoding(String[] words) {
-        Arrays.sort(words, (a, b) -> Integer.compare(b.length(), a.length()));
-        Trie trie = new Trie();
-        int len = 0;
+        Trie root = new Trie();
+        Arrays.sort(words, (a, b) -> b.length() - a.length());
+        int length = 0;
         for (String word : words) {
-            if (!trie.search(word)) {
-                trie.insert(word);
-                len += word.length() + 1;
+            if (!root.search(word)) {
+                length += word.length() + 1;
+                root.insert(word);
             }
         }
-        return len;
+        return length;
     }
 }
