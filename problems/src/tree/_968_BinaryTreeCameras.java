@@ -13,23 +13,19 @@ public class _968_BinaryTreeCameras {
         return ans;
     }
 
-    // 0: placed camera at root
-    // 1: root is visible
-    // 2: root is not visible
-    private int dfs(TreeNode root) {
-        if (root == null) {
+    private int dfs(TreeNode node) {
+        if (node == null) {
             return 1;
         }
-
-        int left = dfs(root.left);
-        int right = dfs(root.right);
-        if (left == 0 || right == 0) {
-            return 1;
-        } else if (left == 2 || right == 2) {
+        int l = dfs(node.left), r = dfs(node.right);
+        if (l == 0 || r == 0) {
+            return 1; // visible
+        } else if (l == 2 || r == 2) {
             ans++;
-            return 0;
+            return 0; // must place a camera
         } else {
-            return 2;
+            return 2; // not visible
         }
     }
+
 }
