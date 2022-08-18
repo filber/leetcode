@@ -4,21 +4,23 @@ package string;
 
 public class _266_PalindromePermutation {
 
+    // Given a string, determine if a permutation of the string could form a palindrome.
     public boolean canPermutePalindrome(String s) {
-        char[] chars = s.toCharArray();
-        int[] count = new int[26];
-        for (char ch : chars) {
-            count[ch - 'a']++;
+        int[] cnt = new int[26];
+        for (char ch : s.toCharArray()) {
+            cnt[ch - 'a']++;
         }
-        int oddCount = 0;
-        for (int i = 0; i < 26; i++) {
-            if (count[i] % 2 != 0) {
-                oddCount++;
-            }
-            if (oddCount > 1) {
-                return false;
+        int oddCnt = 0;
+        for (int c : cnt) {
+            if (c % 2 != 0) {
+                oddCnt++;
             }
         }
-        return true;
+
+        if (oddCnt > 1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
