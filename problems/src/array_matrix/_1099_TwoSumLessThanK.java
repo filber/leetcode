@@ -19,17 +19,18 @@ public class _1099_TwoSumLessThanK {
 
     public int twoSumLessThanK(int[] A, int K) {
         Arrays.sort(A);
+        int S = -1;
         int l = 0, r = A.length - 1;
-        int maxSum = -1;
         while (l < r) {
             int sum = A[l] + A[r];
             if (sum >= K) {
                 r--;
             } else {
-                maxSum = Math.max(maxSum, sum);
+                S = Math.max(S, sum);
                 l++;
             }
         }
-        return maxSum;
+
+        return S;
     }
 }
