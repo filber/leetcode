@@ -1,4 +1,4 @@
-package array_matrix;
+package slidew;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -18,7 +18,6 @@ public class _1695_MaximumErasureValueTest {
     @After
     public void after() throws Exception {
     }
-
 
     @Test
     public void testMaximumUniqueSubarray1() throws Exception {
