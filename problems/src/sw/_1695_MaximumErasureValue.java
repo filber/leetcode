@@ -1,4 +1,4 @@
-package slidew;
+package sw;
 
 //https://leetcode.com/problems/maximum-erasure-value/
 
