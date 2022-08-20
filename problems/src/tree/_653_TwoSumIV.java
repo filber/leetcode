@@ -8,25 +8,31 @@ public class _653_TwoSumIV {
         return helper(root, root, k);
     }
 
-    private boolean helper(TreeNode root, TreeNode cur, int k) {
-        if (cur == null) {
+    // if exits p in P, q in Q, p.val+q.val=k, p!=q
+    private boolean helper(TreeNode P, TreeNode Q, int k) {
+        if (Q == null) {
             return false;
         }
-
-        return dfs(root, cur, k - cur.val)
-                || helper(root, cur.left, k)
-                || helper(root, cur.right, k);
+        if (dfs(P, Q, k - Q.val)) {
+            return true;
+        } else if (helper(P, Q.left, k) || helper(P, Q.right, k)) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    private boolean dfs(TreeNode root, TreeNode cur, int k) {
-        if (root == null) {
+
+    // if exits node p in P, p.val=t and p!=q
+    private boolean dfs(TreeNode P, TreeNode q, int t) {
+        if (P == null) {
             return false;
         }
-        if (root.val < k) {
-            return dfs(root.right, cur, k);
+        if (P.val > t) {
+            return dfs(P.right, q, t);
+        } else if (P.val < t) {
+            return dfs(P.left, q, t);
+        } else {
+            return P != q;
         }
-        if (root.val > k) {
-            return dfs(root.left, cur, k);
-        }
-        return root != cur;
     }
 }
