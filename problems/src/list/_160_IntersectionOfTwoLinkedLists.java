@@ -5,35 +5,31 @@ package list;
 public class _160_IntersectionOfTwoLinkedLists {
 
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        ListNode tmp = headA;
-        ListNode tailA = null;
-        while (tmp != null) {
-            tailA = tmp;
-            tmp = tmp.next;
+        ListNode tail = headA;
+        while (tail.next != null) {
+            tail = tail.next;
         }
+        tail.next = headB;
 
-        tailA.next = headB;
-
-        ListNode slow = headA;
-        ListNode fast = headA;
-        while (slow != null && fast != null && fast.next != null) {
+        ListNode slow = headA, fast = headA;
+        while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
             if (slow == fast) {
                 break;
             }
         }
-
         if (fast == null || fast.next == null) {
-            tailA.next = null;
+            tail.next = null;
             return null;
         }
-        fast = headA;
-        while (fast != slow) {
-            fast = fast.next;
+
+        slow = headA;
+        while (slow != fast) {
             slow = slow.next;
+            fast = fast.next;
         }
-        tailA.next = null;
+        tail.next = null;
         return slow;
     }
 }
