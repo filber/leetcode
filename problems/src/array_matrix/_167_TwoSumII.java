@@ -10,7 +10,7 @@ public class _167_TwoSumII {
             int sum = numbers[l] + numbers[r];
             int mid = l + (r - l) / 2;
             if (sum == target) {
-                return new int[]{l + 1, r + 1};
+                break;
             } else if (sum > target) {
                 if (numbers[l] + numbers[mid] > target) {
                     r = mid - 1;
@@ -25,6 +25,6 @@ public class _167_TwoSumII {
                 }
             }
         }
-        return null;
+        return new int[]{l + 1, r + 1};
     }
 }

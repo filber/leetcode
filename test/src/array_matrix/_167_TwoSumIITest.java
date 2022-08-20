@@ -37,4 +37,10 @@ public class _167_TwoSumIITest {
         int[] pair = target.twoSum(new int[]{-1, 0}, -1);
         assertArrayEquals(new int[]{1, 2}, pair);
     }
+
+    @Test
+    public void testTwoSum4() throws Exception {
+        int[] pair = target.twoSum(new int[]{5,25,75}, 100);
+        assertArrayEquals(new int[]{2, 3}, pair);
+    }
 }
