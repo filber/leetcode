@@ -7,38 +7,37 @@ public class _552_StudentAttendanceRecordII {
     private static final int modulo = (int) (1e9 + 7);
 
     public int checkRecord(int n) {
-        // without A
-        int p = 1;
-        int l = 1;
-        int ll = 0;
-
-        // with A
-        int ap = 0;
-        int al = 0;
-        int all = 0;
-
-        // ending with A
-        int a = 1;
-
-        for (int i = 2; i <= n; i++) {
-            int tmpAP = ap;
-            ap = add(ap, add(al, add(all, a)));
-            all = al;
-            al = add(tmpAP, a);
-
-            a = add(p, add(l, ll));
-
-            int tmpP = p;
-            p = add(l, add(p, ll));
-            int tmpL = l;
-            l = tmpP;
-            ll = tmpL;
+        if (n == 1) {
+            return 3;
         }
 
-        return add(p, add(l, add(ll, add(ap, add(al, add(all, a))))));
-    }
 
-    int add(int a, int b) {
-        return (a + b) % modulo;
+        long[] P = new long[n];
+        long[] L = new long[n];
+        long[] LL = new long[n];
+        long[] A = new long[n];
+        long[] wP = new long[n];
+        long[] wL = new long[n];
+        long[] wLL = new long[n];
+
+        // Initialize
+        A[0] = 1;
+        P[0] = 1;
+        L[0] = 1;
+        LL[0] = 0;
+        wP[0] = 0;
+        wL[0] = 0;
+        wLL[0] = 0;
+        for (int i = 1; i < n; i++) {
+            P[i] = (P[i - 1] + L[i - 1] + LL[i - 1]) % modulo;
+            L[i] = P[i - 1];
+            LL[i] = L[i - 1];
+            A[i] = P[i];
+            wP[i] = (A[i - 1] + wP[i - 1] + wL[i - 1] + wLL[i - 1]) % modulo;
+            wL[i] = (A[i - 1] + wP[i - 1]) % modulo;
+            wLL[i] = wL[i - 1];
+        }
+        int ans = (int) ((P[n - 1] + L[n - 1] + LL[n - 1] + A[n - 1] + wP[n - 1] + wL[n - 1] + wLL[n - 1]) % modulo);
+        return ans;
     }
 }

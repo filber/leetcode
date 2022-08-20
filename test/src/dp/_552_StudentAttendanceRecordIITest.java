@@ -49,4 +49,10 @@ public class _552_StudentAttendanceRecordIITest {
         int record = target.checkRecord(2);
         assertEquals(8, record);
     }
+
+    @Test
+    public void testCheckRecord6() throws Exception {
+        int record = target.checkRecord(10101);
+        assertEquals(183236316, record);
+    }
 }
