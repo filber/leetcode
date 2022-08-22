@@ -2,38 +2,36 @@ package array_matrix;
 
 //https://leetcode.com/problems/check-if-a-string-contains-all-binary-codes-of-size-k/
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class _1461_CheckIfAStringContainsAllBinaryCodesOfSizeK {
 
     public boolean hasAllCodes(String s, int k) {
-        if (s.length() < k) {
-            return false;
-        }
-        boolean[] has = new boolean[(int) Math.pow(2, k)];
         char[] chars = s.toCharArray();
         int n = chars.length;
-        int value = 0;
+        if (k >= n) {
+            return false;
+        }
+        Set<Integer> set = new HashSet<>();
+        int winVal = 0;
         for (int i = 0; i < k; i++) {
-            value <<= 1;
-            value += chars[i] - '0';
+            winVal <<= 1;
+            winVal += chars[i] - '0';
         }
-        has[value] = true;
-        int count = 1;
+        set.add(winVal);
 
-        for (int i = 1; i + k - 1 < n; i++) {
-            int preValue = chars[i - 1] - '0';
-            value -= preValue << (k - 1);
-            value <<= 1;
-            int curValue = chars[i + k - 1] - '0';
-            value += curValue;
-            if (!has[value]) {
-                has[value] = true;
-                count++;
-                if (count == has.length) {
-                    return true;
-                }
+        int MAX_SIZE = 1 << k;
+        for (int r = k; r < n; r++) {
+            if (set.size() == MAX_SIZE) {
+                return true;
             }
+            int lVal = chars[r - k] - '0';
+            int rVal = chars[r] - '0';
+            winVal = ((winVal - (lVal << (k - 1))) << 1) + rVal;
+            set.add(winVal);
         }
 
-        return false;
+        return set.size() == MAX_SIZE;
     }
 }
