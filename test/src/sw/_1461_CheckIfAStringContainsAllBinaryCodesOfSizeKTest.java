@@ -1,4 +1,4 @@
-package array_matrix;
+package sw;
 
 import org.junit.Test;
 import org.junit.Before;
