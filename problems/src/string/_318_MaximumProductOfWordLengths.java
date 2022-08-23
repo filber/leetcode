@@ -5,30 +5,26 @@ package string;
 public class _318_MaximumProductOfWordLengths {
 
     public int maxProduct(String[] words) {
-        int n = words.length;
-        int[] wordMask = new int[n];
-        int[] wordLen = new int[n];
-        for (int i = 0; i < n; i++) {
-            String word = words[i];
-            wordLen[i] = word.length();
-            int mask = 0;
-            for (char ch : word.toCharArray()) {
-                int offset = (int) ch - 'a';
-                mask |= 1 << offset;
-            }
-            wordMask[i] = mask;
+        int[] vals = new int[words.length];
+        for (int i = 0; i < words.length; i++) {
+            vals[i] = convert(words[i]);
         }
-
-        int maxProduct = 0;
-        for (int i = 0; i < n; i++) {
-            int m1 = wordMask[i];
-            for (int j = i + 1; j < n; j++) {
-                int m2 = wordMask[j];
-                if ((m1&m2) == 0) {
-                    maxProduct = Math.max(maxProduct, wordLen[i] * wordLen[j]);
+        int len = 0;
+        for (int i = 0; i < words.length; i++) {
+            for (int j = i + 1; j < words.length; j++) {
+                if ((vals[i] & vals[j]) == 0) {
+                    len = Math.max(len, words[i].length() * words[j].length());
                 }
             }
         }
-        return maxProduct;
+        return len;
+    }
+
+    private int convert(String word) {
+        int val = 0;
+        for (char ch : word.toCharArray()) {
+            val |= 1 << (ch - 'a');
+        }
+        return val;
     }
 }
