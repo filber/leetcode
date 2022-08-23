@@ -5,22 +5,22 @@ package dp;
 public class _1143_LongestCommonSubsequence {
 
     public int longestCommonSubsequence(String A, String B) {
-        char[] AChars = A.toCharArray();
-        char[] BChars = B.toCharArray();
-        int m = AChars.length;
-        int n = BChars.length;
+        char[] aChars = A.toCharArray();
+        char[] bChars = B.toCharArray();
+        int m = aChars.length;
+        int n = bChars.length;
         int[][] dp = new int[m + 1][n + 1];
         for (int i = 1; i <= m; i++) {
-            char a = AChars[i - 1];
+            char aCh = aChars[i - 1];
             for (int j = 1; j <= n; j++) {
-                int len = 0;
-                char b = BChars[j - 1];
-                if (a == b) {
-                    len = dp[i - 1][j - 1] + 1;
+                char bCh = bChars[j - 1];
+                int lcs = 0;
+                if (aCh == bCh) {
+                    lcs = dp[i - 1][j - 1] + 1;
                 }
-                len = Math.max(len, dp[i - 1][j]);
-                len = Math.max(len, dp[i][j - 1]);
-                dp[i][j] = len;
+                lcs = Math.max(lcs, dp[i][j - 1]);
+                lcs = Math.max(lcs, dp[i - 1][j]);
+                dp[i][j] = lcs;
             }
         }
 
