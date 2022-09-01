@@ -1,40 +1,50 @@
 package array_matrix;
 
-import java.util.PriorityQueue;
-
 public class _1329_SortTheMatrixDiagonally {
 
 
     public int[][] diagonalSort(int[][] mat) {
         int m = mat.length;
         int n = mat[0].length;
-        int[][] rst = new int[m][n];
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-        // n + m - 1
-        for (int k = -m + 1; k < n; k++) {
+        for (int j = 1 - m; j < n; j++) {
             int startI, startJ;
-            if (k >= 0) {
-                startI = 0;
-                startJ = k;
-            } else {
-                startI = -k;
+            if (j < 0) {
+                startI = -j;
                 startJ = 0;
+            } else {
+                startI = 0;
+                startJ = j;
             }
-            pq.clear();
-            int i = startI, j = startJ;
-            while (i < m && j < n) {
-                pq.add(mat[i][j]);
-                i++;
-                j++;
-            }
-            i = startI;
-            j = startJ;
-            while (!pq.isEmpty()) {
-                rst[i][j] = pq.poll();
-                i++;
-                j++;
-            }
+            sort(mat, startI, startJ);
         }
-        return rst;
+
+        return mat;
+    }
+
+    private void sort(int[][] mat, int startI, int startJ) {
+        int[] bucket = new int[101];
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        int i = startI, j = startJ;
+        while (i < mat.length && j < mat[0].length) {
+            int val = mat[i][j];
+            bucket[val]++;
+            min = Math.min(min, val);
+            max = Math.max(max, val);
+            i++;
+            j++;
+        }
+        i = startI;
+        j = startJ;
+        int idx = min;
+        while (i < mat.length && j < mat[0].length) {
+            while (bucket[idx] == 0) {
+                idx++;
+            }
+            mat[i][j] = idx;
+            i++;
+            j++;
+            bucket[idx]--;
+        }
     }
 }
