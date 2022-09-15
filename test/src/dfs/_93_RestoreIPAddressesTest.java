@@ -1,4 +1,4 @@
-package stack;
+package dfs;
 
 import org.junit.Test;
 import org.junit.Before;
