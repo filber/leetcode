@@ -39,4 +39,16 @@ public class _934_ShortestBridgeTest {
         int distance = target.shortestBridge(grid);
         assertEquals(1, distance);
     }
+
+    @Test
+    public void testShortestBridge4() throws Exception {
+        int[][] grid = {
+                {0, 0, 0, 1, 1},
+                {0, 0, 0, 1, 0},
+                {0, 0, 0, 1, 1},
+                {0, 0, 1, 0, 1},
+                {0, 0, 1, 1, 0}};
+        int distance = target.shortestBridge(grid);
+        assertEquals(1, distance);
+    }
 }
