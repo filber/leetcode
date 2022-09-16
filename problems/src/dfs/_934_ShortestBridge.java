@@ -100,11 +100,11 @@ public class _934_ShortestBridge {
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == 1 && groups[i][j] == 0) {
                     queue.add(new int[]{i, j});
+                    groups[i][j] = groupId;
                     while (!queue.isEmpty()) {
                         int[] node = queue.poll();
                         int x = node[0];
                         int y = node[1];
-                        groups[x][y] = groupId;
                         for (int k = 0; k < DIR.length; k++) {
                             int nextX = x + DIR[k][0];
                             int nextY = y + DIR[k][1];
@@ -112,6 +112,7 @@ public class _934_ShortestBridge {
                                     grid[nextX][nextY] == 0 || groups[nextX][nextY] > 0) {
                                 continue;
                             }
+                            groups[nextX][nextY] = groupId;
                             queue.add(new int[]{nextX, nextY});
                         }
                     }
