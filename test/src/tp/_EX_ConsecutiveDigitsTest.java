@@ -42,4 +42,10 @@ public class _EX_ConsecutiveDigitsTest {
         String rst = target.compress("9994331");
         assertEquals("27461", rst);
     }
+
+    @Test
+    public void testCompress5() throws Exception {
+        String rst = target.compress("66644319333");
+        assertEquals("26328", rst);
+    }
 }

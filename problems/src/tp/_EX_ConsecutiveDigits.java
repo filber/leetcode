@@ -7,16 +7,23 @@ public class _EX_ConsecutiveDigits {
         char[] rst = new char[chars.length];
         int r = 0;
         int sum = chars[0] - '0';
+        boolean duplicate = false;
         for (int l = 1; l < chars.length; l++) {
             if (chars[l] == chars[l - 1]) {
                 sum += chars[l] - '0';
+                duplicate = true;
             } else {
                 r = fillRst(rst, r, sum);
                 sum = chars[l] - '0';
             }
         }
         r = fillRst(rst, r, sum);
-        return new String(rst, 0, r);
+        String compressed = new String(rst, 0, r);
+        if (!duplicate) {
+            return compressed;
+        }
+        String second = compress(compressed);
+        return second;
     }
 
     private int fillRst(char[] rst, int r, int sum) {
