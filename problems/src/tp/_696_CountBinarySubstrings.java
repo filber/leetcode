@@ -1,4 +1,4 @@
-package sw;
+package tp;
 
 //https://leetcode.com/problems/count-binary-substrings/
 
