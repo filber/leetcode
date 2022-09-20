@@ -19,32 +19,34 @@ public class _329_LongestIncreasingPathInAMatrix {
         n = matrix[0].length;
         dp = new int[m][n];
         this.matrix = matrix;
+
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (dp[i][j] == 0) {
-                    dfs(-1, i, j);
+                    dfs(Integer.MIN_VALUE, i, j);
                 }
             }
         }
         return maxLen;
     }
 
-    private int dfs(int prev, int i, int j) {
+    private int dfs(int preVal, int i, int j) {
         if (i < 0 || i == m || j < 0 || j == n) {
             return 0;
-        } else if (prev >= matrix[i][j]) {
+        } else if (matrix[i][j] <= preVal) {
             return 0;
-        } else if (dp[i][j] != 0) {
+        } else if (dp[i][j] > 0) {
             return dp[i][j];
         }
-
-        for (int[] dir : DIR) {
-            int nextI = dir[0] + i;
-            int nextJ = dir[1] + j;
-            dp[i][j] = Math.max(dp[i][j], dfs(matrix[i][j], nextI, nextJ) + 1);
+        int len = 0;
+        for (int k = 0; k < DIR.length; k++) {
+            int nextI = i + DIR[k][0];
+            int nextJ = j + DIR[k][1];
+            int nextLen = dfs(matrix[i][j], nextI, nextJ);
+            len = Math.max(len, nextLen);
         }
+        dp[i][j] = len + 1;
         maxLen = Math.max(maxLen, dp[i][j]);
         return dp[i][j];
     }
-
 }
