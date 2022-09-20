@@ -2,38 +2,34 @@ package stack;
 
 // https://leetcode.com/problems/asteroid-collision/
 
-import java.util.Stack;
+import java.util.Arrays;
 
 public class _735_AsteroidCollision {
 
     public static int[] asteroidCollision(int[] asteroids) {
-        Stack<Integer> stack = new Stack<>();
-        int idx = 0;
-        while (idx < asteroids.length) {
-            int ast = asteroids[idx];
-            if (stack.isEmpty()) {
-                stack.push(ast);
-                idx++;
-            } else if ((stack.peek() < 0 && ast < 0)
-                    || (stack.peek() > 0 && ast > 0)
-                    || (stack.peek() < 0 && ast > 0)) {
-                stack.push(ast);
-                idx++;
-            } else if (stack.peek() + ast > 0) {
-                idx++;
-            } else if (stack.peek() + ast == 0) {
-                stack.pop();
-                idx++;
+        int[] stack = new int[asteroids.length];
+        int top = -1;
+        int i = 0;
+        while (i < asteroids.length) {
+            int ast = asteroids[i];
+            if (top == -1) {
+                stack[++top] = ast;
+                i++;
+            } else if (stack[top] > 0 && ast > 0 ||
+                    stack[top] < 0) {
+                stack[++top] = ast;
+                i++;
+            } else if (stack[top] > -ast) {
+                // do nothing
+                i++;
+            } else if (stack[top] == -ast) {
+                top--;
+                i++;
             } else {
-                stack.pop();
+                top--;
             }
         }
 
-        int[] ans = new int[stack.size()];
-        idx = 0;
-        for (int ast : stack) {
-            ans[idx++] = ast;
-        }
-        return ans;
+        return Arrays.copyOf(stack, top + 1);
     }
 }
