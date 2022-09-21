@@ -5,17 +5,14 @@ package bs;
 public class _410_SplitArrayLargestSum {
 
     public int splitArray(int[] nums, int m) {
-        int max = Integer.MIN_VALUE, sum = 0;
+        int l = Integer.MIN_VALUE;
+        int r = 0;
         for (int num : nums) {
-            max = Math.max(max, num);
-            sum += num;
-        }
-        int l = max, r = sum;
-        if (m == 1) {
-            return sum;
+            l = Math.max(l, num);
+            r += num;
         }
         while (l < r) {
-            int mid = (l + r) / 2;
+            int mid = l + (r - l) / 2;
             int cnt = count(nums, mid);
             if (cnt <= m) {
                 r = mid;
@@ -28,14 +25,21 @@ public class _410_SplitArrayLargestSum {
 
     public int count(int[] nums, int sum) {
         int cnt = 0;
-        int s = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (s + nums[i] > sum) {
-                s = 0;
+        int tmpSum = 0;
+        for (int num : nums) {
+            if (tmpSum + num < sum) {
+                tmpSum += num;
+            } else if (tmpSum + num == sum) {
                 cnt++;
+                tmpSum = 0;
+            } else {
+                cnt++;
+                tmpSum = num;
             }
-            s += nums[i];
         }
-        return cnt + 1;
+        if (tmpSum > 0) {
+            cnt++;
+        }
+        return cnt;
     }
 }
