@@ -2,12 +2,53 @@ package stack;
 
 //https://leetcode.com/problems/sum-of-subarray-ranges/
 
-import java.util.Arrays;
 
 public class _2104_SumOfSubarrayRanges {
 
     public long subArrayRanges(int[] arr) {
-        return 0;
+        int n = arr.length;
+        int[] smallerStack = new int[n];
+        int smallerTop = -1;
+        int[] smallerLeft = new int[n];
+        int[] smallerRight = new int[n];
+        int[] greaterStack = new int[n];
+        int greaterTop = -1;
+        int[] greaterLeft = new int[n];
+        int[] greaterRight = new int[n];
+        for (int i = 0; i < n; i++) {
+            smallerLeft[i] = -1;
+            smallerRight[i] = n;
+            while (smallerTop >= 0 && arr[smallerStack[smallerTop]] >= arr[i]) {
+                int peek = smallerStack[smallerTop--];
+                smallerRight[peek] = i;
+            }
+            if (smallerTop >= 0) {
+                smallerLeft[i] = smallerStack[smallerTop];
+            }
+            smallerStack[++smallerTop] = i;
+
+            greaterLeft[i] = -1;
+            greaterRight[i] = n;
+            while (greaterTop >= 0 && arr[greaterStack[greaterTop]] <= arr[i]) {
+                int peek = greaterStack[greaterTop--];
+                greaterRight[peek] = i;
+            }
+            if (greaterTop >= 0) {
+                greaterLeft[i] = greaterStack[greaterTop];
+            }
+            greaterStack[++greaterTop] = i;
+        }
+
+        long sum = 0L;
+        for (int i = 0; i < n; i++) {
+            long smallerL = i - smallerLeft[i];
+            long smallerR = smallerRight[i] - i;
+            long greaterL = i - greaterLeft[i];
+            long greaterR = greaterRight[i] - i;
+            sum += (greaterL * greaterR - smallerL * smallerR) * arr[i];
+        }
+
+        return sum;
     }
 
     public long subArrayRangesDP(int[] nums) {
