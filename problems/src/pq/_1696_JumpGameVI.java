@@ -1,4 +1,4 @@
-package dp;
+package pq;
 
 //https://leetcode.com/problems/jump-game-vi/
 
