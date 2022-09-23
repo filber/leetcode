@@ -10,23 +10,26 @@ public class _1696_JumpGameVI {
 
     public int maxResult(int[] nums, int k) {
         int n = nums.length;
-        int[] score = new int[n];
-        score[0] = nums[0];
-        Deque<Integer> dq = new LinkedList<>();
-        dq.offerLast(0);
+        int[] dp = new int[n];
+        dp[0] = nums[0];
+        Deque<Integer> deque = new LinkedList<>();
+        deque.addLast(0);
         for (int i = 1; i < n; i++) {
-            // pop the old index
-            while (!dq.isEmpty() && dq.peekFirst() < i - k) {
-                dq.pollFirst();
+            while (!deque.isEmpty() && (i - deque.peekFirst()) > k) {
+                deque.pollFirst();
             }
-            score[i] = score[dq.peek()] + nums[i];
-            // pop the smaller value
-            while (!dq.isEmpty() && score[i] >= score[dq.peekLast()]) {
-                dq.pollLast();
+            int max = 0;
+            if (!deque.isEmpty()) {
+                max = dp[deque.peekFirst()];
             }
-            dq.offerLast(i);
+            dp[i] = max + nums[i];
+            while (!deque.isEmpty() && dp[deque.peekLast()] <= dp[i]) {
+                deque.pollLast();
+            }
+            deque.addLast(i);
         }
-        return score[n - 1];
+
+        return dp[n - 1];
     }
 
     public int maxResultPQ(int[] nums, int k) {
