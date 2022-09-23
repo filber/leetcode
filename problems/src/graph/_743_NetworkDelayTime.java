@@ -6,45 +6,45 @@ import java.util.*;
 
 public class _743_NetworkDelayTime {
 
-    // Prime
+    // Dijkstra
     public int networkDelayTime(int[][] times, int n, int k) {
         // 1. Construct Graph
         List<int[]>[] graph = new List[n + 1];
-        for (int i = 1; i <= n; i++) {
+        for (int i = 0; i < graph.length; i++) {
             graph[i] = new ArrayList<>();
         }
-        for (int[] edge : times) {
-            int source = edge[0];
-            int target = edge[1];
-            int weight = edge[2];
-            graph[source].add(new int[]{target, weight});
+        for (int[] time : times) {
+            int source = time[0];
+            int target = time[1];
+            int delay = time[2];
+            graph[source].add(new int[]{target, delay});
         }
 
-        int[] dp = new int[n + 1];
-        Arrays.fill(dp, Integer.MAX_VALUE);
-        dp[0] = 0;
-        Queue<int[]> queue = new PriorityQueue<>((a, b) -> a[1] - b[1]);
-        queue.add(new int[]{k, 0});
-        while (!queue.isEmpty()) {
-            int[] node = queue.poll();
-            int i = node[0];
-            int t = node[1];
-            if (t >= dp[i]) {
+        // 2. Init PQ & dist
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        int[] dist = new int[n + 1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        pq.add(new int[]{k, 0});
+        while (!pq.isEmpty()) {
+            int[] node = pq.poll();
+            int target = node[0];
+            int delay = node[1];
+            if (delay >= dist[target]) {
                 continue;
             }
-            dp[i] = t;
-            for (int[] entry : graph[i]) {
-                int target = entry[0];
-                int w = entry[1];
-                int nextT = t + w;
-                if (nextT < dp[target]) {
-                    queue.add(new int[]{target, nextT});
+            dist[target] = delay;
+            for (int[] neighbor : graph[target]) {
+                int nextTarget = neighbor[0];
+                int nextDelay = delay + neighbor[1];
+                if (nextDelay < dist[nextTarget]) {
+                    pq.add(new int[]{nextTarget, nextDelay});
                 }
             }
         }
 
         int maxDelay = Integer.MIN_VALUE;
-        for (int delay : dp) {
+        for (int i = 1; i <= n ; i++) {
+            int delay = dist[i];
             if (delay == Integer.MAX_VALUE) {
                 return -1;
             }
