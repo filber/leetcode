@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class _EX_CountOfSubsetsWithSumEqualToX {
 
-    public int findCnt(int[] nums, int X) {
+    public int findCntDFS(int[] nums, int X) {
         int[][] memo = new int[nums.length][X + 1];
         for (int i = 0; i < nums.length; i++) {
             memo[i][0] = 1;
@@ -34,17 +34,15 @@ public class _EX_CountOfSubsetsWithSumEqualToX {
     }
 
     // 0/1 Knapsack
-    public int findCntKnapsack(int[] nums, int X) {
+    public int findCnt(int[] nums, int X) {
         int m = nums.length;
         int[] dp = new int[X + 1];
         dp[0] = 1;
 
         for (int i = 1; i <= m; i++) {
-            for (int j = X; j > 0; j--) {
-                int w = nums[i - 1];
-                if (j >= w) {
-                    dp[j] += dp[j - w];
-                }
+            int w = nums[i - 1];
+            for (int j = X; j >= w; j--) {
+                dp[j] += dp[j - w];
             }
         }
         return dp[X];
