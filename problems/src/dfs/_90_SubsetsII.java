@@ -6,41 +6,29 @@ import java.util.*;
 
 public class _90_SubsetsII {
 
-    List<List<Integer>> ans = new ArrayList<>();
-    int[] nums;
-    int[] candidate;
-    int len = 0;
-    boolean[] used;
-    int n;
-
     public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
         Arrays.sort(nums);
-        n = nums.length;
-        this.nums = nums;
-        used = new boolean[n];
-        candidate = new int[n];
-        backtracking(0);
+        backtracking(nums, new boolean[nums.length], new ArrayList<>(), ans, 0);
         return ans;
     }
 
-    private void backtracking(int i) {
-        if (i == n) {
-            List<Integer> list = new ArrayList<>();
-            for (int j = 0; j < len; j++) {
-                list.add(candidate[j]);
-            }
-            ans.add(list);
+    private void backtracking(int[] nums,
+                              boolean[] used,
+                              List<Integer> seq,
+                              List<List<Integer>> ans,
+                              int i) {
+        if (i == nums.length) {
+            ans.add(new ArrayList<>(seq));
             return;
         }
-
-        if (i == 0 || nums[i] != nums[i - 1] || used[i - 1]) {
-            // Use i
+        backtracking(nums, used, seq, ans, i + 1);
+        if (i == 0 || nums[i - 1] != nums[i] || used[i - 1]) {
             used[i] = true;
-            backtracking(i + 1);
+            seq.add(nums[i]);
+            backtracking(nums, used, seq, ans, i + 1);
             used[i] = false;
+            seq.remove(seq.size() - 1);
         }
-
-        // Not use i
-        backtracking(i + 1);
     }
 }
