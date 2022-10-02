@@ -1,9 +1,8 @@
-package string;
+package tp;
 
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
-import string._5_LongestPalindromicSubstring;
 
 import java.util.Arrays;
 import java.util.HashSet;
