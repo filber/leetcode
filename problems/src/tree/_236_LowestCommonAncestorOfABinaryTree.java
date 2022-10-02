@@ -5,17 +5,17 @@ package tree;
 public class _236_LowestCommonAncestorOfABinaryTree {
 
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || p == root || q == root) {
+        if (root == null || root.val == p.val || root.val == q.val) {
             return root;
         }
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-        if (left != null && right != null) {
+        TreeNode L = lowestCommonAncestor(root.left, p, q);
+        TreeNode R = lowestCommonAncestor(root.right, p, q);
+        if (L != null && R != null) {
             return root;
-        } else if (left != null) {
-            return left;
+        } else if (L != null) {
+            return L;
         } else {
-            return right;
+            return R;
         }
     }
 }
