@@ -5,53 +5,43 @@ import java.util.*;
 //https://leetcode.com/problems/course-schedule-ii/
 public class _210_CourseScheduleII {
 
-    List<Integer>[] edges;
-    int[] status;
-    int[] empty = new int[0];
-    int[] order;
-    int idx = 0;
-
-    public int[] findOrder(int n, int[][] prerequisites) {
-        status = new int[n];
-        edges = new List[n];
-        order = new int[n];
-
+    public int[] findOrder(int n, int[][] edges) {
+        List<Integer>[] graph = new List[n];
         for (int i = 0; i < n; i++) {
-            edges[i] = new ArrayList<>();
+            graph[i] = new ArrayList<>();
+        }
+        int[] degree = new int[n];
+        for (int[] edge : edges) {
+            int from = edge[1];
+            int to = edge[0];
+            degree[to]++;
+            graph[from].add(to);
         }
 
-        for (int i = 0; i < prerequisites.length; i++) {
-            int[] pre = prerequisites[i];
-            edges[pre[0]].add(pre[1]);
+        Queue<Integer> queue = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            if (degree[i] == 0) {
+                queue.add(i);
+            }
         }
 
-        for (int i = 0; i < n; i++) {
-            if (status[i] == 0) {
-                if (!dfs(i)) {
-                    return empty;
+        int[] ans = new int[n];
+        int idx = 0;
+        while (!queue.isEmpty()) {
+            int from = queue.poll();
+            ans[idx++] = from;
+            for (int adj : graph[from]) {
+                degree[adj]--;
+                if (degree[adj] == 0) {
+                    queue.add(adj);
                 }
             }
         }
 
-        return order;
-    }
-
-    private boolean dfs(int i) {
-        if (status[i] == 2) {
-            return true;
-        } else if (status[i] == 1) {
-            return false;
+        if (idx < n) {
+            return new int[0];
         }
-        status[i] = 1;
-        for (int neighbor : edges[i]) {
-            if (status[neighbor] == 0 && !dfs(neighbor) || status[neighbor] == 1) {
-                return false;
-            }
-        }
-
-        order[idx++] = i;
-        status[i] = 2;
-        return true;
+        return ans;
     }
 
 }
