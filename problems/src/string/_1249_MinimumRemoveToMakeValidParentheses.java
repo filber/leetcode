@@ -6,44 +6,36 @@ public class _1249_MinimumRemoveToMakeValidParentheses {
 
     public String minRemoveToMakeValid(String s) {
         char[] chars = s.toCharArray();
-        int n = chars.length;
-        int l = 0, r = 0;
+        int r = remove(chars, 0, 1, '(', ')');
+        int l = remove(chars, r - 1, -1, ')', '(');
+        return new String(chars, l + 1, r - l - 1);
+    }
+
+    int remove(char[] chars, int start, int dir, char keepCh, char delCh) {
+        int l = start, r = start;
         int stack = 0;
-        // forward
-        while (r < n) {
-            char ch = chars[r++];
-            chars[l++] = ch;
-            if (ch == '(') {
+        while (l < chars.length && l >= 0) {
+            if (chars[l] == keepCh) {
                 stack++;
-            } else if (ch == ')') {
+                chars[r] = chars[l];
+                r += dir;
+                l += dir;
+            } else if (chars[l] == delCh) {
                 stack--;
-            }
-            if (stack < 0) {
-                l--;
-                stack++;
+                if (stack >= 0) {
+                    chars[r] = chars[l];
+                    l += dir;
+                    r += dir;
+                } else {
+                    stack = 0;
+                    l += dir;
+                }
+            } else {
+                chars[r] = chars[l];
+                r += dir;
+                l += dir;
             }
         }
-
-        stack = 0;
-        int end = l - 1;
-        r = end;
-        l = end;
-        // backward
-        while (l >= 0) {
-            char ch = chars[l--];
-            chars[r--] = ch;
-            if (ch == ')') {
-                stack++;
-            } else if (ch == '(') {
-                stack--;
-            }
-            if (stack < 0) {
-                r++;
-                stack++;
-            }
-        }
-
-        int start = r + 1;
-        return new String(chars, start, end - start + 1);
+        return r;
     }
 }
