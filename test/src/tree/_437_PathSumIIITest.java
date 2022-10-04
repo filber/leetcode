@@ -54,4 +54,16 @@ public class _437_PathSumIIITest {
         int cnt = target.pathSum(root, 28);
         assertEquals(0, cnt);
     }
+
+    @Test
+    public void testPathSum6() throws Exception {
+        TreeNode root = TreeNode.createTreeNode(new Integer[]{
+                1000000000,
+                1000000000, null,
+                294967296, null, null,null,
+                1000000000, null,null,null,null,null,null,null,
+                1000000000});
+        int cnt = target.pathSum(root, 0);
+        assertEquals(0, cnt);
+    }
 }

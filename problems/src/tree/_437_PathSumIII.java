@@ -7,29 +7,29 @@ import java.util.Map;
 
 public class _437_PathSumIII {
 
+
+    int count = 0;
+    Map<Long, Integer> map = new HashMap<>();
     int targetSum;
-    Map<Integer, Integer> preSum = new HashMap<>();
 
     public int pathSum(TreeNode root, int targetSum) {
+        map.put(0L, 1);
         this.targetSum = targetSum;
-        preSum.put(0, 1);
-        return backtracking(root, 0);
+        backtracking(root, 0);
+        return count;
     }
 
-    private int backtracking(TreeNode root, int sum) {
+    private void backtracking(TreeNode root, long pathSum) {
         if (root == null) {
-            return 0;
+            return;
         }
-        sum += root.val;
-        int cnt = 0;
-        cnt += preSum.getOrDefault(sum - targetSum, 0);
+        pathSum += root.val;
 
-        preSum.put(sum, preSum.getOrDefault(sum, 0) + 1);
+        count += map.getOrDefault(pathSum - targetSum, 0);
 
-        cnt += backtracking(root.left, sum);
-        cnt += backtracking(root.right, sum);
-
-        preSum.put(sum, preSum.get(sum) - 1);
-        return cnt;
+        map.put(pathSum, map.getOrDefault(pathSum, 0) + 1);
+        backtracking(root.left, pathSum);
+        backtracking(root.right, pathSum);
+        map.put(pathSum, map.getOrDefault(pathSum, 0) - 1);
     }
 }
