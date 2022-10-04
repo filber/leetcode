@@ -7,27 +7,28 @@ public class _124_BinaryTreeMaximumPathSum {
     int maxSum = Integer.MIN_VALUE;
 
     public int maxPathSum(TreeNode root) {
-        largestPath(root);
+        dfs(root);
         return maxSum;
     }
 
-    private int largestPath(TreeNode root) {
+    private int dfs(TreeNode node) {
         int sum;
-        if (root.left == null && root.right == null) {
-            sum = root.val;
-        } else if (root.left == null) {
-            sum = Math.max(root.val, root.val + largestPath(root.right));
-        } else if (root.right == null) {
-            sum = Math.max(root.val, root.val + largestPath(root.left));
+        int bothSum = Integer.MIN_VALUE;
+        if (node.left == null && node.right == null) {
+            sum = node.val;
+        } else if (node.left == null) {
+            int rightSum = dfs(node.right) + node.val;
+            sum = Math.max(node.val, rightSum);
+        } else if (node.right == null) {
+            int leftSum = dfs(node.left) + node.val;
+            sum = Math.max(node.val, leftSum);
         } else {
-            int leftSum = largestPath(root.left) + root.val;
-            int rightSum = largestPath(root.right) + root.val;
-            sum = Math.max(root.val, Math.max(leftSum, rightSum));
-            int bothSum = leftSum + rightSum - root.val;
-            maxSum = Math.max(maxSum, bothSum);
+            int rightSum = dfs(node.right) + node.val;
+            int leftSum = dfs(node.left) + node.val;
+            sum = Math.max(node.val, Math.max(leftSum, rightSum));
+            bothSum = leftSum + rightSum - node.val;
         }
-
-        maxSum = Math.max(maxSum, sum);
+        maxSum = Math.max(maxSum, Math.max(sum, bothSum));
         return sum;
     }
 }
