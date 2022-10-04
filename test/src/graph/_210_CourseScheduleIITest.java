@@ -54,4 +54,10 @@ public class _210_CourseScheduleIITest {
         int[] order = target.findOrder(4, new int[][]{{1, 0}, {2, 0}, {3, 1}, {3, 2}, {0, 3}});
         assertEquals(0, order.length);
     }
+
+    @Test
+    public void testFindOrder7() throws Exception {
+        int[] order = target.findOrder(3, new int[][]{{1, 0}, {1, 2}, {0, 1}});
+        assertEquals(0, order.length);
+    }
 }

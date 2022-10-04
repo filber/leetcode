@@ -19,16 +19,17 @@ public class _1143_LongestCommonSubsequenceTest {
     public void after() throws Exception {
     }
 
-
     @Test
     public void testLongestCommonSubsequence1() throws Exception {
         int len = target.longestCommonSubsequence("abcde", "ace");
+        // ace
         assertEquals(3, len);
     }
 
     @Test
     public void testLongestCommonSubsequence2() throws Exception {
         int len = target.longestCommonSubsequence("abc", "abc");
+        // abc
         assertEquals(3, len);
     }
 
