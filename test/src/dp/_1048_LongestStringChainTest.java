@@ -40,4 +40,11 @@ public class _1048_LongestStringChainTest {
         int len = target.longestStrChain(words);
         assertEquals(1, len);
     }
+
+    @Test
+    public void testLongestStrChain4() throws Exception {
+        String[] words = {"ksqvsyq", "ks", "kss", "czvh", "zczpzvdhx", "zczpzvh", "zczpzvhx", "zcpzvh", "zczvh", "gr", "grukmj", "ksqvsq", "gruj", "kssq", "ksqsq", "grukkmj", "grukj", "zczpzfvdhx", "gru"};
+        int len = target.longestStrChain(words);
+        assertEquals(7, len);
+    }
 }
