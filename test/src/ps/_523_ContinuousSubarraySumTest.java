@@ -45,4 +45,14 @@ public class _523_ContinuousSubarraySumTest {
         boolean check = target.checkSubarraySum(nums, k);
         assertFalse(check);
     }
+
+    @Test
+    public void testCheckSubarraySum4() throws Exception {
+        //[23,25,29,35,41]
+        //[ 2, 4, 1, 0, 6]
+        int[] nums = {23, 2, 4, 6, 6};
+        int k = 7;
+        boolean check = target.checkSubarraySum(nums, k);
+        assertTrue(check);
+    }
 }

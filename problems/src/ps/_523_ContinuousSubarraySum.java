@@ -8,9 +8,9 @@ public class _523_ContinuousSubarraySum {
 
     public boolean checkSubarraySum(int[] nums, int k) {
         HashMap<Integer, Integer> map = new HashMap<>();
-        map.put(nums[0] % k, 0);
-        int prefix = nums[0];
-        for (int i = 1; i < nums.length; i++) {
+        map.put(0, -1);
+        int prefix = 0;
+        for (int i = 0; i < nums.length; i++) {
             prefix += nums[i];
             int r = prefix % k;
             Integer prev = map.get(r);
