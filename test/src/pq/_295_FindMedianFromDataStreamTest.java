@@ -1,9 +1,9 @@
-package array_matrix;
+package pq;
 
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
-import array_matrix._295_FindMedianFromDataStream.MedianFinder;
+import pq._295_FindMedianFromDataStream.MedianFinder;
 
 import static org.junit.Assert.*;
 
