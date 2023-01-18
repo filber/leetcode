@@ -1,41 +1,41 @@
-package array_matrix;
+package bs;
 // https://leetcode.com/problems/3sum/
 
 import java.util.*;
 
 public class _15_3Sum {
 
-    public static List<List<Integer>> threeSum(int[] nums) {
-        int n = nums.length;
+    public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
-        List<List<Integer>> ans = new ArrayList<>();
-        for (int pos = 0; pos < n; pos++) {
-            if (pos > 0 && nums[pos] == nums[pos - 1]) {
-                continue;
+        int n = nums.length;
+        List<List<Integer>> list = new ArrayList<>();
+        for (int pos = 0; pos < n - 2; pos++) {
+            while (pos > 0 && pos < n - 2 && nums[pos] == nums[pos - 1]) {
+                pos++;
             }
             int a = nums[pos];
-            int r = n - 1;
             int l = pos + 1;
+            int r = n - 1;
             while (l < r) {
                 int b = nums[l];
                 int c = nums[r];
                 int sum = a + b + c;
                 if (sum == 0) {
-                    ans.add(List.of(a, b, c));
-                    while (nums[l] == b && l < r) {
+                    list.add(List.of(a, b, c));
+                    while (l < r && nums[l] == b) {
                         l++;
                     }
                 } else if (sum < 0) {
-                    while (nums[l] == b && l < r) {
+                    while (l < r && nums[l] == b) {
                         l++;
                     }
                 } else {
-                    while (nums[r] == c && l < r) {
+                    while (l < r && nums[r] == c) {
                         r--;
                     }
                 }
             }
         }
-        return ans;
+        return list;
     }
 }
