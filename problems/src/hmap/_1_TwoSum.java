@@ -1,4 +1,4 @@
-package array_matrix;
+package hmap;
 // https://leetcode.com/problems/two-sum/
 
 import java.util.HashMap;
