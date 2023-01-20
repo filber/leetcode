@@ -1,8 +1,9 @@
-package array_matrix;
+package tp;
 
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
+import tp._27_RemoveElement;
 
 import java.util.Arrays;
 
