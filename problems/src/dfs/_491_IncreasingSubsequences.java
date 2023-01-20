@@ -7,39 +7,36 @@ import java.util.*;
 public class _491_IncreasingSubsequences {
 
     List<List<Integer>> ans = new ArrayList<>();
-
-    int[] nums;
     int n;
+    int idx = 0;
     int[] seq;
-    int idx = -1;
+    int[] nums;
 
     public List<List<Integer>> findSubsequences(int[] nums) {
-        this.nums = nums;
         n = nums.length;
         seq = new int[n];
+        this.nums = nums;
         backtracking(0);
         return ans;
     }
 
     private void backtracking(int i) {
-        if (idx > 0) {
+        if (idx > 1) {
             List<Integer> list = new ArrayList<>();
-            for (int k = 0; k <= idx; k++) {
-                list.add(seq[k]);
+            for (int j = 0; j < idx; j++) {
+                list.add(seq[j]);
             }
             ans.add(list);
         }
         if (i == n) {
             return;
         }
-
         Set<Integer> set = new HashSet<>();
         for (int j = i; j < n; j++) {
-            int val = nums[j];
-            if (idx != -1 && seq[idx] > val) continue;
-            if (set.contains(val)) continue;
-            set.add(val);
-            seq[++idx] = val;
+            if (idx > 0 && seq[idx - 1] > nums[j]) continue;
+            if (set.contains(nums[j])) continue;
+            set.add(nums[j]);
+            seq[idx++] = nums[j];
             backtracking(j + 1);
             idx--;
         }
