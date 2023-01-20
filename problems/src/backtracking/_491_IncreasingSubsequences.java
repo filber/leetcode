@@ -1,4 +1,4 @@
-package dfs;
+package backtracking;
 
 //https://leetcode.com/problems/increasing-subsequences/
 
