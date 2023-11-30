@@ -49,9 +49,9 @@ public class _310_MinimumHeightTrees {
         }
 
         if (sz == 1) {
-            return List.of(ans[0]);
+            return Arrays.asList(ans[0]);
         } else {
-            return List.of(ans[0], ans[1]);
+            return Arrays.asList(ans[0], ans[1]);
         }
     }
 }

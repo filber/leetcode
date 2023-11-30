@@ -12,7 +12,7 @@ public class _71_SimplifyPath {
         int top = -1;
 
         for (String segment : segments) {
-            if (".".equals(segment) || segment.isBlank()) {
+            if (".".equals(segment) || segment.isEmpty()) {
                 // ignore
             } else if ("..".equals(segment)) {
                 if (top >= 0) {

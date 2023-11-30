@@ -25,8 +25,8 @@ public class _897_IncreasingOrderSearchTree {
             root.left = null;
         }
 
-        TreeNode lNode = Objects.requireNonNullElse(leftPair[0], root);
-        TreeNode rNode = Objects.requireNonNullElse(rightPair[1], root);
+        TreeNode lNode = Objects.isNull(leftPair[0]) ? root : leftPair[0];
+        TreeNode rNode = Objects.isNull(rightPair[1]) ? root : rightPair[1];
         return new TreeNode[]{lNode, rNode};
     }
 

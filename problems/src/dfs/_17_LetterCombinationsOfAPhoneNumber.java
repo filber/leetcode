@@ -1,6 +1,8 @@
 package dfs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class _17_LetterCombinationsOfAPhoneNumber {
@@ -21,7 +23,7 @@ public class _17_LetterCombinationsOfAPhoneNumber {
         char[] chars = digits.toCharArray();
         char[] seq = new char[chars.length];
         if (chars.length == 0) {
-            return List.of();
+            return Collections.emptyList();
         }
         dfs(chars, seq, 0);
         return ans;

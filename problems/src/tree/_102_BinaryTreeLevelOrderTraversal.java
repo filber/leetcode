@@ -2,16 +2,13 @@ package tree;
 
 //https://leetcode.com/problems/binary-tree-level-order-traversal/
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class _102_BinaryTreeLevelOrderTraversal {
 
     public List<List<Integer>> levelOrder(TreeNode root) {
         if (root == null) {
-            return List.of();
+            return Collections.emptyList();
         }
 
         Queue<TreeNode> queue = new ArrayDeque<>();

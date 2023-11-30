@@ -21,7 +21,7 @@ public class _15_3Sum {
                 int c = nums[r];
                 int sum = a + b + c;
                 if (sum == 0) {
-                    list.add(List.of(a, b, c));
+                    list.add(Arrays.asList(a, b, c));
                     while (l < r && nums[l] == b) {
                         l++;
                     }

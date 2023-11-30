@@ -3,6 +3,7 @@ package graph;
 //https://leetcode.com/problems/critical-connections-in-a-network/
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class _1192_CriticalConnectionsInANetwork {
@@ -47,7 +48,7 @@ public class _1192_CriticalConnectionsInANetwork {
             dfs(i, j);
             low[i] = Math.min(low[i], low[j]);
             if (dfn[i] < low[j]) {
-                ans.add(List.of(i, j));
+                ans.add(Arrays.asList(i, j));
             }
         }
     }

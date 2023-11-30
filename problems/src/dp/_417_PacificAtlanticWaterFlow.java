@@ -3,6 +3,7 @@ package dp;
 //https://leetcode.com/problems/pacific-atlantic-water-flow/
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class _417_PacificAtlanticWaterFlow {
@@ -30,7 +31,7 @@ public class _417_PacificAtlanticWaterFlow {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (pDP[i][j] && aDP[i][j]) {
-                    list.add(List.of(i, j));
+                    list.add(Arrays.asList(i, j));
                 }
             }
         }

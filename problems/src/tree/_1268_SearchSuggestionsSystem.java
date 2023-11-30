@@ -31,7 +31,7 @@ public class _1268_SearchSuggestionsSystem {
             }
         }
         if (cur == null) {
-            return List.of();
+            return Collections.emptyList();
         }
         List<String> list = new ArrayList<>();
         for (int i = 0; i < 3 && i < cur.indices.size(); i++) {

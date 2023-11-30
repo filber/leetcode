@@ -63,6 +63,7 @@ public class _444_SequenceReconstruction {
         }
 
         // 4. Compare traverseOrder with pSeq
+
         return Arrays.compare(traverseSeq, pSeq) == 0;
     }
 }

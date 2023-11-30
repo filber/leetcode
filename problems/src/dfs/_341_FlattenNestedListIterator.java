@@ -38,7 +38,7 @@ public class _341_FlattenNestedListIterator {
 
         @Override
         public List<NestedInteger> getList() {
-            return List.of();
+            return new ArrayList<>();
         }
     }
 
