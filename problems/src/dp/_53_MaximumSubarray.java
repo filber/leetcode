@@ -5,12 +5,14 @@ public class _53_MaximumSubarray {
 
     public int maxSubArray(int[] nums) {
         int n = nums.length;
-        int dp = nums[0];
-        int max = nums[0];
+        int[] dp = new int[n];
+
+        dp[0] = nums[0];
+        int rst = nums[0];
         for (int i = 1; i < n; i++) {
-            dp = Math.max(nums[i], dp + nums[i]);
-            max = Math.max(dp, max);
+            dp[i] = Math.max(nums[i], dp[i - 1] + nums[i]);
+            rst = Math.max(dp[i], rst);
         }
-        return max;
+        return rst;
     }
 }
