@@ -1,4 +1,4 @@
-package array_matrix;
+package greedy;
 
 import org.junit.Test;
 import org.junit.Before;
@@ -18,7 +18,6 @@ public class _45_JumpGameIITest {
     @After
     public void after() throws Exception {
     }
-
 
     @Test
     public void testJump1() throws Exception {
