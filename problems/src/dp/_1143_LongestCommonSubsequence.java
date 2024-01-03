@@ -4,23 +4,23 @@ package dp;
 
 public class _1143_LongestCommonSubsequence {
 
-    public int longestCommonSubsequence(String A, String B) {
-        char[] aChars = A.toCharArray();
-        int m = aChars.length;
-        char[] bChars = B.toCharArray();
-        int n = bChars.length;
-        int[][] dp = new int[m + 1][n + 1];
+    public int longestCommonSubsequence(String p, String q) {
+        char[] P = p.toCharArray();
+        int m = P.length;
+        char[] Q = q.toCharArray();
+        int n = Q.length;
 
+        int[][] dp = new int[m + 1][n + 1];
         for (int i = 1; i <= m; i++) {
-            char a = aChars[i - 1];
             for (int j = 1; j <= n; j++) {
-                char b = bChars[j - 1];
-                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-                if (a == b) {
-                    dp[i][j] = Math.max(dp[i][j], dp[i - 1][j - 1] + 1);
+                if (P[i - 1] == Q[j - 1]) {
+                    dp[i][j] = Math.max(dp[i - 1][j - 1] + 1, Math.max(dp[i - 1][j], dp[i][j - 1]));
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
                 }
             }
         }
+
         return dp[m][n];
     }
 }
