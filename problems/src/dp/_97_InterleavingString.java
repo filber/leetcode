@@ -5,39 +5,47 @@ package dp;
 public class _97_InterleavingString {
 
     public boolean isInterleave(String p, String q, String s) {
-        char[] pChars = p.toCharArray();
-        int m = pChars.length;
-        char[] qChars = q.toCharArray();
-        int n = qChars.length;
-        char[] sChars = s.toCharArray();
-        if (m + n != sChars.length) {
+        int m = p.length();
+        int n = q.length();
+        if (s.length() != m + n) {
             return false;
         }
+        char[] P = p.toCharArray();
+        char[] Q = q.toCharArray();
+        char[] S = s.toCharArray();
+
+        // whether interleaving p[0..i] and q[0..j] could formulate s[0..i+j]
         boolean[][] dp = new boolean[m + 1][n + 1];
 
-        // Initialize DP
+        // 1. Initialize
+        // 1.1. Both Empty
         dp[0][0] = true;
-        for (int i = 1; i <= m && pChars[i - 1] == sChars[i - 1]; i++) {
-            dp[i][0] = true;
+        // 1.2. Ignore q
+        for (int i = 1; i <= m; i++) {
+            if (P[i - 1] == S[i - 1]) {
+                dp[i][0] = true;
+            } else {
+                break;
+            }
         }
-        for (int j = 1; j <= n && qChars[j - 1] == sChars[j - 1]; j++) {
-            dp[0][j] = true;
+        // 1.3. Ignore p
+        for (int j = 1; j <= n; j++) {
+            if (Q[j - 1] == S[j - 1]) {
+                dp[0][j] = true;
+            } else {
+                break;
+            }
         }
 
-        // Populate DP
+        // 2. Fill DP
         for (int i = 1; i <= m; i++) {
-            char pCh = pChars[i - 1];
             for (int j = 1; j <= n; j++) {
-                char qCh = qChars[j - 1];
-                char sCh = sChars[i + j - 1];
-                if (pCh == sCh && dp[i - 1][j] ||
-                        qCh == sCh && dp[i][j - 1]) {
+                if ((P[i - 1] == S[i + j - 1] && dp[i - 1][j]) ||
+                        (Q[j - 1] == S[i + j - 1] && dp[i][j - 1])) {
                     dp[i][j] = true;
                 }
             }
         }
-
-        // Final Result
         return dp[m][n];
     }
 }
