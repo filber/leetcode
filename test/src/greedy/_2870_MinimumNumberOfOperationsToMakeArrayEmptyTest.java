@@ -1,4 +1,4 @@
-package hmap;
+package greedy;
 
 import org.junit.Before;
 import org.junit.Test;

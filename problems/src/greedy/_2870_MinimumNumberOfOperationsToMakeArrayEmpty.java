@@ -1,4 +1,4 @@
-package hmap;
+package greedy;
 
 // https://leetcode.com/problems/minimum-number-of-operations-to-make-array-empty/
 
