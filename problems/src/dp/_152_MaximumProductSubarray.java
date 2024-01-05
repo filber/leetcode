@@ -5,20 +5,16 @@ public class _152_MaximumProductSubarray {
 
     public int maxProduct(int[] nums) {
         int n = nums.length;
-        int[] maxProduct = new int[n];
-        maxProduct[0] = nums[0];
-        int[] minProduct = new int[n];
-        minProduct[0] = nums[0];
-        int max = nums[0];
+        int minDP = nums[0];
+        int maxDP = nums[0];
+        int result = maxDP;
         for (int i = 1; i < n; i++) {
-            int val = nums[i];
-            int maxP = maxProduct[i - 1] * val;
-            int minP = minProduct[i - 1] * val;
-            maxProduct[i] = Math.max(val, Math.max(maxP, minP));
-            minProduct[i] = Math.min(val, Math.min(maxP, minP));
-            max = Math.max(max, maxProduct[i]);
+            int prevMin = minDP;
+            int prevMax = maxDP;
+            minDP = Math.min(nums[i], Math.min(nums[i] * prevMin, nums[i] * prevMax));
+            maxDP = Math.max(nums[i], Math.max(nums[i] * prevMin, nums[i] * prevMax));
+            result = Math.max(result, maxDP);
         }
-
-        return max;
+        return result;
     }
 }
