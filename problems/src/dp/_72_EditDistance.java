@@ -4,31 +4,35 @@ package dp;
 
 public class _72_EditDistance {
 
-    public int minDistance(String word1, String word2) {
-        char[] A = word1.toCharArray();
+    public int minDistance(String a, String b) {
+        char[] A = a.toCharArray();
+        char[] B = b.toCharArray();
         int m = A.length;
-        char[] B = word2.toCharArray();
         int n = B.length;
+
+        // minimum steps needed to reshape A[0..i] into B[0..j]
         int[][] dp = new int[m + 1][n + 1];
+        dp[0][0] = 0; // empty -> empty
         for (int i = 0; i <= m; i++) {
-            dp[i][0] = i;
+            dp[i][0] = i; // A[0..i] -> empty, delete all chars
         }
         for (int j = 0; j <= n; j++) {
-            dp[0][j] = j;
+            dp[0][j] = j; // empty -> B[0..j], insert all chars
         }
 
         for (int i = 1; i <= m; i++) {
-            char a = A[i - 1];
             for (int j = 1; j <= n; j++) {
-                char b = B[j - 1];
-                if (a == b) {
+                if (A[i - 1] == B[j - 1]) {
                     dp[i][j] = dp[i - 1][j - 1];
                 } else {
-                    dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;
+                    dp[i][j] = Math.min(
+                            dp[i - 1][j - 1] + 1, // A[i] -> B[j]
+                            Math.min(dp[i - 1][j] + 1, // delete A[i]
+                                    dp[i][j - 1] + 1)  // insert B[j]
+                    );
                 }
             }
         }
-
         return dp[m][n];
     }
 }
