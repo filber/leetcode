@@ -23,17 +23,17 @@ public class _91_DecodeWays {
             char cur = A[i - 1];
             char previous = A[i - 2];
             if (cur == '0' && previous != '1' && previous != '2') {
-                return 0;
+                return 0; // '0' must combine with previous, but failed to do so
             } else if (cur == '0' && (previous == '1' || previous == '2')) {
                 dp[i] = dp[i - 2];
             } else if (cur >= '7' && cur <= '9' && previous == '1') {
-                dp[i] = dp[i - 1] + dp[i - 2]; // could combine with previous '1' or exist singly
+                dp[i] = dp[i - 1] + dp[i - 2]; // could combine with previous '1' or exists individually
             } else if (cur >= '7' && cur <= '9') {
-                dp[i] = dp[i - 1]; // can't combine with previous char
+                dp[i] = dp[i - 1]; // previous is not '1', can't combine with previous char
             } else if (cur >= '1' && cur <= '6' && (previous == '1' || previous == '2')) {
-                dp[i] = dp[i - 1] + dp[i - 2]; // could combine with previous '1'/'2' or exist singly
+                dp[i] = dp[i - 1] + dp[i - 2]; // could combine with previous '1'/'2', or exists individually
             } else {
-                dp[i] = dp[i - 1]; // can't combine with previous char
+                dp[i] = dp[i - 1]; // previous is not '1' or '2', can't combine with previous char
             }
         }
         return dp[n];
