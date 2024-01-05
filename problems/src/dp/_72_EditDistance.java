@@ -23,7 +23,7 @@ public class _72_EditDistance {
         for (int i = 1; i <= m; i++) {
             for (int j = 1; j <= n; j++) {
                 if (A[i - 1] == B[j - 1]) {
-                    dp[i][j] = dp[i - 1][j - 1];
+                    dp[i][j] = dp[i - 1][j - 1]; // no need for extra steps
                 } else {
                     dp[i][j] = Math.min(
                             dp[i - 1][j - 1] + 1, // A[i] -> B[j]
