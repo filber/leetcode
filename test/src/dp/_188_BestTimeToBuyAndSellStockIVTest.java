@@ -10,7 +10,7 @@ public class _188_BestTimeToBuyAndSellStockIVTest {
     _188_BestTimeToBuyAndSellStockIV target;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         target = new _188_BestTimeToBuyAndSellStockIV();
     }
 
