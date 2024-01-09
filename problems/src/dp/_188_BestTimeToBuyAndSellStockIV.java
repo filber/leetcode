@@ -11,7 +11,8 @@ public class _188_BestTimeToBuyAndSellStockIV {
         int maxProfit = 0;
 
         // 0 - transactions
-        dp[0][0][0] = 0;
+        dp[0][0][0] = 0; // not -prices[0]!
+        dp[0][0][1] = 0;
 
         // experienced 1-k transactions at day0
         for (int j = 1; j <= k; j++) {
@@ -19,6 +20,7 @@ public class _188_BestTimeToBuyAndSellStockIV {
             dp[0][j][1] = 0; // hold nothing
         }
 
+        // iterate remaining prices
         for (int i = 1; i < n; i++) {
             for (int j = 1; j <= k; j++) {
                 dp[i][j][0] = Math.max(dp[i - 1][j][0], dp[i - 1][j - 1][1] - prices[i]); // hold one share
