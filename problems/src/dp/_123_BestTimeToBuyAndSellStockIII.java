@@ -3,54 +3,29 @@ package dp;
 //https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
 public class _123_BestTimeToBuyAndSellStockIII {
 
-    public static int maxProfit(int[] prices) {
-        int buy1 = Integer.MIN_VALUE;
-        int sell1 = 0;
-        int buy2 = Integer.MIN_VALUE;
-        int sell2 = 0;
-
-        for (int price : prices) {
-            buy1 = Math.max(buy1, - price);
-            sell1 = Math.max(sell1, buy1 + price);
-            buy2 = Math.max(buy2, sell1 - price);
-            sell2 = Math.max(sell2, buy2 + price);
-        }
-
-        return sell2;
-    }
-
-    public static int maxProfitDP(int[] prices) {
+    public int maxProfit(int[] prices) {
         int n = prices.length;
-        // forward
-        int[] fDP = new int[n];
-        int fMin = prices[0];
-        fDP[0] = 0;
+        // dp[i][0]: until ith day, no operation
+        // dp[i][1]: until ith day, first time hold one share
+        // dp[i][2]: until ith day, first time sell off one share
+        // dp[i][3]: until ith day, second time hold one share
+        // dp[i][4]: until ith day, second time sell off one share
+
+        int[][] dp = new int[n][5];
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0]; // buy at day 1
+        dp[0][2] = 0; // buy,sell
+        dp[0][3] = -prices[0]; // buy,sell,buy at day 1
+        dp[0][4] = 0; // buy,sell,buy,sell
         for (int i = 1; i < n; i++) {
-            fMin = Math.min(fMin, prices[i]);
-            fDP[i] = Math.max(prices[i] - fMin, fDP[i - 1]);
+            dp[i][0] = dp[i - 1][0]; // always 0
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
+            dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][1] + prices[i]);
+            dp[i][3] = Math.max(dp[i - 1][3], dp[i - 1][2] - prices[i]);
+            dp[i][4] = Math.max(dp[i - 1][4], dp[i - 1][3] + prices[i]);
         }
 
-        // backward
-        int[] bDP = new int[n];
-        int bMax = prices[n-1];
-        bDP[n-1] = 0;
-        for (int i = n - 2; i >= 0; i--) {
-            bMax = Math.max(bMax, prices[i]);
-            bDP[i] = Math.max(bMax - prices[i], bDP[i + 1]);
-        }
-
-        int maxP = 0;
-        for (int i = 0; i < n; i++) {
-            maxP = Math.max(maxP, fDP[i] + bDP[i]);
-        }
-
-        return maxP;
-    }
-
-    public static void main(String[] args) {
-        int m1 = maxProfit(new int[]{3, 3, 5, 0, 0, 3, 1, 4}); // 6
-        int m2 = maxProfit(new int[]{1, 2, 3, 4, 5}); //4
-        int m3 = maxProfit(new int[]{7, 6, 4, 3, 1}); //0
-        int m4 = maxProfit(new int[]{1, 2, 4, 2, 5, 7, 2, 4, 9, 0}); //13
+        int maxProfit = Math.max(dp[n - 1][2], dp[n - 1][4]);
+        return maxProfit;
     }
 }
