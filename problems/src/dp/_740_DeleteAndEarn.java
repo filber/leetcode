@@ -5,34 +5,23 @@ package dp;
 public class _740_DeleteAndEarn {
 
     public int deleteAndEarn(int[] nums) {
-        int n = nums.length;
-        if (n == 1) {
-            return nums[0];
-        }
-        int[] map = new int[10001];
-
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
+        int[] map = new int[10001];
         for (int num : nums) {
             map[num] += num;
             min = Math.min(min, num);
             max = Math.max(max, num);
         }
 
-        int len = max - min + 1;
-        if (len == 1) {
-            return map[min];
-        } else if (len == 2) {
-            return Math.max(map[min], map[max]);
+        int[] dp = new int[max - min + 2];
+        dp[0] = 0;
+        dp[1] = map[min];
+        for (int i = 2; i < dp.length; i++) {
+            int num = min + i - 1;
+            int sum = map[num];
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + sum);
         }
-        int dpPrePre = map[min];
-        int dpPre = Math.max(dpPrePre, map[min + 1]);
-        int dp = 0;
-        for (int i = 2; i < len; i++) {
-            dp = Math.max(dpPre, dpPrePre + map[min + i]);
-            dpPrePre = dpPre;
-            dpPre = dp;
-        }
-        return dp;
+        return dp[dp.length - 1];
     }
 }
