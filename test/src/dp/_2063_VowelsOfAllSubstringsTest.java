@@ -1,6 +1,5 @@
 package dp;
 
-import dp._2063_VowelsOfAllSubstrings;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
