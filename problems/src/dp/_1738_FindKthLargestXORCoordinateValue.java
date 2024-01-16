@@ -5,43 +5,40 @@ import java.util.Arrays;
 
 public class _1738_FindKthLargestXORCoordinateValue {
 
-    public static int kthLargestValue(int[][] matrix, int k) {
-        int m = matrix.length;
-        int n = matrix[0].length;
-        int[] arr = new int[m * n];
-        int[][] dp = new int[m][n];
-        dp[0][0] = matrix[0][0];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i == 0 && j == 0) {
-                    dp[0][0] = matrix[0][0];
-                } else if (i == 0) {
-                    dp[0][j] = dp[0][j - 1] ^ matrix[i][j];
-                } else if (j == 0) {
-                    dp[i][0] = dp[i - 1][0] ^ matrix[i][j];
-                } else {
-                    dp[i][j] = dp[i - 1][j] ^ dp[i - 1][j - 1] ^ dp[i][j - 1] ^ matrix[i][j];
-                }
-                arr[i * n + j] = dp[i][j];
-            }
+    int m;
+    int n;
+    public int kthLargestValue(int[][] matrix, int k) {
+        m = matrix.length;
+        n = matrix[0].length;
+        int[] dp = new int[m * n];
+        dp[0] = matrix[0][0];
+        for (int i = 1; i < m; i++) {
+            dp[coordiante(i, 0)] = dp[coordiante(i - 1, 0)] ^ matrix[i][0];
         }
 
-        Arrays.sort(arr);
+        for (int j = 1; j < n; j++) {
+            dp[coordiante(0, j)] = dp[coordiante(0, j - 1)] ^ matrix[0][j];
+        }
 
-        return arr[arr.length - k];
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                // A^A = 0
+                // A^0 = A
+                // A^A^A = A
+                // DP[i-1][j-1] 3
+                // DP[i-1][j]  1
+                // DP[i][j-1] 1
+                dp[coordiante(i, j)] = dp[coordiante(i - 1, j - 1)]
+                        ^ dp[coordiante(i - 1, j)]
+                        ^ dp[coordiante(i, j - 1)]
+                        ^ matrix[i][j];
+            }
+        }
+        Arrays.sort(dp);
+        return dp[dp.length - k];
     }
 
-    public static void main(String[] args) {
-        int[][] m1 = new int[][]{{4}};
-        int m1_1 = kthLargestValue(m1, 1); // 4
-
-        int[][] m2 = new int[][]{{5, 2}, {1, 6}};
-        int m2_1 = kthLargestValue(m2, 1); // 7
-        int m2_2 = kthLargestValue(m2, 2); // 5
-        int m2_3 = kthLargestValue(m2, 3); // 4
-        int m2_4 = kthLargestValue(m2, 4);
-
-        int[][] m3 = new int[][]{{10, 9, 5}, {2, 0, 4}, {1, 0, 9}, {3, 4, 8}};
-        int m3_1 = kthLargestValue(m3, 10);
+    public int coordiante(int i, int j) {
+        return i * n + j;
     }
 }
