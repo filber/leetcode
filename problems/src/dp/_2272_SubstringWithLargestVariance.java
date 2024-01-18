@@ -8,48 +8,50 @@ import java.util.Set;
 public class _2272_SubstringWithLargestVariance {
 
     public int largestVariance(String s) {
+        int n = s.length();
         char[] chars = s.toCharArray();
         Set<Character> set = new HashSet<>();
-        for (char ch: chars) {
-            set.add(ch);
+        for (char c : chars) {
+            set.add(c);
         }
-        int n = chars.length;
-        int result = 0;
-        // dp[i][0]: max sum of subarray ending with chars[i] if it doesn't contain -1
-        // dp[i][1]: max sum of subarray ending with chars[i] if it contains -1
-        int[][] dp = new int[n][2];
 
-        for (char bigCh: set) {
-            for (char smallCh: set) {
-                if (bigCh == smallCh) {
+        int ans = 0;
+        int[] P = new int[n]; // max sum of subarray ending with i
+        int[] Q = new int[n]; // max sum of subarray ending with i and contains at least one b
+        for (char a: set) {
+            for (char b: set) {
+                if (a==b) {
                     continue;
                 }
-
-                if (chars[0] == bigCh) {
-                    dp[0][0] = 1;
-                    dp[0][1] = Integer.MIN_VALUE / 2;
-                } else if (chars[0] == smallCh) {
-                    dp[0][0] = 0; // Empty
-                    dp[0][1] = -1;
+                char firstCh = chars[0];
+                if (firstCh == a) {
+                    P[0] = 1;
+                    Q[0] = Integer.MIN_VALUE / 2; // Invalid
+                } else if (firstCh == b) {
+                    P[0] = -1;
+                    Q[0] = -1;
+                } else {
+                    P[0] = 0;
+                    Q[0] = Integer.MIN_VALUE / 2; // Invalid
                 }
 
                 for (int i = 1; i < n; i++) {
                     char ch = chars[i];
-                    if (ch == bigCh) {
-                        dp[i][0] = dp[i - 1][0] + 1;
-                        dp[i][1] = dp[i - 1][1] + 1;
-                    } else if (ch == smallCh) {
-                        dp[i][0] = 0;
-                        dp[i][1] = Math.max(dp[i - 1][0] - 1, dp[i - 1][1] - 1);
+                    if (ch == a) {
+                        P[i] = Math.max(P[i - 1] + 1, 1);
+                        Q[i] = Q[i - 1] + 1;
+                    } else if (ch == b) {
+                        P[i] = Math.max(P[i - 1] - 1, -1);
+                        Q[i] = P[i];
                     } else {
-                        dp[i][0] = dp[i - 1][0];
-                        dp[i][1] = dp[i - 1][1];
+                        P[i] = Math.max(P[i - 1], 0);
+                        Q[i] = Q[i - 1];
                     }
-                    result = Math.max(result, dp[i][1]);
+                    ans = Math.max(ans, Q[i]);
                 }
             }
         }
 
-        return result;
+        return ans;
     }
 }
