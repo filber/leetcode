@@ -10,8 +10,7 @@ public class _279_PerfectSquares {
         for (int i = 2; i <= n; i++) {
             int min = Integer.MAX_VALUE;
             for (int j = 1; j * j <= i; j++) {
-                int squares = j * j;
-                min = Math.min(min, dp[i - squares]);
+                min = Math.min(min, dp[i - j * j]);
             }
             dp[i] = min + 1;
         }
