@@ -3,38 +3,51 @@ package stack;
 //https://leetcode.com/problems/sum-of-subarray-minimums/
 
 import java.util.Arrays;
+import java.util.Stack;
 
 public class _907_SumOfSubArrayMinimums {
 
     public int sumSubarrayMins(int[] arr) {
         int n = arr.length;
-        int[] left = new int[n]; // store the index of the closest smaller value before i
-        int[] right = new int[n]; // store the index of the closest smaller value after i
+        int[] right = new int[n];
         Arrays.fill(right, n);
-        int[] stack = new int[n];
-        int top = -1;
-        for (int i = 0; i < n; i++) {
-            left[i] = -1;
-            while (top >= 0 && arr[stack[top]] >= arr[i]) {
-                int peek = stack[top];
+        Stack<Integer> stack = new Stack<>();
+        stack.push(0);
+        for (int i = 1; i < n; i++) {
+            int val = arr[i];
+            while (!stack.isEmpty() && arr[stack.peek()] >= val) {
+                int peek = stack.pop();
                 right[peek] = i;
-                top--;
             }
-            if (top >= 0) {
-                left[i] = stack[top];
-            }
-            stack[++top] = i;
+            stack.push(i);
+        }
+        while (!stack.isEmpty()) {
+            right[stack.pop()] = n;
         }
 
+        int[] left = new int[n];
+        Arrays.fill(left, -1);
+        stack.push(n - 1);
+        for (int i = n - 2; i >= 0; i--) {
+            int val = arr[i];
+            while (!stack.isEmpty() && arr[stack.peek()] > val) {
+                int peek = stack.pop();
+                left[peek] = i;
+            }
+            stack.push(i);
+        }
+        while (!stack.isEmpty()) {
+            left[stack.pop()] = -1;
+        }
 
-        long sum = 0;
-        final int modulo = (int) (1e9 + 7);
+        long result = 0;
+        long mod = (int) 1e9 + 7;
         for (int i = 0; i < n; i++) {
-            long x = i - left[i];
-            long y = right[i] - i;
-            long delta = x * y * arr[i];
-            sum += delta;
+            long val = arr[i];
+            long l = i - left[i];
+            long r = right[i] - i;
+            result += l * val * r;
         }
-        return (int) (sum % modulo);
+        return (int) (result % mod);
     }
 }
