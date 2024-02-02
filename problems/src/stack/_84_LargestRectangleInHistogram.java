@@ -12,7 +12,7 @@ public class _84_LargestRectangleInHistogram {
         int peek = 0;
         int area = 0;
         for (int i = 1; i < H.length; i++) {
-            while (peek > 0 && H[stack[peek]] >= H[i]) {
+            while (peek > 0 && H[stack[peek]] > H[i]) {
                 int h = H[stack[peek]];
                 peek--;
                 int w = i - stack[peek] - 1;
