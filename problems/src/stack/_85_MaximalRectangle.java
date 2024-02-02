@@ -12,28 +12,25 @@ public class _85_MaximalRectangle {
         }
         for (int i = 1; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (matrix[i][j] == '0') {
-                    dp[i][j + 1] = 0;
-                } else {
+                if (matrix[i][j] == '1') {
                     dp[i][j + 1] = dp[i - 1][j + 1] + 1;
                 }
             }
         }
 
-        int[] stack = new int[n + 2];
-        int top;
         int maxArea = 0;
+        int[] stack = new int[n + 2];
+        int peek = 0;
         for (int i = 0; i < m; i++) {
-            top = 0;
-            stack[0] = 0;
-            for (int j = 1; j < n + 2; j++) {
-                int h = dp[i][j];
-                while (dp[i][stack[top]] > h) {
-                    int height = dp[i][stack[top--]];
-                    int width = j - 1 - stack[top];
-                    maxArea = Math.max(maxArea, height * width);
+            peek = 0; // reset stack
+            for (int j = 1; j <= n + 1; j++) {
+                while (peek > 0 && dp[i][stack[peek]] >= dp[i][j]) {
+                    int height = dp[i][stack[peek]];
+                    peek--;
+                    int width = j - stack[peek] - 1;
+                    maxArea = Math.max(maxArea, width * height);
                 }
-                stack[++top] = j;
+                stack[++peek] = j;
             }
         }
 
