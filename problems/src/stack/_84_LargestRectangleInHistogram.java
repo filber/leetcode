@@ -5,25 +5,22 @@ package stack;
 public class _84_LargestRectangleInHistogram {
 
     public int largestRectangleArea(int[] heights) {
-        int n = heights.length + 2;
-        int[] h = new int[n];
-        for (int i = 0; i < heights.length; i++) {
-            h[i + 1] = heights[i];
-        }
+        int[] H = new int[heights.length + 2];
+        System.arraycopy(heights, 0, H, 1, heights.length);
 
-        int maxArea = 0;
-        int[] stack = new int[n];
-        int top = -1;
-        for (int i = 0; i < n; i++) {
-            while (top != -1 && h[stack[top]] > h[i]) {
-                int height = h[stack[top--]];
-                int width = i - 1 - stack[top];
-                maxArea = Math.max(maxArea, height * width);
+        int[] stack = new int[H.length];
+        int peek = 0;
+        int area = 0;
+        for (int i = 1; i < H.length; i++) {
+            while (peek > 0 && H[stack[peek]] >= H[i]) {
+                int h = H[stack[peek]];
+                peek--;
+                int w = i - stack[peek] - 1;
+                area = Math.max(area, h * w);
             }
-            stack[++top] = i;
+            stack[++peek] = i;
         }
-
-        return maxArea;
+        return area;
     }
 
 }
