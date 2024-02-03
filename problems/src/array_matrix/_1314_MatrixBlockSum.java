@@ -4,86 +4,51 @@ package array_matrix;
 
 public class _1314_MatrixBlockSum {
 
-//  Constraints:
-//    m == mat.length
-//    n == mat[i].length
-//    1 <= m, n, K <= 100
-//    1 <= mat[i][j] <= 100
+    int[][] dp;
+    int m;
+    int n;
 
-    public static int[][] matrixBlockSum(int[][] mat, int k) {
-        int m = mat.length;
-        int n = mat[0].length;
-        int[][] ans = new int[m][n];
-        int[][] sumTable = new int[m][n];
+    public int[][] matrixBlockSum(int[][] mat, int k) {
+        m = mat.length;
+        n = mat[0].length;
+        // dp[i][j]: sum of all elements within <(0,0) ... (i,j)>
+        // append an extra row at top and an extra column at the left, all filled with 0s
+        dp = new int[m + 1][n + 1];
+        // init
         for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                int top = i > 0 ? sumTable[i - 1][j] : 0;
-                int left = j > 0 ? sumTable[i][j - 1] : 0;
-                int topLeft = i > 0 && j > 0 ? sumTable[i - 1][j - 1] : 0;
-                sumTable[i][j] = top + left - topLeft + mat[i][j];
+            dp[i + 1][1] = dp[i][1] + mat[i][0];
+        }
+        for (int j = 0; j < n; j++) {
+            dp[1][j + 1] = dp[1][j] + mat[0][j];
+        }
+
+        // iterate
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1] - dp[i - 1][j - 1] + mat[i - 1][j - 1];
             }
         }
 
+        int[][] result = new int[m][n];
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-
-                int x1 = i - k - 1;
-                int y1 = j - k - 1;
-                int x2 = i + k;
-                int y2 = j + k;
-
-                int topLeft = 0;
-                if (x1 >= 0 &&  y1>= 0) {
-                    topLeft = getSum(sumTable, x1, y1);
-                }
-
-                int topRight = 0;
-                if (x1 >= 0) {
-                    topRight = getSum(sumTable, x1, Math.min(n - 1, y2));
-                }
-
-                int bottomLeft = 0;
-                if (y1 >= 0) {
-                    bottomLeft = getSum(sumTable, Math.min(m - 1, x2), y1);
-                }
-
-                int bottomRight = getSum(sumTable, Math.min(m - 1, x2), Math.min(n - 1, y2));
-
-                ans[i][j] = bottomRight - bottomLeft - topRight + topLeft;
+                result[i][j] = sum(i - k, j - k, i + k + 1, j + k + 1);
             }
         }
 
-        return ans;
+        return result;
     }
 
+    private int sum(int p, int q, int i, int j) {
+        p = Math.max(0, p);
+        q = Math.max(0, q);
+        i = Math.min(m, i);
+        j = Math.min(n, j);
 
-    private static int getSum(int[][] sumTable, int i, int j) {
-        int m = sumTable.length;
-        int n = sumTable[0].length;
-        if (i < 0 || i >= m || j < 0 || j >= n) {
-            return 0;
-        } else {
-            return sumTable[i][j];
-        }
-    }
-
-    public static void main(String[] args) {
-//    Output: [[12,21,16],[27,45,33],[24,39,28]]
-        int[][] m1 = matrixBlockSum(new int[][]{
-                {1, 2, 3},
-                {4, 5, 6},
-                {7, 8, 9}}, 1);
-
-//    Output: [[45,45,45],[45,45,45],[45,45,45]]
-        int[][] m2 = matrixBlockSum(new int[][]{
-                {1, 2, 3},
-                {4, 5, 6},
-                {7, 8, 9}}, 2);
-
-        int[][] m3 = matrixBlockSum(new int[][]{
-                {67, 64, 78},
-                {82, 46, 46},
-                {6, 52, 55},
-                {55, 99, 45}}, 1);
+        int A = dp[p][q];
+        int B = dp[p][j];
+        int C = dp[i][q];
+        int sum = dp[i][j] - B - C + A;
+        return sum;
     }
 }
