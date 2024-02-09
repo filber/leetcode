@@ -1,37 +1,37 @@
 package dp;
 
-//[Dynamic Programming]
-
 // https://leetcode.com/problems/burst-balloons/
+
 public class _312_BurstBalloons {
 
-    public static int maxCoins(int[] nums) {
-        int[] balloons = new int[nums.length + 2];
-        balloons[0] = 1;
-        balloons[balloons.length - 1] = 1;
+    public int maxCoins(int[] nums) {
+        int[] N = new int[nums.length + 2];
+        N[0] = 1;
+        N[N.length - 1] = 1;
         for (int i = 0; i < nums.length; i++) {
-            balloons[i + 1] = nums[i];
+            N[i + 1] = nums[i];
         }
 
-        int n = nums.length;
-        int[][] dp = new int[n + 2][n + 2];
+        int n = N.length;
+        int[][] dp = new int[n][n];
 
-        for (int len = 1; len <= n; len++) {
-            for (int i = 1; i <= n - len + 1; i++) {
+        // Init diagonal
+        for (int i = 1; i < n - 1; i++) {
+            dp[i][i] = N[i - 1] * N[i] * N[i + 1];
+        }
+
+        // Iterate
+        for (int len = 2; len <= nums.length; len++) {
+            for (int i = 1; i + len - 1 <= nums.length; i++) {
                 int j = i + len - 1;
                 for (int k = i; k <= j; k++) {
-                    int kVal = balloons[i-1]*balloons[k]*balloons[j+1];
-                    dp[i][j] = Math.max(dp[i][j], dp[i][k - 1] + dp[k + 1][j] + kVal);
+                    int prev = N[i-1];
+                    int cur = N[k];
+                    int next = N[j + 1];
+                    dp[i][j] = Math.max(dp[i][j], dp[i][k - 1] + dp[k + 1][j] + prev * cur * next);
                 }
             }
         }
-
-        return dp[1][n];
-    }
-
-    public static void main(String[] args) {
-        int m3 = maxCoins(new int[]{4}); // 4
-        int m1 = maxCoins(new int[]{1, 5}); // 10
-        int m2 = maxCoins(new int[]{3, 1, 5, 8}); //167
+        return dp[1][nums.length];
     }
 }
