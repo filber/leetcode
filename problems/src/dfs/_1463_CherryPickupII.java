@@ -10,9 +10,6 @@ public class _1463_CherryPickupII {
     public int cherryPickup(int[][] grid) {
         m = grid.length;
         n = grid[0].length;
-        if (m == 70 && n == 70) {
-            return 0;
-        }
         this.grid = grid;
         memo = new int[m][n][n]; // <x,y1,y2>
         for (int i = 0; i < m; i++) {
