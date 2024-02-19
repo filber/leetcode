@@ -1,6 +1,8 @@
-package tree;
+package pq;
 
 //https://leetcode.com/problems/meeting-rooms-ii/
+
+import java.util.*;
 
 public class _253_MeetingRoomsII {
 
@@ -8,10 +10,33 @@ public class _253_MeetingRoomsII {
 //    [[s1,e1],[s2,e2],...] (si < ei),
 //    find the minimum number of conference rooms required.
 
+
+    public int leastRooms(int[][] meetings) {
+        PriorityQueue<Integer[]> used = new PriorityQueue<>(Comparator.comparing(a -> a[1]));
+        Queue<Integer> rooms = new ArrayDeque<>();
+        int roomCnt = 0;
+        Arrays.sort(meetings, Comparator.comparingInt(a -> a[0]));
+        for (int[] meeting : meetings) {
+            while (!used.isEmpty() && meeting[0] >= used.peek()[1]) {
+                Integer[] top = used.poll();
+                rooms.add(top[0]);
+            }
+
+            if (rooms.isEmpty()) {
+                roomCnt++;
+                used.add(new Integer[]{roomCnt, meeting[1]});
+            } else {
+                int room = rooms.poll();
+                used.add(new Integer[]{room, meeting[1]});
+            }
+        }
+        return roomCnt;
+    }
+
     SegmentTree root = null;
     int rooms = 0;
 
-    public int leastRooms(int[][] meeting) {
+    public int leastRoomsST(int[][] meeting) {
         for (int[] m : meeting) {
             root = addRange(root, m[0], m[1]);
         }

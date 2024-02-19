@@ -1,4 +1,4 @@
-package tree;
+package pq;
 
 import org.junit.Test;
 import org.junit.Before;
