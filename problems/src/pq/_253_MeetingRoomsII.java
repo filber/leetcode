@@ -12,22 +12,22 @@ public class _253_MeetingRoomsII {
 
 
     public int leastRooms(int[][] meetings) {
-        PriorityQueue<Integer[]> used = new PriorityQueue<>(Comparator.comparing(a -> a[1]));
-        Queue<Integer> rooms = new ArrayDeque<>();
+        PriorityQueue<Integer> used = new PriorityQueue<>(Comparator.comparing(a -> a));
         int roomCnt = 0;
+        int available = 0;
         Arrays.sort(meetings, Comparator.comparingInt(a -> a[0]));
         for (int[] meeting : meetings) {
-            while (!used.isEmpty() && meeting[0] >= used.peek()[1]) {
-                Integer[] top = used.poll();
-                rooms.add(top[0]);
+            while (!used.isEmpty() && meeting[0] >= used.peek()) {
+                used.poll();
+                available++;
             }
 
-            if (rooms.isEmpty()) {
+            if (available == 0) {
                 roomCnt++;
-                used.add(new Integer[]{roomCnt, meeting[1]});
+                used.add(meeting[1]);
             } else {
-                int room = rooms.poll();
-                used.add(new Integer[]{room, meeting[1]});
+                available--;
+                used.add(meeting[1]);
             }
         }
         return roomCnt;
