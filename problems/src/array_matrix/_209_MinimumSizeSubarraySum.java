@@ -5,23 +5,23 @@ package array_matrix;
 public class _209_MinimumSizeSubarraySum {
 
     public int minSubArrayLen(int target, int[] nums) {
-        int n = nums.length, r = 0, l = 0, sum = nums[0];
-        if (sum >= target) {
-            return 1;
-        }
+        int sum = 0;
+        int l = 0;
+        int n = nums.length;
         int len = Integer.MAX_VALUE;
-        while (r < n) {
-            if (sum >= target) {
+
+        for (int r = 0; r < n; r++) {
+            sum += nums[r];
+            while (sum >= target) {
                 len = Math.min(len, r - l + 1);
-                sum -= nums[l++];
-            } else {
-                r++;
-                if (r < n) {
-                    sum += nums[r];
-                }
+                sum -= nums[l];
+                l++;
             }
         }
 
-        return len == Integer.MAX_VALUE ? 0 : len;
+        if (len == Integer.MAX_VALUE) {
+            return 0;
+        }
+        return len;
     }
 }
