@@ -28,19 +28,4 @@ public class _525_ContiguousArray {
         }
         return maxLen;
     }
-
-    public static void main(String[] args) {
-        // 2
-        int m1 = findMaxLength(new int[]{0, 1});
-        // 2
-        int m2 = findMaxLength(new int[]{0, 1, 0});
-        // 0
-        int m3 = findMaxLength(new int[]{1, 1});
-        // 0
-        int m4 = findMaxLength(new int[]{0, 0});
-        // 8
-        int m5 = findMaxLength(new int[]{0, 1, 1, 1, 0, 0, 0, 1, 1});
-        // 4
-        int m6 = findMaxLength(new int[]{0, 1, 1, 0, 1, 1, 1, 0});
-    }
 }
